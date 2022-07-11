@@ -1,4 +1,4 @@
-My contributions to the Japanese learning community. For questions and support, I can be contacted @Marv [in TheMoeWay](https://learnjapanese.moe/join/).
+My contributions to the Japanese learning community. For questions, suggestions, and support, I can be contacted @Marv [in TheMoeWay](https://learnjapanese.moe/join/).
 
 - [Sorting Mined Anki Cards by Frequency](#sorting-mined-anki-cards-by-frequency)
   - [Usage](#usage)
@@ -30,7 +30,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the first f
     {{~/if~}}
 {{/inline}}
 ```
-(This only selects the first frequency list value, if you know a method of selecting the lowest frequency value using handlebars please let me know.)
+(This only selects the first frequency value displayed; if you know a method of selecting the lowest frequency value using handlebars then please let me know.)
 
 - In `Configure Anki card format...`, we may need to refresh the card model for the new field to show up. To do this, change the model to something else and change it back. This will clear your fields so take a screenshot to remember what you had. When your frequency field shows up, add `{freq}` in its value box to use the handlebar.
 ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-15-02.png)
@@ -44,7 +44,7 @@ Now we can simply sort our new cards by our frequency field, then press `ctrl + 
 
 - I personally then select the first thirty or so cards and randomly sort them again using the random sort option for more variability when reviewing.
 
-Alternatively you could use the [AnkiAutoReorder](https://github.com/KamWithK/AnkiAutoReorder) addon. I have not personally tried it though.
+Alternatively you could use the [AnkiAutoReorder](https://github.com/KamWithK/AnkiAutoReorder) addon. I have not personally tried it yet though.
 
 #### Frequency Order
 
@@ -53,20 +53,20 @@ As mentioned, this only takes the first available frequency value from your freq
 
 ### Backfilling Old Cards
 
-If you already have a large backlog of old cards without frequency values, you might need to fill in these values first or they won't be sorted. You could just opt to finish reviewing these cards first, but there is a hacky method to backfill these cards. But **backup your collection before attempting this, it could cause significant lag to your Anki.**
+If you already have a large backlog of old cards without frequency values, you might need to fill in these values first or they won't be sorted. You could just opt to finish reviewing these cards first, but there is a hacky method to backfill these cards. **Make sure to backup your collection before attempting this, it could cause significant lag to your Anki.** In addition, for users of Anki 2.1.50+ [increase your backup interval](https://docs.ankiweb.net/backups.html?highlight=backup#anki-2150) before attempting the import as it will take a *long* time. A backup occurring while you're waiting on Anki to delete cards will just cause more lag. 
 
 - Create a frequency list in `.txt` format that contains a list of expressions followed by frequency values. You can use the ones I have created [here](frequency), I recommend downloading the [JPDB](frequency/JPDB.txt) list as it's the most exhaustive. 
 
 - In Anki, go to File -> Import, then select the txt frequency file. Map the first field to your term/expression field, then the second field to your frequency field. **Make sure to enable "Update existing notes when first field matches."** 
 ![](images/anki_Import_2022-07-10_10-47-55.png)
 
-- This will update your existing notes' frequency values, but it'll also import a LOT of new cards. To delete these new cards, search `added:1 Glossary:` in your card browser. The `added:1` is to find cards added today, and `Glossary:` (change it depending on your field name) is to find cards that have no glossary, as all your existing cards should have it. 
+- This will update your existing notes' frequency values, but it'll also import a LOT of new unneeded cards. To delete these new cards, search `added:1 Glossary:` in your card browser. The `added:1` is to find cards added today, and `Glossary:` (change it depending on your field name) is to find cards that have no glossary, as all your existing cards should have it. 
 
 - Then hit `ctrl + a` to select all and `ctrl + del` to delete these new cards. But **be sure** you aren't deleting any valid cards first.
 
 ## Anki Card Blur
 
-Adding cards from VNs, we might find some risque content that we still want to look at while reviewing because it's cute. However, you might review in places where you don't always want other people to see your cards. Using this card template, we can blur media in Anki and have the option persist throughout a review session.
+When adding cards from VNs, we might find some risque content that we still want to look at while reviewing because it's cute. However, you might review in places where you don't always want other people to see your cards. Using this card template, we can blur media in Anki and have the option persist throughout a review session.
 
 - Decide on a tag for NSFW cards. I use `-NSFW` so the tag is sorted first for easy access. If you choose something else you'll need to replace all instances of `-NSFW` in this guide with your tag name (with `ctrl + h` in a text editor or an [online tool](http://www.unit-conversion.info/texttools/replace-text/)).
 
@@ -83,6 +83,8 @@ Adding cards from VNs, we might find some risque content that we still want to l
 
 - Then, at the end of the template paste in this code: 
 ```html
+<script src="__persistence.js"></script>
+
 <script>
   // nsfw
   (function () {
@@ -178,7 +180,7 @@ Media: ハミダシクリエイティブ ©まどそふと
 
 #### Default to Enabled/Disabled
 
-In the code we pasted in the template, there are variables that can change whether it is enabled by default on desktop/mobile, the thought being that this is most for reviewing on a phone. These can be changed with `true` marking that cards will not be blurred by default.
+In the code we pasted in the template there are variables that can change whether blurring is enabled by default on desktop/mobile separately; the thought being that this script is primarily intended for reviewing on a phone. These variables can be changed with `true` marking that cards will not be blurred by default.
 
 ```js
 const nsfwDefaultPC = true;
