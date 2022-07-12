@@ -1,13 +1,19 @@
 My contributions to the Japanese learning community. For questions, suggestions, and support, I can be contacted @Marv [in TheMoeWay](https://learnjapanese.moe/join/).
 
 - [Sorting Mined Anki Cards by Frequency](#sorting-mined-anki-cards-by-frequency)
+  - [How-To](#how-to)
   - [Usage](#usage)
     - [Frequency Order](#frequency-order)
   - [Backfilling Old Cards](#backfilling-old-cards)
 - [Anki Card Blur](#anki-card-blur)
+  - [How-To](#how-to-1)
+    - [Card Template/Code](#card-templatecode)
+    - [CSS](#css)
   - [Usage](#usage-1)
     - [Default to Enabled/Disabled](#default-to-enableddisabled)
   - [Non Persistent/NoJS Version](#non-persistentnojs-version)
+    - [HTML](#html)
+    - [CSS](#css-1)
   - [ShareX Hotkey for NSFW cards](#sharex-hotkey-for-nsfw-cards)
 
 ## Sorting Mined Anki Cards by Frequency
@@ -15,6 +21,8 @@ My contributions to the Japanese learning community. For questions, suggestions,
 When reading and adding cards from the content you're reading, you'll come across a variety of words with varying degrees of usefulness. Especially as a beginner, you'll want to learn the useful words as soon as possible and learn the less useful words later. With this we can sort a backlog of mined cards by frequency using various installed Yomichan frequency lists.
 
 This handlebar for Yomichan will add a `{freq}` field that will send the first frequency value available to Anki in a numerical format. 
+
+### How-To
 
 - First, in your Anki card template create a new field for frequency, we can name this `Frequency` or whatever you like.
 ![](images/anki_Fields_for_Mining_2022-07-10_10-12-31.png)
@@ -55,7 +63,7 @@ As mentioned, this only takes the first available frequency value from your freq
 
 If you already have a large backlog of old cards without frequency values, you might need to fill in these values first or they won't be sorted. You could just opt to finish reviewing these cards first, but there is a hacky method to backfill these cards. **Make sure to backup your collection before attempting this, it could cause significant lag to your Anki.** In addition, for users of Anki 2.1.50+ [increase your backup interval](https://docs.ankiweb.net/backups.html?highlight=backup#anki-2150) before attempting the import as it will take a *long* time. A backup occurring while you're waiting on Anki to delete cards will just cause more lag. 
 
-- Create a frequency list in `.txt` format that contains a list of expressions followed by frequency values. You can use the ones I have created [here](frequency), I recommend downloading the [JPDB](frequency/JPDB.txt) list as it's the most exhaustive. 
+- Create a frequency list in `.txt` format that contains a list of expressions followed by frequency values. You can use the ones I have created [here](frequency), I recommend downloading the [JPDB](frequency/JPDB.txt) list as it's the most exhaustive. However the [VN Stars](frequency/vnsfreqSTARS.txt) list also fills in some of the gaps that JPDB doesn't cover, so you could import it first, then import JPDB afterward for maximum coverage.
 
 - In Anki, go to File -> Import, then select the txt frequency file. Map the first field to your term/expression field, then the second field to your frequency field. **Make sure to enable "Update existing notes when first field matches."** 
 ![](images/anki_Import_2022-07-10_10-47-55.png)
@@ -68,11 +76,15 @@ If you already have a large backlog of old cards without frequency values, you m
 
 When adding cards from VNs, we might find some risque content that we still want to look at while reviewing because it's cute. However, you might review in places where you don't always want other people to see your cards. Using this card template, we can blur media in Anki and have the option persist throughout a review session.
 
+### How-To
+
 - Decide on a tag for NSFW cards. I use `-NSFW` so the tag is sorted first for easy access. If you choose something else you'll need to replace all instances of `-NSFW` in this guide with your tag name (with `ctrl + h` in a text editor or an [online tool](http://www.unit-conversion.info/texttools/replace-text/)).
 
 - Tag your NSFW cards with this tag in Anki (see [ShareX Hotkey](#anki-hotkey-for-nsfw-cards)).
 
 - Download the anki-persistence script (`minified.js` or `script.js`) from [here](https://github.com/SimonLammer/anki-persistence/releases/tag/v1.0.0). Then rename it `__persistence.js` and place it in your Anki [user/media folder](https://docs.ankiweb.net/files.html#file-locations).
+
+#### Card Template/Code
 
 - In your card template where you want the image to go, paste in this HTML, renaming `{{Picture}}` to match the name of the field that contains your media.
 ```html
@@ -139,6 +151,8 @@ When adding cards from VNs, we might find some risque content that we still want
 </script>
 ```
 
+#### CSS
+
 Then in your card styling paste in the following css, making sure to replace `-NSFW` with your tag name.
 
 ```css
@@ -190,17 +204,20 @@ const nsfwDefaultMobile = false;
 ### Non Persistent/NoJS Version
 
 If you want all cards to be blurred by default and for it to stay that way, you can simply do something like this instead. The `.mobile` part can be removed so it works on desktop as well.
-html: 
+
+#### HTML
+
 ```html
 <div class="main_image {{Tags}}">{{Picture}}</div>
 ```
-css: 
+#### CSS
+
 ```css
-.mobile .NSFW img {
+.mobile .-NSFW img {
   filter: blur(30px);
 }
 
-.mobile .NSFW img:hover {
+.mobile .-NSFW img:hover {
   filter: blur(0px);
 }
 ```
