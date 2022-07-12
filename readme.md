@@ -88,7 +88,8 @@ If you already have a large backlog of old cards without frequency values, you m
 - With this temporary deck selected, go to File -> Import, then select the txt frequency list. Map the first field to your term/expression field, then the second field to your frequency field. **Make sure to enable "Update existing notes when first field matches."** Then import it to your temporary deck.
 ![](images/anki_Import_2022-07-10_10-47-55.png)
 
-- This will update your existing notes' frequency values, but it'll also import a LOT of new unneeded cards. Thankfully, we we imported them to a temporary deck so this will be easy. Just search for your tag using `tag:backlog` and then again hit `ctrl + a` then `ctrl + d` to move them back to your vocabulary deck. Now we can simply delete the temporary deck along with the all the new cards that were added, just **make sure** you aren't deleting any actual cartds first.
+- This will update your existing notes' frequency values, but it'll also import a LOT of new unneeded cards. 
+  - Search for your backlogged cards using `tag:backlog` and then again hit `ctrl + a` then `ctrl + d` to move them back to your vocabulary deck. Now we can simply delete the temporary deck along with the all the new cards that were added, just **make sure** you aren't deleting any actual cards first.
 
 - Finally, you can right click the `backlog` tag in the sidebar and delete it.
 
