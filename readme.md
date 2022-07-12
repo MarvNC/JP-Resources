@@ -3,7 +3,6 @@ My contributions to the Japanese learning community. For questions, suggestions,
 - [Sorting Mined Anki Cards by Frequency](#sorting-mined-anki-cards-by-frequency)
   - [How-To](#how-to)
   - [Usage](#usage)
-    - [Frequency Order](#frequency-order)
   - [Backfilling Old Cards](#backfilling-old-cards)
 - [Anki Card Blur](#anki-card-blur)
   - [How-To](#how-to-1)
@@ -16,11 +15,15 @@ My contributions to the Japanese learning community. For questions, suggestions,
     - [CSS](#css-1)
   - [ShareX Hotkey for NSFW cards](#sharex-hotkey-for-nsfw-cards)
 
+### Special Thanks
+
+Much thanks to Renji-xD for rewriting the handlebar to find a minimum value. Thanks to GrumpyThomas and pj for some suggestions.
+
 ## Sorting Mined Anki Cards by Frequency
 
 When reading and adding cards from the content you're reading, you'll come across a variety of words with varying degrees of usefulness. Especially as a beginner, you'll want to learn the useful words as soon as possible and learn the less useful words later. With this we can sort a backlog of mined cards by frequency using various installed Yomichan frequency lists.
 
-This handlebar for Yomichan will add a `{freq}` field that will send the first frequency value available to Anki in a numerical format. 
+This handlebar for Yomichan will add a `{freq}` field that will send the lowest frequency value available to Anki in a numerical format. 
 
 ### How-To
 
@@ -31,6 +34,24 @@ This handlebar for Yomichan will add a `{freq}` field that will send the first f
 ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-10-26.png)
 ```handlebars
 {{#*inline "freq"}}
+    {{~#scope~}}
+        {{~#set "min-freq" 0}}{{/set~}}
+            {{#each definition.frequencies}}
+                {{~#if (op "||" (op "===" (get "min-freq") 0) (op ">" (op "+" (get "min-freq")) (op "+" (regexMatch "\d" "g" this.frequency))))}}
+                    {{~#set "min-freq" (op "+" (regexMatch "\d" "g" this.frequency))}}{{/set~}}   
+                {{~/if~}}
+            {{/each}}
+        {{get "min-freq"}}
+    {{~/scope~}}
+{{/inline}}
+```
+
+<details>
+  <summary>Alternative handlebar</summary>
+  The original handlebar I made only selects the first frequency available, which may be useful for some.
+
+```handlebars
+{{#*inline "freq"}}
     {{~#if (op ">" definition.frequencies.length 0)~}}
         {{#regexReplace "[^\d]" ""}}
             {{definition.frequencies.[0].frequency}}
@@ -38,9 +59,9 @@ This handlebar for Yomichan will add a `{freq}` field that will send the first f
     {{~/if~}}
 {{/inline}}
 ```
-(This only selects the first frequency value displayed; if you know a method of selecting the lowest frequency value using handlebars then please let me know.)
+</details>
 
-- In `Configure Anki card format...`, we may need to refresh the card model for the new field to show up. To do this, change the model to something else and change it back. This will clear your fields so take a screenshot to remember what you had. When your frequency field shows up, add `{freq}` in its value box to use the handlebar.
+- In `Configure Anki card format...`, we may need to refresh the card model for the new field to show up. To do this, change the model to something else and change it back. **This will clear your fields, so take a screenshot to remember what you had.** When your frequency field shows up, add `{freq}` in its value box to use the handlebar.
 ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-15-02.png)
 
 ### Usage
@@ -54,23 +75,22 @@ Now we can simply sort our new cards by our frequency field, then press `ctrl + 
 
 Alternatively you could use the [AnkiAutoReorder](https://github.com/KamWithK/AnkiAutoReorder) addon. I have not personally tried it yet though.
 
-#### Frequency Order
-
-As mentioned, this only takes the first available frequency value from your frequency lists, so your list order matters. Order them by how important they are to you, and also by what has the lowest values first. I primarily read VNs, so my list order looks like this:
-![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-41-48.png)
-
 ### Backfilling Old Cards
 
 If you already have a large backlog of old cards without frequency values, you might need to fill in these values first or they won't be sorted. You could just opt to finish reviewing these cards first, but there is a hacky method to backfill these cards. **Make sure to backup your collection before attempting this, it could cause significant lag to your Anki.** In addition, for users of Anki 2.1.50+ [increase your backup interval](https://docs.ankiweb.net/backups.html?highlight=backup#anki-2150) before attempting the import as it will take a *long* time. A backup occurring while you're waiting on Anki to delete cards will just cause more lag. 
 
-- Create a frequency list in `.txt` format that contains a list of expressions followed by frequency values. You can use the ones I have created [here](frequency), I recommend downloading the [JPDB](frequency/JPDB.txt) list as it's the most exhaustive. However the [VN Stars](frequency/vnsfreqSTARS.txt) list also fills in some of the gaps that JPDB doesn't cover, so you could import it first, then import JPDB afterward for maximum coverage.
+- Create a frequency list in `.txt` format that contains a list of expressions followed by frequency values. You can use the ones I have created [here](frequency), I recommend downloading the [JPDB](frequency/JPDB.txt) list as it's the most exhaustive. However the [VN Stars](frequency/vnsfreqSTARS.txt) list also fills in some of the gaps that JPDB doesn't cover, so you could import it first, then import JPDB afterward for maximum frequency coverage.
 
-- In Anki, go to File -> Import, then select the txt frequency file. Map the first field to your term/expression field, then the second field to your frequency field. **Make sure to enable "Update existing notes when first field matches."** 
+- In Anki, create a new temporary deck and move your backlogged cards to the new deck, then tag them for later.
+  - Search for the backlogged new cards using `deck:{deckname} is:new` in your card browser, then hit `ctrl + a` to select them all then `ctrl + d` to bring up the "Change Deck" menu from which you can create a new deck (named `temp` or whatever you like) and move them.
+  - Select this new deck, then tag them using `ctrl + a` then `ctrl + shift + a` to add a new tag, where you can type in something like `backlog`.
+
+- With this temporary deck selected, go to File -> Import, then select the txt frequency list. Map the first field to your term/expression field, then the second field to your frequency field. **Make sure to enable "Update existing notes when first field matches."** Then import it to your temporary deck.
 ![](images/anki_Import_2022-07-10_10-47-55.png)
 
-- This will update your existing notes' frequency values, but it'll also import a LOT of new unneeded cards. To delete these new cards, search `added:1 Glossary:` in your card browser. The `added:1` is to find cards added today, and `Glossary:` (change it depending on your field name) is to find cards that have no glossary, as all your existing cards should have it. 
+- This will update your existing notes' frequency values, but it'll also import a LOT of new unneeded cards. Thankfully, we we imported them to a temporary deck so this will be easy. Just search for your tag using `tag:backlog` and then again hit `ctrl + a` then `ctrl + d` to move them back to your vocabulary deck. Now we can simply delete the temporary deck along with the all the new cards that were added, just **make sure** you aren't deleting any actual cartds first.
 
-- Then hit `ctrl + a` to select all and `ctrl + del` to delete these new cards. But **be sure** you aren't deleting any valid cards first.
+- Finally, you can right click the `backlog` tag in the sidebar and delete it.
 
 ## Anki Card Blur
 
