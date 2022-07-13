@@ -17,7 +17,7 @@ My contributions to the Japanese learning community. For questions, suggestions,
 
 ### Special Thanks
 
-Much thanks to Renji-xD for rewriting the handlebar to find a minimum value. Thanks to GrumpyThomas and pj for some suggestions.
+Much thanks to Renji-xD for rewriting the handlebar to find a minimum value. Thanks to GrumpyThomas, pj, and aka_baka for some suggestions.
 
 ## Sorting Mined Anki Cards by Frequency
 
@@ -61,7 +61,10 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 ```
 </details>
 
-- In `Configure Anki card format...`, we may need to refresh the card model for the new field to show up. To do this, change the model to something else and change it back. **This will clear your fields, so take a screenshot to remember what you had.** When your frequency field shows up, add `{freq}` in its value box to use the handlebar.
+- In `Configure Anki card format...`, we may need to refresh the card model for the new field to show up. 
+  - To do this, change the model to something else and change it back. **This will clear your fields, so take a screenshot to remember what you had.** 
+    - You can try duplicating your card model in Anki and switching to/from that model, so hopefully your card fields will remain.
+- When your frequency field shows up, add `{freq}` in its value box to use the handlebar.
 ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-15-02.png)
 
 ### Usage
