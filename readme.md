@@ -66,7 +66,8 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 </details>
 
 - In `Configure Anki card format...`, we may need to refresh the card model for the new field to show up.
-  - To do this, change the model to something else and change it back. **This will clear your fields, so take a screenshot to remember what you had.**
+  - To do this, change the model to something else and change it back. 
+  - ⚠️**This will clear your fields, so take a screenshot to remember what you had.**
     - You can try duplicating your card model in Anki and switching to/from that model, so hopefully your card fields will remain.
 - When your frequency field shows up, add `{freq}` in its value box to use the handlebar.
 
@@ -74,11 +75,11 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
 ### Usage
 
-To sort our new cards by frequency, we need the Anki [Advanced Browser](https://ankiweb.net/shared/info/874215009) addon. Then in your card browser, search for new cards in your mining deck and right click the menu to display your frequency field as shown.
+To show the frequency field in Anki, we need the [Advanced Browser](https://ankiweb.net/shared/info/874215009) addon. Then in your card browser, search for new cards in your mining deck and right click the menu to display your frequency field as shown.
 
 ![](<images/anki_Browse_(1_of_2224_cards_selected)_2022-07-10_10-22-41.png>)
 
-Now we can simply sort our new cards by our frequency field, then press `ctrl + a` to select all and then `ctrl + shift + s` to reorder them all.
+Now we can simply order our new card in the card browser by our frequency field, then press `ctrl + a` to select all and then `ctrl + shift + s` to reposition them all so new cards will be sorted by frequency.
 
 - I personally then select the first thirty or so cards and randomly sort them again using the random sort option for more variability when reviewing.
 
