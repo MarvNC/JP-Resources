@@ -270,15 +270,15 @@ Some text replacement patterns in Yomichan `Settings -> Translation -> Custom Te
   - 鯛も１人はうまからず
   - ３種
 
-`1|１` -> `一`
-`2|２` -> `二`
-`3|３` -> `三`
-`4|４` -> `四`
-`5|５` -> `五`
-`6|６` -> `六`
-`7|７` -> `七`
-`8|８` -> `八`
-`9|９` -> `九`
+`1|１` -> `一`  
+`2|２` -> `二`  
+`3|３` -> `三`  
+`4|４` -> `四`  
+`5|５` -> `五`  
+`6|６` -> `六`  
+`7|７` -> `七`  
+`8|８` -> `八`  
+`9|９` -> `九`  
 
 - Occasionally expressions or names may be separated by dots or commas, and the dictionary entry will usually not contain the dot.
   - コピ・ルアク
