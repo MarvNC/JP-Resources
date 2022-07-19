@@ -14,6 +14,7 @@ My contributions to the Japanese learning community. For questions, suggestions,
     - [HTML](#html)
     - [CSS](#css-1)
   - [ShareX Hotkey for NSFW cards](#sharex-hotkey-for-nsfw-cards)
+- [Yomichan Text Replacement Patterns](#yomichan-text-replacement-patterns)
 
 ### Special Thanks
 
@@ -66,7 +67,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 </details>
 
 - In `Configure Anki card format...`, we may need to refresh the card model for the new field to show up.
-  - To do this, change the model to something else and change it back. 
+  - To do this, change the model to something else and change it back.
   - ⚠️**This will clear your fields, so take a screenshot to remember what you had.**
     - You can try duplicating your card model in Anki and switching to/from that model, so hopefully your card fields will remain.
 - When your frequency field shows up, add `{freq}` in its value box to use the handlebar.
@@ -79,7 +80,7 @@ To show the frequency field in Anki, we need the [Advanced Browser](https://anki
 
 ![](<images/anki_Browse_(1_of_2224_cards_selected)_2022-07-10_10-22-41.png>)
 
-Now we can simply order our new card in the card browser by our frequency field, then press `ctrl + a` to select all and then `ctrl + shift + s` to reposition them all so new cards will be sorted by frequency.
+Now we can simply order our new cards in the card browser by our frequency field, then press `ctrl + a` to select all and then `ctrl + shift + s` to reposition them all so new cards will be sorted by frequency.
 
 - I personally then select the first thirty or so cards and randomly sort them again using the random sort option for more variability when reviewing.
 
@@ -266,3 +267,39 @@ I use the hotkeys in [this guide](https://rentry.co/mining#hotkey-for-screenshot
 ```powershell
 -NoProfile -Command "$medianame = \"%input\" | Split-Path -leaf; $data = Invoke-RestMethod -Uri http://127.0.0.1:8765 -Method Post -ContentType 'application/json; charset=UTF-8' -Body '{\"action\": \"findNotes\", \"version\": 6, \"params\": {\"query\":\"added:1\"}}'; $sortedlist = $data.result | Sort-Object -Descending {[Long]$_}; $noteid = $sortedlist[0]; Invoke-RestMethod -Uri http://127.0.0.1:8765 -Method Post -ContentType 'application/json; charset=UTF-8' -Body \"{`\"action`\": `\"updateNoteFields`\", `\"version`\": 6, `\"params`\": {`\"note`\":{`\"id`\":$noteid, `\"fields`\":{`\"Picture`\":`\"<img src=$medianame>`\"}}}}\"; " Invoke-RestMethod -Uri http://127.0.0.1:8765 -Method Post -ContentType 'application/json; charset=UTF-8' -Body \"{ `\"action`\": `\"addTags`\",`\"version`\": 6,`\"params`\": {`\"notes`\": [$noteid],`\"tags`\": `\"NSFW`\"}}\";
 ```
+
+## Yomichan Text Replacement Patterns
+
+Some text replacement patterns in Yomichan `Settings -> Translation -> Custom Text Replacement Patterns` that I've found useful for better parsing.
+
+- Some expressions may occasionally be written using numerals and most dictionaries only have entries for the kanji version. You could try replacing 0 with 十 and so on for larger numbers, but it dosen't seem to be worth it in my experience.
+  - 鯛も１人はうまからず
+  - ３種
+
+`1|１` -> `一`
+`2|２` -> `二`
+`3|３` -> `三`
+`4|４` -> `四`
+`5|５` -> `五`
+`6|６` -> `六`
+`7|７` -> `七`
+`8|８` -> `八`
+`9|９` -> `九`
+
+- Occasionally expressions or names may be separated by dots or commas, and the dictionary entry will usually not contain the dot.
+  - コピ・ルアク
+  - 「ど、どうですか……？**モノに、なって**きてます……？」
+
+`・|、` -> (nothing)
+
+- Sometimes katakana verbs will use ッ in the past tense form and won't be picked up by Yomichan.
+  - ハモッた
+  - テンパッた
+
+`ッ` -> `っ`
+
+- I should also mention the most important replacement pattern, replacing the 々 with the previous kanji as most monolingual dictionaries don't have entries for the 々 version. Credits to [TheMoeWay's guide](https://learnjapanese.moe/monolingual/#optimizing-yomichan-settings) for the idea.
+  - 囂々
+  - 侃々諤々
+
+`(.)々` -> `$1$1`
