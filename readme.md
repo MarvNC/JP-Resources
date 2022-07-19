@@ -76,15 +76,9 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
 ### Usage
 
-To show the frequency field in Anki, we need the [Advanced Browser](https://ankiweb.net/shared/info/874215009) addon. Then in your card browser, search for new cards in your mining deck and right click the menu to display your frequency field as shown.
+Use the [AnkiAutoReorder](https://github.com/KamWithK/AnkiAutoReorder) addon to have your backlog sort automatically on refresh. I also recommend installing the [Advanced Browser](https://ankiweb.net/shared/info/874215009) addon to display the frequency field in Anki's browse page.
 
 ![](<images/anki_Browse_(1_of_2224_cards_selected)_2022-07-10_10-22-41.png>)
-
-Now we can simply order our new cards in the card browser by our frequency field, then press `ctrl + a` to select all and then `ctrl + shift + s` to reposition them all so new cards will be sorted by frequency.
-
-- I personally then select the first thirty or so cards and randomly sort them again using the random sort option for more variability when reviewing.
-
-Alternatively you could use the [AnkiAutoReorder](https://github.com/KamWithK/AnkiAutoReorder) addon. I have not personally tried it yet though.
 
 ### Backfilling Old Cards
 
