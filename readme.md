@@ -18,7 +18,7 @@ My contributions to the Japanese learning community. For questions, suggestions,
 
 ### Special Thanks
 
-Much thanks to Renji-xD for rewriting the handlebar to find a minimum value. Thanks to GrumpyThomas, pj, and aka_baka for some suggestions.
+Much thanks to Renji-xD for rewriting the handlebar to find a minimum value. Thanks to KamWithK for developing cool Anki addons to use with this guide. Thanks to GrumpyThomas, pj, and aka_baka for some suggestions.
 
 ## Sorting Mined Anki Cards by Frequency
 
@@ -79,6 +79,8 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 Use the [AnkiAutoReorder](https://github.com/KamWithK/AnkiAutoReorder) addon to have your backlog sort automatically on refresh. I also recommend installing the [Advanced Browser](https://ankiweb.net/shared/info/874215009) addon to display the frequency field in Anki's browse page.
 
 ![](<images/anki_Browse_(1_of_2224_cards_selected)_2022-07-10_10-22-41.png>)
+
+Alternatively, after installing Advanced Browser, you could sort by the frequency field and press `ctrl + a` then `ctrl + shift + s` to select all cards and reorder.
 
 ### Backfilling Old Cards
 
