@@ -14,6 +14,7 @@ My contributions to the Japanese learning community. For questions, suggestions,
     - [HTML](#html)
     - [CSS](#css-1)
   - [ShareX Hotkey for NSFW cards](#sharex-hotkey-for-nsfw-cards)
+- [Anki Automatic Hint Sentence for Kana Cards](#anki-automatic-hint-sentence-for-kana-cards)
 - [Yomichan Text Replacement Patterns](#yomichan-text-replacement-patterns)
 
 ### Special Thanks
@@ -131,7 +132,7 @@ When adding cards from VNs, we might find some risque content that we still want
 <script src="__persistence.js"></script>
 
 <script>
-  // nsfw
+  // nsfw https://github.com/MarvNC/JP-Resources
   (function () {
     const nsfwDefaultPC = true;
     const nsfwDefaultMobile = false;
@@ -264,6 +265,56 @@ I use the hotkeys in [this guide](https://rentry.co/mining#hotkey-for-screenshot
 -NoProfile -Command "$medianame = \"%input\" | Split-Path -leaf; $data = Invoke-RestMethod -Uri http://127.0.0.1:8765 -Method Post -ContentType 'application/json; charset=UTF-8' -Body '{\"action\": \"findNotes\", \"version\": 6, \"params\": {\"query\":\"added:1\"}}'; $sortedlist = $data.result | Sort-Object -Descending {[Long]$_}; $noteid = $sortedlist[0]; Invoke-RestMethod -Uri http://127.0.0.1:8765 -Method Post -ContentType 'application/json; charset=UTF-8' -Body \"{`\"action`\": `\"updateNoteFields`\", `\"version`\": 6, `\"params`\": {`\"note`\":{`\"id`\":$noteid, `\"fields`\":{`\"Picture`\":`\"<img src=$medianame>`\"}}}}\"; " Invoke-RestMethod -Uri http://127.0.0.1:8765 -Method Post -ContentType 'application/json; charset=UTF-8' -Body \"{ `\"action`\": `\"addTags`\",`\"version`\": 6,`\"params`\": {`\"notes`\": [$noteid],`\"tags`\": `\"NSFW`\"}}\";
 ```
 
+## Anki Automatic Hint Sentence for Kana Cards
+
+Kana-only terms might be annoying to review in Anki as they're quite arbitrary and don't necessarily derive meaning from a kanji. This makes them potentially harder to recall than kanji terms, but not necessarily for much benefit as you'd come across onomatopoeia with context in the while making them somewhat self explanatory as to what they're describing.
+
+Because of this, you might find it helpful to conditionally display the sentence on the front of your cards to be able to learn kana terms along with the context.
+
+| ![](images%5Canki_Preview_2022-07-21_14-48-38.png) | ![](images%5Canki_Preview_2022-07-21_14-48-41.png) |
+| -------------------------------------------------- | -------------------------------------------------- |
+
+Media: 蒼の彼方のフォーリズム EXTRA1 © sprite
+
+In order to conditionally display the sentence on the front, put the following html on the front of your card template where you want your hint sentence.
+
+- Replace all instances of `{{Sentence}}` with the name of your sentence field, and the same with `{{Expression}}` in the code.
+
+- The anchor linking to jpdb is completely optional, and is used to make easy searches on jpdb. If you don't want this you can just replace the second line with `{{Sentence}}`.
+
+```html
+<div id="hintSentence" style="display: none">
+  <a href="https://jpdb.io/search?q={{Sentence}}">{{Sentence}}</a>
+</div>
+```
+
+Put this code at the bottom of your front card template, making sure to rename `{{Expression}}` to match your field name.
+
+```html
+<script>
+  // https://github.com/MarvNC/JP-Resources
+  (function () {
+    // prevent loading this js on back side of card
+    if (document.getElementById('answer')) {
+      return;
+    }
+
+    const expression = '{{Expression}}';
+    const furigana = '{{Reading}}';
+
+    const kanjiRegex = /[\u4e00-\u9faf]/g;
+
+    if (!expression.match(kanjiRegex)) {
+      const hintSentence = document.getElementById('hintSentence');
+      hintSentence.style.display = 'block';
+      const sentenceElement = document.querySelector('#hintSentence a');
+
+      highlightWord(sentenceElement, expression, furigana);
+    }
+  })();
+</script>
+```
+
 ## Yomichan Text Replacement Patterns
 
 Some text replacement patterns in Yomichan `Settings -> Translation -> Custom Text Replacement Patterns` that I've found useful for better parsing.
@@ -280,7 +331,7 @@ Some text replacement patterns in Yomichan `Settings -> Translation -> Custom Te
 `6|６` -> `六`  
 `7|７` -> `七`  
 `8|８` -> `八`  
-`9|９` -> `九`  
+`9|９` -> `九`
 
 - Occasionally expressions or names may be separated by dots or commas, and the dictionary entry will usually not contain the dot.
   - コピ・ルアク
