@@ -271,8 +271,8 @@ Kana-only terms might be annoying to review in Anki as they're quite arbitrary a
 
 Because of this, you might find it helpful to conditionally display the sentence on the front of your cards to be able to learn kana terms along with the context.
 
-| ![](images%5Canki_Preview_2022-07-21_14-48-38.png) | ![](images%5Canki_Preview_2022-07-21_14-48-41.png) |
-| -------------------------------------------------- | -------------------------------------------------- |
+| ![](images/anki_Preview_2022-07-21_14-48-38.png) | ![](images/anki_Preview_2022-07-21_14-48-41.png) |
+| ------------------------------------------------ | ------------------------------------------------ |
 
 Media: 蒼の彼方のフォーリズム EXTRA1 © sprite
 
