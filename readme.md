@@ -108,6 +108,13 @@ If you already have a large backlog of old cards without frequency values, you m
 
 When adding cards from VNs, we might find some risque content that we still want to look at while reviewing because it's cute. However, you might review in places where you don't always want other people to see your cards. Using this card template, we can blur media in Anki and have the option persist throughout a review session.
 
+|  x   | Blur disabled                                    | Blur enabled                                     |
+| :--: | ------------------------------------------------ | ------------------------------------------------ |
+| SFW  | ![](images/anki_Preview_2022-07-10_15-37-54.png) | ![](images/anki_Preview_2022-07-10_15-54-14.png) |
+| NSFW | ![](images/anki_Preview_2022-07-10_15-37-37.png) | ![](images/anki_Preview_2022-07-10_15-37-34.png) |
+
+Media: ハミダシクリエイティブ © まどそふと
+
 ### How-To
 
 - Decide on a tag for NSFW cards. I use `-NSFW` so the tag is sorted first for easy access. If you choose something else you'll need to replace all instances of `-NSFW` in this guide with your tag name (with `ctrl + h` in a text editor or an [online tool](http://www.unit-conversion.info/texttools/replace-text/)).
@@ -218,13 +225,6 @@ Then in your card styling paste in the following css, making sure to replace `-N
 ### Usage
 
 During a review session, you can click/tap the image to toggle card blurring. When the blurring is enabled, there will be a solid green line at the top of the image. When blurring is not enabled, there will be a fuchsia dotted line, and when the card is NSFW the borders will be dotted red. This option will persist throughout a review session but the setting will reset after exiting the session.
-
-|  x   | Blur disabled                                    | Blur enabled                                     |
-| :--: | ------------------------------------------------ | ------------------------------------------------ |
-| SFW  | ![](images/anki_Preview_2022-07-10_15-37-54.png) | ![](images/anki_Preview_2022-07-10_15-54-14.png) |
-| NSFW | ![](images/anki_Preview_2022-07-10_15-37-37.png) | ![](images/anki_Preview_2022-07-10_15-37-34.png) |
-
-Media: ハミダシクリエイティブ © まどそふと
 
 #### Default to Enabled/Disabled
 
