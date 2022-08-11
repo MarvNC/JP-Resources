@@ -1,3 +1,5 @@
+# JP Resources <!-- omit in toc -->
+
 My contributions to the Japanese learning community. For questions, suggestions, and support, I can be contacted @Marv [in TheMoeWay](https://learnjapanese.moe/join/).
 
 - [Sorting Mined Anki Cards by Frequency](#sorting-mined-anki-cards-by-frequency)
@@ -6,13 +8,9 @@ My contributions to the Japanese learning community. For questions, suggestions,
   - [Backfilling Old Cards](#backfilling-old-cards)
 - [Anki Card Blur](#anki-card-blur)
   - [How-To](#how-to-1)
-    - [Card Template/Code](#card-templatecode)
-    - [CSS](#css)
   - [Usage](#usage-1)
     - [Default to Enabled/Disabled](#default-to-enableddisabled)
   - [Non Persistent/NoJS Version](#non-persistentnojs-version)
-    - [HTML](#html)
-    - [CSS](#css-1)
   - [ShareX Hotkey for NSFW cards](#sharex-hotkey-for-nsfw-cards)
 - [Anki Automatic Hint Sentence for Kana Cards](#anki-automatic-hint-sentence-for-kana-cards)
 - [Yomichan Text Replacement Patterns](#yomichan-text-replacement-patterns)
@@ -123,7 +121,7 @@ Media: ハミダシクリエイティブ © まどそふと
 
 - Download the anki-persistence script (`minified.js` or `script.js`) from [here](https://github.com/SimonLammer/anki-persistence/releases/tag/v1.0.0). Then rename it `__persistence.js` and place it in your Anki [user/media folder](https://docs.ankiweb.net/files.html#file-locations).
 
-#### Card Template/Code
+#### Card Template/Code <!-- omit in toc -->
 
 - In your card template where you want the image to go, paste in this HTML, renaming `{{Picture}}` to match the name of the field that contains your media.
 
@@ -192,7 +190,7 @@ Media: ハミダシクリエイティブ © まどそふと
 </script>
 ```
 
-#### CSS
+#### CSS <!-- omit in toc -->
 
 Then in your card styling paste in the following css, making sure to replace `-NSFW` with your tag name.
 
@@ -239,13 +237,13 @@ const nsfwDefaultMobile = false;
 
 If you want all cards to be blurred by default and for it to stay that way, you can simply do something like this instead. The `.mobile` part can be removed so it works on desktop as well.
 
-#### HTML
+#### HTML <!-- omit in toc -->
 
 ```html
 <div class="main_image {{Tags}}">{{Picture}}</div>
 ```
 
-#### CSS
+#### CSS <!-- omit in toc -->
 
 ```css
 .mobile .-NSFW img {
