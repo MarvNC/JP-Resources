@@ -1,5 +1,7 @@
 # JP Resources <!-- omit in toc -->
 
+### Check out these [Yomichan dictionaries](https://github.com/MarvNC/yomichan-dictionaries/)
+
 My contributions to the Japanese learning community. For questions, suggestions, and support, I can be contacted @Marv [in TheMoeWay](https://learnjapanese.moe/join/).
 
 - [Sorting Mined Anki Cards by Frequency](#sorting-mined-anki-cards-by-frequency)
@@ -76,6 +78,8 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 ### Usage
 
 Use the [AnkiAutoReorder](https://github.com/KamWithK/AnkiAutoReorder) addon to have your backlog sort automatically on refresh. I also recommend installing the [Advanced Browser](https://ankiweb.net/shared/info/874215009) addon to display the frequency field in Anki's browse page.
+
+Below: right click the column headers at the top with Advanced Browser installed to select new fields to be displayed.
 
 ![](<images/anki_Browse_(1_of_2224_cards_selected)_2022-07-10_10-22-41.png>)
 
