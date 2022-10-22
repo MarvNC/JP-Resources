@@ -2,8 +2,11 @@
 
 ### Check out these [Yomichan dictionaries](https://github.com/MarvNC/yomichan-dictionaries/)
 
-My contributions to the Japanese learning community. For questions, suggestions, and support, I can be contacted @Marv [in TheMoeWay](https://learnjapanese.moe/join/).
+My contributions to the Japanese learning community. For questions, suggestions, and support, I can be contacted @Marv [in TheMoeWay](https://learnjapanese.moe/join/). Please ask in the questions forum first.
 
+- [Other Resources](#other-resources)
+    - [Dictionaries](#dictionaries)
+  - [Special Thanks](#special-thanks)
 - [Sorting Mined Anki Cards by Frequency](#sorting-mined-anki-cards-by-frequency)
   - [How-To](#how-to)
   - [Usage](#usage)
@@ -16,6 +19,19 @@ My contributions to the Japanese learning community. For questions, suggestions,
   - [ShareX Hotkey for NSFW cards](#sharex-hotkey-for-nsfw-cards)
 - [Anki Automatic Hint Sentence for Kana Cards](#anki-automatic-hint-sentence-for-kana-cards)
 - [Yomichan Text Replacement Patterns](#yomichan-text-replacement-patterns)
+
+## Other Resources
+
+- [JP resources by Aquafina water bottle](https://aquafina-water-bottle.github.io/jp-mining-note/jpresources/) and a [very promising Anki note template](https://aquafina-water-bottle.github.io/jp-mining-note/).
+- [arujisho](https://github.com/emc2314/arujisho) - the BEST android dictionary.
+
+#### Dictionaries
+
+These are absolutely essential.
+
+- [Grammar Dictionaries](https://github.com/aiko-tanaka/Grammar-Dictionaries)
+- [JMDict Surface Forms](https://github.com/FooSoft/yomichan/issues/2183)
+- [Much less bloated JMnedict](https://github.com/FooSoft/yomichan/issues/2111#issuecomment-1192238540)
 
 ### Special Thanks
 
