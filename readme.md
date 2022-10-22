@@ -77,7 +77,15 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
 ### Usage
 
-Use the [AnkiAutoReorder](https://github.com/KamWithK/AnkiAutoReorder) addon to have your backlog sort automatically on refresh. Don't forget to enter your deck's name into the addon's config (Tools > Addons > AutoReorder > Config). I also recommend installing the [Advanced Browser](https://ankiweb.net/shared/info/874215009) addon to display the frequency field in Anki's browse page.
+Use the [AnkiAutoReorder](https://ankiweb.net/shared/info/757527607) addon to have your backlog sort automatically on refresh.
+
+- Enter your search query (`search_to_sort`) and your `sort_field` into the addon's config (`Tools > Addons > AutoReorder > Config`).
+  - You can get the appropriate search query by going to the Browse window, then ctrl click your deck name and the "New" card state. The string at the top is the search query you can use in the addon settings, it should have the deck name and `is:new`.
+- Then reorder your deck by frequency from `Tools > Reposition Cards`. Remember to do this every day after adding new cards.
+
+![](<images/anki_Browse_(1_of_1557_cards_selected)_2022-10-21_20-48-50.png>)
+
+I also recommend installing the [Advanced Browser](https://ankiweb.net/shared/info/874215009) addon to display the frequency field in Anki's browse page.
 
 Below: right click the column headers at the top with Advanced Browser installed to select new fields to be displayed.
 
