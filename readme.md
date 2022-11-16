@@ -17,6 +17,7 @@ My contributions to the Japanese learning community. For questions, suggestions,
     - [Default to Enabled/Disabled](#default-to-enableddisabled)
   - [Non Persistent/NoJS Version](#non-persistentnojs-version)
   - [ShareX Hotkey for NSFW cards](#sharex-hotkey-for-nsfw-cards)
+- [Anki Automatically Highlight in Sentence](#anki-automatically-highlight-in-sentence)
 - [Anki Automatic Hint Sentence for Kana Cards](#anki-automatic-hint-sentence-for-kana-cards)
 - [Yomichan Text Replacement Patterns](#yomichan-text-replacement-patterns)
 
@@ -289,6 +290,67 @@ I use the hotkeys in [this guide](https://rentry.co/mining#hotkey-for-screenshot
 
 ```powershell
 -NoProfile -Command "$medianame = \"%input\" | Split-Path -leaf; $data = Invoke-RestMethod -Uri http://127.0.0.1:8765 -Method Post -ContentType 'application/json; charset=UTF-8' -Body '{\"action\": \"findNotes\", \"version\": 6, \"params\": {\"query\":\"added:1\"}}'; $sortedlist = $data.result | Sort-Object -Descending {[Long]$_}; $noteid = $sortedlist[0]; Invoke-RestMethod -Uri http://127.0.0.1:8765 -Method Post -ContentType 'application/json; charset=UTF-8' -Body \"{`\"action`\": `\"updateNoteFields`\", `\"version`\": 6, `\"params`\": {`\"note`\":{`\"id`\":$noteid, `\"fields`\":{`\"Picture`\":`\"<img src=$medianame>`\"}}}}\"; " Invoke-RestMethod -Uri http://127.0.0.1:8765 -Method Post -ContentType 'application/json; charset=UTF-8' -Body \"{ `\"action`\": `\"addTags`\",`\"version`\": 6,`\"params`\": {`\"notes`\": [$noteid],`\"tags`\": `\"NSFW`\"}}\";
+```
+
+## Anki Automatically Highlight in Sentence
+
+It's good practice to have your word highlighted within the target sentence so it's easier to see. You can do this for new cards by using the [cloze options in Yomichan](https://aquafina-water-bottle.github.io/jp-mining-note/jpresources/#automatically-highlight-the-tested-word-within-the-sentence-upon-card-creation), but that doesn't affect existing cards that don't have the word highlighted. Here's some code to highlight the target expression within already existing cards. It's quite flexible, being able to work to some degree for most cards even if the sentence doesn't exactly contain the expression, or if it contains the expression but in hiragana or katakana.
+
+To use it, simply append the following script to the end of a card.
+
+- You need to modify the lines specifying your field names by changing `{{Expression}}` and `{{Reading}}` to match your field.
+- You also need to modify the selector to select the part of your card containing your sentence. An easy way to do this would be to wrap your sentence in a `div` with an id of `sentence` so the selector is `#sentence` as it is by default. For example, `<div id="sentence">{{Sentence}}</div>`.
+
+```html
+<script>
+  (function () {
+    const expression = '{{Expression}}';
+    const reading = '{{Reading}}';
+
+    const sentenceElement = document.querySelector('#sentence');
+    highlightWord(sentenceElement, expression, reading);
+  })();
+
+  function highlightWord(sentenceElement, expression, reading) {
+    const sentence = sentenceElement.innerHTML;
+
+    if (!sentence.match(/<(strong|b)>/)) {
+      let possibleReplaces = [
+        // shorten kanji expression
+        shorten(expression, sentence, 1),
+        // shorten with kana reading
+        shorten(reading, sentence, 2),
+        // find katakana
+        shorten(hiraganaToKatakana(expression), sentence, 2),
+        // find katakana with kana reading
+        shorten(hiraganaToKatakana(reading), sentence, 2),
+      ];
+
+      // find and use longest one that is a substring of the sentence
+      replace = possibleReplaces
+        .filter((str) => str && sentence.includes(str))
+        .reduce((a, b) => (a.length > b.length ? a : b));
+
+      sentenceElement.innerHTML = sentenceElement.innerHTML.replace(
+        new RegExp(replace, 'g'),
+        `<strong>${replace}</strong>`
+      );
+    }
+  }
+  // takes an expression and shortens it until it's in the sentence
+  function shorten(expression, sentence, minLength) {
+    while (expression.length > minLength && !sentence.match(expression)) {
+      expression = expression.substr(0, expression.length - 1);
+    }
+    return expression;
+  }
+
+  function hiraganaToKatakana(hiragana) {
+    return hiragana.replace(/[\u3041-\u3096]/g, function (c) {
+      return String.fromCharCode(c.charCodeAt(0) + 0x60);
+    });
+  }
+</script>
 ```
 
 ## Anki Automatic Hint Sentence for Kana Cards
