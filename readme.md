@@ -303,6 +303,7 @@ To use it, simply append the following script to the end of a card.
 
 ```html
 <script>
+  // https://github.com/MarvNC/JP-Resources
   (function () {
     const expression = '{{Expression}}';
     const reading = '{{Reading}}';
