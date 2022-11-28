@@ -2,7 +2,7 @@
 
 ### Check out these [Yomichan dictionaries](https://github.com/MarvNC/yomichan-dictionaries/)
 
-My contributions to the Japanese learning community. For questions, suggestions, and support, I can be contacted @Marv [in TheMoeWay](https://learnjapanese.moe/join/). Please ask in the questions forum first.
+My contributions to the Japanese learning community. For questions and support, please make a thread in the questions forum [in TheMoeWay](https://learnjapanese.moe/join/). For suggestions please mention @Marv.
 
 - [Other Resources](#other-resources)
     - [Dictionaries](#dictionaries)
