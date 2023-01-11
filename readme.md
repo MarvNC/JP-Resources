@@ -123,12 +123,12 @@ Of course, you could just opt to finish reviewing these cards first instead of b
 
 - Install the latest version of [Python](https://www.python.org/downloads/) if you do not have it already installed.
 - Install [AnkiConnect](https://ankiweb.net/shared/info/2055492159) if you do not have it already installed.
-- Open Anki, so that AnkiConnect is running.
+- Open Anki. If you just installed AnkiConnect, make sure to restart Anki so AnkiConnect is properly running.
 - Run the following commands:
     ```bash
-    git clone https://github.com/MarvNC/JP-Resources.git
+    git clone "https://github.com/MarvNC/JP-Resources.git"
     cd JP-Resources
-    cd backfill
+    cd frequency
 
     # - Linux users may have to use `python3` instead of `python`.
     # - Run `python backfill.py --help` to view all possible arguments.
