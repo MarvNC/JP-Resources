@@ -121,7 +121,7 @@ Of course, you could just opt to finish reviewing these cards first instead of b
 <details>
 <summary><b>Backfilling: Command Line</b></summary>
 
-- Install the latest version of [Python](https://www.python.org/downloads/) if you do not have it already installed. Any version of Python above 3.8 should work.
+- Install the latest version of [Python](https://www.python.org/downloads/) if you do not have it already installed. Any Python version 3.8 or above should work.
 - Install [AnkiConnect](https://ankiweb.net/shared/info/2055492159) if you do not have it already installed.
 - Open Anki. If you just installed AnkiConnect, make sure to restart Anki so AnkiConnect is properly running.
 - Run the following commands:
