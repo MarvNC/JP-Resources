@@ -123,7 +123,7 @@ Of course, you could just opt to finish reviewing these cards first instead of b
 > **Warning**: **Make sure to backup your collection** before trying either method below.
 
 <details>
-<summary><b>Backfilling: Command Line</b></summary>
+<summary><b>Backfilling: Command Line (Recommended)</b></summary>
 
 - Install the latest version of [Python](https://www.python.org/downloads/) if you do not have it already installed. Any Python version 3.8 or above should work.
 - Install [AnkiConnect](https://ankiweb.net/shared/info/2055492159) if you do not have it already installed.
