@@ -38,12 +38,14 @@ def invoke(action, **params):
 
 
 def get_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
 
     parser.add_argument(
         "expr_field",
         type=str,
-        help="exact field name to search for when comparing frequencies",
+        help="exact field name that contains the expression",
     )
 
     parser.add_argument(
@@ -57,12 +59,11 @@ def get_args() -> argparse.Namespace:
         "--query",
         type=str,
         help="exact note query to send to Anki",
-        default=None,
+        default=argparse.SUPPRESS,
     )
 
     parser.add_argument(
-        "-f",
-        "--files",
+        "--freq-lists",
         nargs="+",
         type=str,
         help="what lists to use to backfill",
@@ -88,9 +89,11 @@ def create_actions(ids: List[int], freq: str, freq_field: str) -> List[Dict[str,
 def main():
     args = get_args()
 
-    query = args.query
-    if query is None:
-        query = f"{args.freq_field}:"  # queries all notes with an empty frequency field
+    if "query" in args:
+        query = args.query
+    else:
+        # queries all notes with an empty frequency field
+        query = f"{args.freq_field}:"
     print(f"Querying Anki with: '{query}'")
     notes = invoke("findNotes", query=query)
 
@@ -113,7 +116,7 @@ def main():
 
     print("Parsing frequency lists...")
     found_exprs = set()
-    for file_path in args.files:
+    for file_path in args.freq_lists:
         with open(file_path, encoding="utf-8") as f:
             for line in csv.reader(f, dialect=csv.excel_tab):
                 expr, freq = line
@@ -133,6 +136,7 @@ def main():
 
     print("Updating notes within Anki...")
     invoke("multi", actions=actions)
+    print("Done!")
 
 
 if __name__ == "__main__":

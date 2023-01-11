@@ -131,9 +131,28 @@ Of course, you could just opt to finish reviewing these cards first instead of b
     cd frequency
 
     # - Linux users may have to use `python3` instead of `python`.
-    # - Run `python backfill.py --help` to view all possible arguments.
     # - Replace "Expression" with the exact field name that contains the word/expression.
     python backfill.py "Expression"
+    ```
+
+    Here are some more examples on how to use `backfill.py`:
+    ```bash
+    # View all possible arguments.
+    python backfill.py --help
+
+    # Searches for the expression in the field "Word" instead of "Expression"
+    # Note that this is case sensitive!
+    python backfill.py "Word"
+
+    # Uses the field "FrequencySort" instead of the default ("Frequency").
+    # This also changes the default query to `FrequencySort:`.
+    python backfill.py "Expression" --freq-field "FrequencySort"
+
+    # Uses a custom query instead of the default ("Frequency:").
+    python backfill.py "Expression" --query "Frequency: \\\"note:My mining note\\\""
+
+    # Changes the order of which frequency list is used first.
+    python backfill.py "Expression" --freq-lists "vnsfreq.txt" "JPDB.txt"
     ```
 
 </details>
