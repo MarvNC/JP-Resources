@@ -36,7 +36,11 @@ These are absolutely essential.
 
 ### Special Thanks
 
-Much thanks to Renji-xD for rewriting the handlebar to find a minimum value. Thanks to KamWithK for developing cool Anki addons to use with this guide. Thanks to GrumpyThomas, pj, and aka_baka for some suggestions.
+Much thanks to:
+ - Renji-xD for rewriting the handlebar to find a minimum value. 
+ - KamWithK for developing cool Anki addons to use with this guide. 
+ - Aquafina-water-bottle for developing a python script that greatly improved the backfilling process.
+ - GrumpyThomas, pj, and aka_baka for some suggestions.
 
 ## Sorting Mined Anki Cards by Frequency
 
