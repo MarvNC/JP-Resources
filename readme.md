@@ -112,7 +112,55 @@ Alternatively, after installing Advanced Browser, you could sort by the frequenc
 
 ### Backfilling Old Cards
 
-If you already have a large backlog of old cards without frequency values, you might need to fill in these values first or they won't be sorted. You could just opt to finish reviewing these cards first, but there is a hacky method to backfill these cards. **Make sure to backup your collection before attempting this, it could cause significant lag to your Anki.** In addition, for users of Anki 2.1.50+ [increase your backup interval](https://docs.ankiweb.net/backups.html?highlight=backup#anki-2150) before attempting the import as it will take a _long_ time. A backup occurring while you're waiting on Anki to delete cards will just cause more lag.
+If you already have a large backlog of old cards without frequency values, you might need to fill in these values first or they won't be sorted. There are two methods listed below to do exactly that. The command line method runs much faster than the Anki method, but requires some command line knowledge to pull off.
+
+Of course, you could just opt to finish reviewing these cards first instead of backfilling the old cards.
+
+> **Warning**: **Make sure to backup your collection** before trying either method below.
+
+<details>
+<summary><b>Backfilling: Command Line</b></summary>
+
+- Install the latest version of [Python](https://www.python.org/downloads/) if you do not have it already installed. Any Python version 3.8 or above should work.
+- Install [AnkiConnect](https://ankiweb.net/shared/info/2055492159) if you do not have it already installed.
+- Open Anki. If you just installed AnkiConnect, make sure to restart Anki so AnkiConnect is properly running.
+- Run the following commands:
+    ```bash
+    git clone "https://github.com/MarvNC/JP-Resources.git"
+    cd JP-Resources
+    cd frequency
+
+    # Linux users might have to use `python3` instead of `python`.
+    # Replace "Expression" with the exact field name that contains the word/expression.
+    python backfill.py "Expression"
+    ```
+
+    Here are some more examples on how to use `backfill.py`:
+    ```bash
+    # View all possible arguments.
+    python backfill.py --help
+
+    # Searches for the expression in the field "Word" instead of "Expression"
+    # Note that this is case sensitive!
+    python backfill.py "Word"
+
+    # Uses the field "FrequencySort" instead of the default ("Frequency").
+    # This also changes the default query to `FrequencySort:`.
+    python backfill.py "Expression" --freq-field "FrequencySort"
+
+    # Uses a custom query instead of the default ("Frequency:").
+    python backfill.py "Expression" --query "Frequency: \"note:My mining note\""
+
+    # Changes the order of which frequency list is used first.
+    python backfill.py "Expression" --freq-lists "vnsfreq.txt" "JPDB.txt"
+    ```
+
+</details>
+
+<details>
+<summary><b>Backfilling: Within Anki</b></summary>
+
+- This is a hacky method to backfill your old cards. Again, **make sure to backup your collection before attempting this, it could cause significant lag to your Anki.** In addition, for users of Anki 2.1.50+ [increase your backup interval](https://docs.ankiweb.net/backups.html?highlight=backup#anki-2150) before attempting the import as it will take a _long_ time. A backup occurring while you're waiting on Anki to delete cards will just cause more lag.
 
 - Create a frequency list in `.txt` format that contains a list of expressions followed by frequency values. You can use the ones I have created [here](frequency), I recommend downloading the [JPDB](frequency/JPDB.txt) list as it's the most exhaustive. However the [VN Stars](frequency/vnsfreqSTARS.txt) list also fills in some of the gaps that JPDB doesn't cover, so you could import it first, then import JPDB afterward for maximum frequency coverage.
 
@@ -123,13 +171,16 @@ If you already have a large backlog of old cards without frequency values, you m
 
 - With this temporary deck selected, go to File -> Import, then select the txt frequency list. Map the first field to your term/expression field, then the second field to your frequency field. **Make sure to enable "Update existing notes when first field matches."** Then import it to your temporary deck.
 
-![](images/anki_Import_2022-07-10_10-47-55.png)
+    ![](images/anki_Import_2022-07-10_10-47-55.png)
 
 - This will update your existing notes' frequency values, but it'll also import a LOT of new unneeded cards.
 
   - Search for your backlogged cards using `tag:backlog` and then again hit `ctrl + a` then `ctrl + d` to move them back to your vocabulary deck. Now we can simply delete the temporary deck along with the all the new cards that were added, just **make sure** you aren't deleting any actual cards first.
 
 - Finally, you can right click the `backlog` tag in the sidebar and delete it.
+
+</details>
+
 
 ## Anki Card Blur
 
