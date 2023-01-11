@@ -500,10 +500,15 @@ Some text replacement patterns in Yomichan `Settings -> Translation -> Custom Te
 
 ## Frequency Dictionaries
 
-I sometimes get asked about what frequency dictionaries to use and the differences between them, so here are some of themore general frequency dictionaries I would recommend.
+I sometimes get asked about what frequency dictionaries to use and the differences between them, so here are a few essential dictionaries I would recommend.
 
 - **[JPDB](https://github.com/MarvNC/yomichan-dictionaries/#jpdb-frequency-dictionary)**
   - Frequency data scraped from https://jpdb.io in May of 2022. Due to the way the data was scraped, some terms are missing frequencies and the jpdb dictionary itself is limited to terms in JMDict. For example, 経緯 only has an entry for the いきさつ reading which is less common in this frequency dictionary so it should not be used as a dictionary for sorting. The corpus of JPDB is quite good for immersion learners as it covers anime, dramas, light novels, visual novels, and web novels so the frequencies will be relatively accurate to what you're actually reading. This dictionary is notable for displaying the frequencies of kana readings separately, so you can often get a sense of how often a word is written with kanji or not.
 - **[Innocent Ranked](https://learnjapanese.moe/resources/#dictionaries)**
   - The Innocent Corpus from the [Yomichan page](https://github.com/FooSoft/yomichan#dictionaries) but reordered to be sorted by rank. It is based on data [from 5000+ novels](https://web.archive.org/web/20190309073023/https://forum.koohii.com/thread-9459.html#pid168613). A weakness is that it does not differentiate based on reading, so all readings of a term will show the same value.
-- **[BCCWJ](https://github.com/toasted-nutbread/yomichan-bccwj-frequency-dictionary/releases/tag/1.0.1)**
+- **[BCCWJ](https://github.com/toasted-nutbread/yomichan-bccwj-frequency-dictionary/releases)**
+  - From the [publication](https://link.springer.com/article/10.1007/s10579-013-9261-0):
+  - > The balanced corpus of contemporary written Japanese (BCCWJ) is Japan’s first 100 million words balanced corpus. It consists of three subcorpora (publication subcorpus, library subcorpus, and special-purpose subcorpus) and covers a wide range of text registers including books in general, magazines, newspapers, governmental white papers, best-selling books, an internet bulletin-board, a blog, school textbooks, minutes of the national diet, publicity newsletters of local governments, laws, and poetry verses.
+  - It has extremely wide coverage with most terms you'll encounter having an entry in this list even if other frequency lists don't. In addition, it differentiates between readings quite well. Make sure to install the LUW version as it has more terms.
+- **[CC100](https://learnjapanese.moe/resources/#dictionaries)**
+  - Made by the mind behind [arujisho](https://github.com/emc2314/arujisho), this uses the [CC100 dataset](https://data.statmt.org/cc-100/) which was made by crawling the web. Coverage is very wide, and there is reason behind the way readings are differentiated which is why I use this as my Yomichan sort dictionary.
