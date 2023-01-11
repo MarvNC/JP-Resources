@@ -112,12 +112,14 @@ Alternatively, after installing Advanced Browser, you could sort by the frequenc
 
 ### Backfilling Old Cards
 
-If you already have a large backlog of old cards without frequency values, you might need to fill in these values first or they won't be sorted. There are two methods listed below to do exactly that. The command line method runs much faster than the Anki method, but requires some command line knowledge to pull off. Of course, you could just opt to finish reviewing these cards first instead of backfilling the old cards.
+If you already have a large backlog of old cards without frequency values, you might need to fill in these values first or they won't be sorted. There are two methods listed below to do exactly that. The command line method runs much faster than the Anki method, but requires some command line knowledge to pull off.
 
-> **Warning**: Before trying either method below, **make sure to backup your collection beforehand.**
+Of course, you could just opt to finish reviewing these cards first instead of backfilling the old cards.
+
+> **Warning**: **Make sure to backup your collection** before trying either method below.
 
 <details>
-<summary><b>Command Line (Python script)</b></summary>
+<summary><b>Backfilling: Command Line</b></summary>
 
 - Install the latest version of [Python](https://www.python.org/downloads/) if you do not have it already installed.
 - Install [AnkiConnect](https://ankiweb.net/shared/info/2055492159) if you do not have it already installed.
@@ -137,7 +139,7 @@ If you already have a large backlog of old cards without frequency values, you m
 </details>
 
 <details>
-<summary><b>Within Anki</b></summary>
+<summary><b>Backfilling: Within Anki</b></summary>
 
 - This is a hacky method to backfill your old cards. Again, **make sure to backup your collection before attempting this, it could cause significant lag to your Anki.** In addition, for users of Anki 2.1.50+ [increase your backup interval](https://docs.ankiweb.net/backups.html?highlight=backup#anki-2150) before attempting the import as it will take a _long_ time. A backup occurring while you're waiting on Anki to delete cards will just cause more lag.
 
