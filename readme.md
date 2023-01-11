@@ -130,8 +130,8 @@ Of course, you could just opt to finish reviewing these cards first instead of b
     cd JP-Resources
     cd frequency
 
-    # - Linux users may have to use `python3` instead of `python`.
-    # - Replace "Expression" with the exact field name that contains the word/expression.
+    # Linux users might have to use `python3` instead of `python`.
+    # Replace "Expression" with the exact field name that contains the word/expression.
     python backfill.py "Expression"
     ```
 
