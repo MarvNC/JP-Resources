@@ -112,7 +112,9 @@ Alternatively, after installing Advanced Browser, you could sort by the frequenc
 
 ### Backfilling Old Cards
 
-If you already have a large backlog of old cards without frequency values, you might need to fill in these values first or they won't be sorted. There are two methods listed below to do exactly that. Of course, you could just opt to finish reviewing these cards first instead of backfilling the old cards.
+If you already have a large backlog of old cards without frequency values, you might need to fill in these values first or they won't be sorted. There are two methods listed below to do exactly that. The command line method runs much faster than the Anki method, but requires some command line knowledge to pull off. Of course, you could just opt to finish reviewing these cards first instead of backfilling the old cards.
+
+> **Warning**: Before trying either method below, **make sure to backup your collection beforehand.**
 
 <details>
 <summary><b>Command Line (Python script)</b></summary>
@@ -127,7 +129,7 @@ If you already have a large backlog of old cards without frequency values, you m
     cd backfill
 
     # - Linux users may have to use `python3` instead of `python`.
-    # - Run `python backfill.py --help` to view all arguments.
+    # - Run `python backfill.py --help` to view all possible arguments.
     # - Replace "Expression" with the exact field name that contains the word/expression.
     python backfill.py "Expression"
     ```
@@ -137,8 +139,7 @@ If you already have a large backlog of old cards without frequency values, you m
 <details>
 <summary><b>Within Anki</b></summary>
 
-> **Warning**: This is a hacky method to backfill these cards. **Make sure to backup your collection before attempting this, it could cause significant lag to your Anki.** In addition, for users of Anki 2.1.50+ [increase your backup interval](https://docs.ankiweb.net/backups.html?highlight=backup#anki-2150) before attempting the import as it will take a _long_ time. A backup occurring while you're waiting on Anki to delete cards will just cause more lag.
-
+- This is a hacky method to backfill your old cards. Again, **make sure to backup your collection before attempting this, it could cause significant lag to your Anki.** In addition, for users of Anki 2.1.50+ [increase your backup interval](https://docs.ankiweb.net/backups.html?highlight=backup#anki-2150) before attempting the import as it will take a _long_ time. A backup occurring while you're waiting on Anki to delete cards will just cause more lag.
 
 - Create a frequency list in `.txt` format that contains a list of expressions followed by frequency values. You can use the ones I have created [here](frequency), I recommend downloading the [JPDB](frequency/JPDB.txt) list as it's the most exhaustive. However the [VN Stars](frequency/vnsfreqSTARS.txt) list also fills in some of the gaps that JPDB doesn't cover, so you could import it first, then import JPDB afterward for maximum frequency coverage.
 
