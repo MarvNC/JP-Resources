@@ -10,20 +10,30 @@ from typing import List, Dict, Any
 # https://github.com/FooSoft/anki-connect#python
 import json
 import urllib.request
+
+
 def request(action, **params):
-    return {'action': action, 'params': params, 'version': 6}
+    return {"action": action, "params": params, "version": 6}
+
+
 def invoke(action, **params):
-    requestJson = json.dumps(request(action, **params)).encode('utf-8')
-    response = json.load(urllib.request.urlopen(urllib.request.Request('http://localhost:8765', requestJson)))
+    requestJson = json.dumps(request(action, **params)).encode("utf-8")
+    response = json.load(
+        urllib.request.urlopen(
+            urllib.request.Request("http://localhost:8765", requestJson)
+        )
+    )
     if len(response) != 2:
-        raise Exception('response has an unexpected number of fields')
-    if 'error' not in response:
-        raise Exception('response is missing required error field')
-    if 'result' not in response:
-        raise Exception('response is missing required result field')
-    if response['error'] is not None:
-        raise Exception(response['error'])
-    return response['result']
+        raise Exception("response has an unexpected number of fields")
+    if "error" not in response:
+        raise Exception("response is missing required error field")
+    if "result" not in response:
+        raise Exception("response is missing required result field")
+    if response["error"] is not None:
+        raise Exception(response["error"])
+    return response["result"]
+
+
 # ============================= #
 
 
@@ -33,14 +43,14 @@ def get_args() -> argparse.Namespace:
     parser.add_argument(
         "expr_field",
         type=str,
-        help="exact field name to search for when comparing frequencies"
+        help="exact field name to search for when comparing frequencies",
     )
 
     parser.add_argument(
         "--freq-field",
         type=str,
         help="exact field name to fill with the frequency information",
-        default="Frequency"
+        default="Frequency",
     )
 
     parser.add_argument(
@@ -61,6 +71,7 @@ def get_args() -> argparse.Namespace:
 
     return parser.parse_args()
 
+
 # freq is a string since it's not parsed at all by the csv.reader
 def create_actions(ids: List[int], freq: str, freq_field: str) -> List[Dict[str, Any]]:
     actions = []
@@ -68,14 +79,7 @@ def create_actions(ids: List[int], freq: str, freq_field: str) -> List[Dict[str,
         a = {
             "action": "updateNoteFields",
             "version": 6,
-            "params": {
-                "note": {
-                    "id": i,
-                    "fields": {
-                        freq_field: freq
-                    }
-                }
-            }
+            "params": {"note": {"id": i, "fields": {freq_field: freq}}},
         }
         actions.append(a)
     return actions
@@ -86,7 +90,7 @@ def main():
 
     query = args.query
     if query is None:
-        query = f"{args.freq_field}:" # queries all notes with an empty frequency field
+        query = f"{args.freq_field}:"  # queries all notes with an empty frequency field
     print(f"Querying Anki with: '{query}'")
     notes = invoke("findNotes", query=query)
 
@@ -114,18 +118,21 @@ def main():
             for line in csv.reader(f, dialect=csv.excel_tab):
                 expr, freq = line
                 if expr not in found_exprs and expr in expr_to_nid:
-                    new_actions = create_actions(expr_to_nid[expr], freq, args.freq_field)
+                    new_actions = create_actions(
+                        expr_to_nid[expr], freq, args.freq_field
+                    )
                     actions.extend(new_actions)
                     found_exprs.add(expr)
 
-    confirm = input(f"This will change {len(actions)} notes. Type 'yes' to confirm, or anything else to exit.\n> ")
+    confirm = input(
+        f"This will change {len(actions)} notes. Type 'yes' to confirm, or anything else to exit.\n> "
+    )
     if confirm != "yes":
         print("Reply was not 'yes'. Exiting...")
         return
 
     print("Updating notes within Anki...")
     invoke("multi", actions=actions)
-
 
 
 if __name__ == "__main__":
