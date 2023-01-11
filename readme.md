@@ -20,6 +20,7 @@ My contributions to the Japanese learning community. For questions and support, 
 - [Anki Automatically Highlight in Sentence](#anki-automatically-highlight-in-sentence)
 - [Anki Automatic Hint Sentence for Kana Cards](#anki-automatic-hint-sentence-for-kana-cards)
 - [Yomichan Text Replacement Patterns](#yomichan-text-replacement-patterns)
+- [Frequency Dictionaries](#frequency-dictionaries)
 
 ## Other Resources
 
@@ -37,10 +38,11 @@ These are absolutely essential.
 ### Special Thanks
 
 Much thanks to:
- - Renji-xD for rewriting the handlebar to find a minimum value. 
- - KamWithK for developing cool Anki addons to use with this guide. 
- - Aquafina-water-bottle for developing a python script that greatly improved the backfilling process.
- - GrumpyThomas, pj, and aka_baka for some suggestions.
+
+- Renji-xD for rewriting the handlebar to find a minimum value.
+- KamWithK for developing cool Anki addons to use with this guide.
+- Aquafina-water-bottle for developing a python script that greatly improved the backfilling process.
+- GrumpyThomas, pj, and aka_baka for some suggestions.
 
 ## Sorting Mined Anki Cards by Frequency
 
@@ -129,35 +131,37 @@ Of course, you could just opt to finish reviewing these cards first instead of b
 - Install [AnkiConnect](https://ankiweb.net/shared/info/2055492159) if you do not have it already installed.
 - Open Anki. If you just installed AnkiConnect, make sure to restart Anki so AnkiConnect is properly running.
 - Run the following commands:
-    ```bash
-    git clone "https://github.com/MarvNC/JP-Resources.git"
-    cd JP-Resources
-    cd frequency
 
-    # Linux users might have to use `python3` instead of `python`.
-    # Replace "Expression" with the exact field name that contains the word/expression.
-    python backfill.py "Expression"
-    ```
+  ```bash
+  git clone "https://github.com/MarvNC/JP-Resources.git"
+  cd JP-Resources
+  cd frequency
 
-    Here are some more examples on how to use `backfill.py`:
-    ```bash
-    # View all possible arguments.
-    python backfill.py --help
+  # Linux users might have to use `python3` instead of `python`.
+  # Replace "Expression" with the exact field name that contains the word/expression.
+  python backfill.py "Expression"
+  ```
 
-    # Searches for the expression in the field "Word" instead of "Expression"
-    # Note that this is case sensitive!
-    python backfill.py "Word"
+  Here are some more examples on how to use `backfill.py`:
 
-    # Uses the field "FrequencySort" instead of the default ("Frequency").
-    # This also changes the default query to `FrequencySort:`.
-    python backfill.py "Expression" --freq-field "FrequencySort"
+  ```bash
+  # View all possible arguments.
+  python backfill.py --help
 
-    # Uses a custom query instead of the default ("Frequency:").
-    python backfill.py "Expression" --query "Frequency: \"note:My mining note\""
+  # Searches for the expression in the field "Word" instead of "Expression"
+  # Note that this is case sensitive!
+  python backfill.py "Word"
 
-    # Changes the order of which frequency list is used first.
-    python backfill.py "Expression" --freq-lists "vnsfreq.txt" "JPDB.txt"
-    ```
+  # Uses the field "FrequencySort" instead of the default ("Frequency").
+  # This also changes the default query to `FrequencySort:`.
+  python backfill.py "Expression" --freq-field "FrequencySort"
+
+  # Uses a custom query instead of the default ("Frequency:").
+  python backfill.py "Expression" --query "Frequency: \"note:My mining note\""
+
+  # Changes the order of which frequency list is used first.
+  python backfill.py "Expression" --freq-lists "vnsfreq.txt" "JPDB.txt"
+  ```
 
 </details>
 
@@ -175,7 +179,7 @@ Of course, you could just opt to finish reviewing these cards first instead of b
 
 - With this temporary deck selected, go to File -> Import, then select the txt frequency list. Map the first field to your term/expression field, then the second field to your frequency field. **Make sure to enable "Update existing notes when first field matches."** Then import it to your temporary deck.
 
-    ![](images/anki_Import_2022-07-10_10-47-55.png)
+  ![](images/anki_Import_2022-07-10_10-47-55.png)
 
 - This will update your existing notes' frequency values, but it'll also import a LOT of new unneeded cards.
 
@@ -184,7 +188,6 @@ Of course, you could just opt to finish reviewing these cards first instead of b
 - Finally, you can right click the `backlog` tag in the sidebar and delete it.
 
 </details>
-
 
 ## Anki Card Blur
 
@@ -494,3 +497,18 @@ Some text replacement patterns in Yomichan `Settings -> Translation -> Custom Te
   - 侃々諤々
 
 `(.)々` -> `$1$1`
+
+## Frequency Dictionaries
+
+I sometimes get asked about what frequency dictionaries to use and the differences between them, so here are a few essential dictionaries I would recommend.
+
+- **[JPDB](https://github.com/MarvNC/yomichan-dictionaries/#jpdb-frequency-dictionary)**
+  - Frequency data scraped from https://jpdb.io in May of 2022. Due to the way the data was scraped, some terms are missing frequencies and the jpdb dictionary itself is limited to terms in JMDict. For example, 経緯 only has an entry for the いきさつ reading which is less common in this frequency dictionary so it should not be used as a dictionary for sorting. The corpus of JPDB is quite good for immersion learners as it covers anime, dramas, light novels, visual novels, and web novels so the frequencies will be relatively accurate to what you're actually reading. This dictionary is notable for displaying the frequencies of kana readings separately, so you can often get a sense of how often a word is written with kanji or not.
+- **[Innocent Ranked](https://learnjapanese.moe/resources/#dictionaries)**
+  - The Innocent Corpus from the [Yomichan page](https://github.com/FooSoft/yomichan#dictionaries) but reordered to be sorted by rank. It is based on data [from 5000+ novels](https://web.archive.org/web/20190309073023/https://forum.koohii.com/thread-9459.html#pid168613). A weakness is that it does not differentiate based on reading, so all readings of a term will show the same value.
+- **[BCCWJ](https://github.com/toasted-nutbread/yomichan-bccwj-frequency-dictionary/releases)**
+  - From the [publication](https://link.springer.com/article/10.1007/s10579-013-9261-0):
+  - > The balanced corpus of contemporary written Japanese (BCCWJ) is Japan’s first 100 million words balanced corpus. It consists of three subcorpora (publication subcorpus, library subcorpus, and special-purpose subcorpus) and covers a wide range of text registers including books in general, magazines, newspapers, governmental white papers, best-selling books, an internet bulletin-board, a blog, school textbooks, minutes of the national diet, publicity newsletters of local governments, laws, and poetry verses.
+  - It has extremely wide coverage with most terms you'll encounter having an entry in this list even if other frequency lists don't. In addition, it differentiates between readings quite well. Make sure to install the LUW version as it has more terms.
+- **[CC100](https://learnjapanese.moe/resources/#dictionaries)**
+  - Made by the mind behind [arujisho](https://github.com/emc2314/arujisho), this uses the [CC100 dataset](https://data.statmt.org/cc-100/) which was made by crawling the web. Coverage is very wide, and there is reason behind the way readings are differentiated which is why I use this as my Yomichan sort dictionary.
