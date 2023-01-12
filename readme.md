@@ -495,11 +495,11 @@ Some text replacement patterns in Yomichan `Settings -> Translation -> Custom Te
 `8|８` -> `八`  
 `9|９` -> `九`
 
-- Occasionally expressions or names may be separated by dots or commas, and the dictionary entry will usually not contain the dot.
+- Occasionally there are things with dots, dashes, or other miscellaneous things in it that you want to scan.
   - コピ・ルアク
   - 「ど、どうですか……？**モノに、なって**きてます……？」
 
-`・|、` -> (nothing)
+`・|、|\-|\.` -> (nothing)
 
 - Sometimes katakana verbs will use ッ in the past tense form and won't be picked up by Yomichan.
   - ハモッた
