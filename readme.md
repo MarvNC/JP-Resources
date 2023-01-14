@@ -172,6 +172,8 @@ Of course, you could just opt to finish reviewing these cards first instead of b
   python backfill.py "Expression" --freq-field "FrequencySort"
 
   # Uses a custom query instead of the default ("Frequency:").
+  # Note: For powershell users, you must escape the quotes with an additional backtick:
+  #     --query "Frequency: \`"note:My mining note\`""
   python backfill.py "Expression" --query "Frequency: \"note:My mining note\""
 
   # Changes the order of which frequency list is used first.
