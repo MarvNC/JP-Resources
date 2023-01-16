@@ -121,9 +121,11 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
     <details>
       <summary>Ignoring Frequency Dictionaries</summary>
-      By default, `JLPT_Level` is ignored. If you want to ignore multiple dictionaries,
+
+    * By default, `JLPT_Level` is ignored. If you want to ignore other dictionaries,
       edit the `ignored-freq-dict-regex` variable and join the dictionary names with `|`.
       For example, to ignore `My amazing frequency dictionary`, do the following:
+
       ```
       {{~#set "ignored-freq-dict-regex"~}} ^(JLPT_Level|My amazing frequency dictionary)$ {{~/set~}}
       ```
