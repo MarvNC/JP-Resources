@@ -69,41 +69,66 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
 - First, in your Anki card template create a new field for frequency, we can name this `Frequency` or whatever you like.
 
-![](images/anki_Fields_for_Mining_2022-07-10_10-12-31.png)
+    ![](images/anki_Fields_for_Mining_2022-07-10_10-12-31.png)
 
 - Then in Yomichan options, insert the following handlebar code at the end of the menu in `Configure Anki card templates...`.
 
-![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-10-26.png)
+    ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-10-26.png)
 
-```handlebars
-{{#*inline "freq"}}
-    {{~#scope~}}
-        {{~#set "min-freq" 0}}{{/set~}}
-            {{#each definition.frequencies}}
-                {{~#if (op "||" (op "===" (get "min-freq") 0) (op ">" (op "+" (get "min-freq")) (op "+" (regexMatch "\d" "g" this.frequency))))}}
-                    {{~#set "min-freq" (op "+" (regexMatch "\d" "g" this.frequency))}}{{/set~}}
-                {{~/if~}}
-            {{/each}}
-        {{get "min-freq"}}
-    {{~/scope~}}
-{{/inline}}
-```
+    ```handlebars
+    {{#*inline "freq"}}
+        {{~#scope~}}
+            {{~#set "ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
+            {{~#set "min-freq" 0~}}{{~/set~}}
+                {{~#each definition.frequencies~}}
 
-<details>
-  <summary>Alternative handlebar</summary>
-  The original handlebar I made only selects the first frequency available, which may be useful for some.
+                    {{~#set "rx-match-ignored-freq" ~}}
+                        {{~#regexMatch (get "ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                    {{/set~}}
 
-```handlebars
-{{#*inline "freq"}}
-    {{~#if (op ">" definition.frequencies.length 0)~}}
-        {{#regexReplace "[^\d]" ""}}
-            {{definition.frequencies.[0].frequency}}
-        {{/regexReplace}}
-    {{~/if~}}
-{{/inline}}
-```
+                    {{~#if
+                        (op "&&"
+                            (op "||"
+                                (op "===" (get "min-freq") 0)
+                                (op ">" (op "+" (get "min-freq")) (op "+" (regexMatch "\d" "g" this.frequency)))
+                            )
+                            (op "===" (get "rx-match-ignored-freq") "")
+                        )
+                    ~}}
+                        {{~#set "min-freq" (op "+" (regexMatch "\d" "g" this.frequency))}}{{/set~}}
+                    {{~/if~}}
+                {{~/each~}}
+            {{~get "min-freq"~}}
+        {{~/scope~}}
+    {{/inline}}
+    ```
 
-</details>
+    <details>
+      <summary>Alternative handlebar</summary>
+      The original handlebar I made only selects the first frequency available, which may be useful for some.
+
+    ```handlebars
+    {{#*inline "freq"}}
+        {{~#if (op ">" definition.frequencies.length 0)~}}
+            {{#regexReplace "[^\d]" ""}}
+                {{definition.frequencies.[0].frequency}}
+            {{/regexReplace}}
+        {{~/if~}}
+    {{/inline}}
+    ```
+
+    </details>
+
+    <details>
+      <summary>Ignoring Frequency Dictionaries</summary>
+      By default, `JLPT_Level` is ignored. If you want to ignore multiple dictionaries,
+      edit the `ignored-freq-dict-regex` variable and join the dictionary names with `|`.
+      For example, to ignore `My amazing frequency dictionary`, do the following:
+      ```
+      {{~#set "ignored-freq-dict-regex"~}} ^(JLPT_Level|My amazing frequency dictionary)$ {{~/set~}}
+      ```
+
+    </details>
 
 - In `Configure Anki card format...`, we may need to refresh the card model for the new field to show up.
   - To do this, change the model to something else and change it back.
