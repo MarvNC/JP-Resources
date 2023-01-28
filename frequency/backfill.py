@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import argparse
 import collections
+import re
 from typing import List, Dict, Any
 
 
@@ -11,6 +12,10 @@ from typing import List, Dict, Any
 import json
 import urllib.request
 
+pattern = re.compile("<.*?>")
+
+def remove_html(expression: str):
+    return re.sub(pattern, '', expression)
 
 def request(action, **params):
     return {"action": action, "params": params, "version": 6}
@@ -108,7 +113,7 @@ def main():
     # dict[str, list[int]]
     expr_to_nid = collections.defaultdict(list)
     for note_info in notes_info:
-        expr = note_info["fields"][args.expr_field]["value"]
+        expr = remove_html(note_info["fields"][args.expr_field]["value"])
         expr_to_nid[expr].append(note_info["noteId"])
 
     # creates multi action to update multiple notes
