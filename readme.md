@@ -72,81 +72,59 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
     ![](images/anki_Fields_for_Mining_2022-07-10_10-12-31.png)
 
 - Then in Yomichan options, insert the following handlebar code at the end of the menu in `Configure Anki card templates...`.
-
     ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-10-26.png)
-
-    <details>
-      <summary>Handlebar code to copy/paste <i>(click here)</i></summary>
-
-      ```handlebars
-      {{#*inline "freq"}}
-          {{~#scope~}}
-              {{~! Options ~}}
-              {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
-              {{~set "opt-no-freq-default-value" 0~}}
-              {{~set "opt-freq-sort-type" "min"~}} {{~! "min" or "first" ~}}
-              {{~! End of options ~}}
-
-              {{~! Do not change the code below unless you know what you are doing. ~}}
-              {{~set "min-freq" -1~}}
-              {{~#each definition.frequencies~}}
-
-                  {{~#set "rx-match-ignored-freq" ~}}
-                      {{~#regexMatch (get "opt-ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
-                  {{/set~}}
-
-                  {{~#if
-                      (op "||"
-                          (op "&&"
-                              (op "===" (get "opt-freq-sort-type") "min")
-
-                              (op "&&"
-                                  (op "||"
-                                      (op "===" (get "min-freq") -1)
-                                      (op ">" (op "+" (get "min-freq")) (op "+" (regexMatch "\d" "g" this.frequency)))
-                                  )
-                                  (op "===" (get "rx-match-ignored-freq") "")
-                              )
-
-                          )
-
-                          (op "&&"
-                              (op "===" (get "opt-freq-sort-type") "first")
-                              (op "===" (get "min-freq") -1)
-                          )
-                      )
-                  ~}}
-                      {{~set "min-freq" (op "+" (regexMatch "\d" "g" this.frequency))}}
-                  {{~/if~}}
-              {{~/each~}}
-
-              {{~! Sets the default value if -1 ~}}
-              {{~#if (op "===" (get "min-freq") -1)~}}
-                  {{~set "min-freq" (get "opt-no-freq-default-value")}}
-              {{~/if~}}
-
-              {{~get "min-freq"~}}
-          {{~/scope~}}
-      {{/inline}}
-      ```
-
-    </details>
-
-    <details>
-      <summary>Original handlebar</summary>
-      The original handlebar I made only selects the first frequency available, which may be useful for some.
 
     ```handlebars
     {{#*inline "freq"}}
-        {{~#if (op ">" definition.frequencies.length 0)~}}
-            {{#regexReplace "[^\d]" ""}}
-                {{definition.frequencies.[0].frequency}}
-            {{/regexReplace}}
-        {{~/if~}}
+        {{~! Frequency sorting from https://github.com/MarvNC/JP-Resources ~}}
+        {{~! v23.01.28.1 ~}}
+        {{~#scope~}}
+            {{~! Options ~}}
+            {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
+            {{~set "opt-no-freq-default-value" 0~}}
+            {{~set "opt-freq-sort-type" "min"~}} {{~! "min" or "first" ~}}
+            {{~! End of options ~}}
+
+            {{~! Do not change the code below unless you know what you are doing. ~}}
+            {{~set "min-freq" -1~}}
+            {{~#each definition.frequencies~}}
+
+                {{~#set "rx-match-ignored-freq" ~}}
+                    {{~#regexMatch (get "opt-ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                {{/set~}}
+
+                {{~#if
+                    (op "||"
+                        (op "&&"
+                            (op "===" (get "opt-freq-sort-type") "min")
+                            (op "&&"
+                                (op "||"
+                                    (op "===" (get "min-freq") -1)
+                                    (op ">" (op "+" (get "min-freq")) (op "+" (regexMatch "\d" "g" this.frequency)))
+                                )
+                                (op "===" (get "rx-match-ignored-freq") "")
+                            )
+                        )
+
+                        (op "&&"
+                            (op "===" (get "opt-freq-sort-type") "first")
+                            (op "===" (get "min-freq") -1)
+                        )
+                    )
+                ~}}
+                    {{~set "min-freq" (op "+" (regexMatch "\d" "g" this.frequency))}}
+                {{~/if~}}
+            {{~/each~}}
+
+            {{~! Sets the default value if -1 ~}}
+            {{~#if (op "===" (get "min-freq") -1)~}}
+                {{~set "min-freq" (get "opt-no-freq-default-value")}}
+            {{~/if~}}
+
+            {{~get "min-freq"~}}
+        {{~/scope~}}
     {{/inline}}
     ```
-
-    </details>
 
 - In `Configure Anki card format...`, we may need to refresh the card model for the new field to show up.
   - To do this, change the model to something else and change it back.
@@ -157,12 +135,15 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-15-02.png)
 
 ### Handlebars Usage
+The default settings within the handlebars code should work for most people.
+However, it can be customized if desired.
+
 * **Ignoring Frequency Dictionaries**
     * By default, `JLPT_Level` is ignored. If you want to ignore other dictionaries,
       edit the `ignored-freq-dict-regex` variable and join the dictionary names with `|`.
       For example, to ignore `My amazing frequency dictionary`, do the following:
 
-      ```
+      ```handlebars
       {{~#set "ignored-freq-dict-regex"~}} ^(JLPT_Level|My amazing frequency dictionary)$ {{~/set~}}
       ```
 
@@ -171,9 +152,6 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
 * **Default Value**
     * TODO
-
-</details>
-
 
 ### Usage
 
