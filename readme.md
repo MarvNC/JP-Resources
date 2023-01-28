@@ -76,7 +76,8 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
     ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-10-26.png)
 
     <details>
-      <summary>Handlebar code to copy/paste *(click here)*</summary>
+      <summary>Handlebar code to copy/paste <i>(click here)</i></summary>
+
       ```handlebars
       {{#*inline "freq"}}
           {{~#scope~}}
@@ -128,6 +129,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
           {{~/scope~}}
       {{/inline}}
       ```
+
     </details>
 
     <details>
