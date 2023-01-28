@@ -72,6 +72,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
     ![](images/anki_Fields_for_Mining_2022-07-10_10-12-31.png)
 
 - Then in Yomichan options, insert the following handlebar code at the end of the menu in `Configure Anki card templates...`.
+
     ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-10-26.png)
 
     ```handlebars
