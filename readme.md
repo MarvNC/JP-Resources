@@ -137,8 +137,10 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 ### Handlebars Usage
 The default settings within the handlebars code should work for most people.
 However, it can be customized if desired.
+To access the settings, head back to Yomichan's templates (Yomichan options → `Anki` →  `Configure Anki card templates...`),
+and view the lines right below `{{#*inline "freq"}}`.
 
-* **Ignoring Frequency Dictionaries**
+* *Ignoring Frequency Dictionaries*
     * By default, `JLPT_Level` is ignored. If you want to ignore other dictionaries,
       edit the `ignored-freq-dict-regex` variable and join the dictionary names with `|`.
       For example, to ignore `My amazing frequency dictionary`, do the following:
@@ -147,10 +149,10 @@ However, it can be customized if desired.
       {{~#set "ignored-freq-dict-regex"~}} ^(JLPT_Level|My amazing frequency dictionary)$ {{~/set~}}
       ```
 
-* **Sorting Method**
+* *Sorting Method*
     * TODO
 
-* **Default Value**
+* *Default Value*
     * TODO
 
 ### Usage
