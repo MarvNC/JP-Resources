@@ -71,7 +71,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
     ![](images/anki_Fields_for_Mining_2022-07-10_10-12-31.png)
 
-- Then in Yomichan options, insert the following handlebar code at the end of the menu in `Configure Anki card templates...`.
+- Then in Yomichan options, insert the following handlebars code at the end of the menu in `Configure Anki card templates...`.
 
     ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-10-26.png)
 
@@ -94,22 +94,29 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
                     {{~#regexMatch (get "opt-ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
                 {{/set~}}
 
+                {{~! if (
+                    (dictionary is not ignored) and (
+                        (sorting method == "min" and (min-freq == -1 or min-freq > this.frequency))
+                        or (sorting method == "first" and (min-freq == -1))
+                    )
+                )
+                ~}}
                 {{~#if
-                    (op "||"
-                        (op "&&"
-                            (op "===" (get "opt-freq-sorting-method") "min")
+                    (op "&&"
+                        (op "===" (get "rx-match-ignored-freq") "")
+                        (op "||"
                             (op "&&"
+                                (op "===" (get "opt-freq-sorting-method") "min")
                                 (op "||"
                                     (op "===" (get "min-freq") -1)
                                     (op ">" (op "+" (get "min-freq")) (op "+" (regexMatch "\d" "g" this.frequency)))
                                 )
-                                (op "===" (get "rx-match-ignored-freq") "")
                             )
-                        )
 
-                        (op "&&"
-                            (op "===" (get "opt-freq-sorting-method") "first")
-                            (op "===" (get "min-freq") -1)
+                            (op "&&"
+                                (op "===" (get "opt-freq-sorting-method") "first")
+                                (op "===" (get "min-freq") -1)
+                            )
                         )
                     )
                 ~}}
@@ -135,7 +142,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
 ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-15-02.png)
 
-### Handlebars Usage
+### `freq` Handlebars Settings
 The default settings within the handlebars code should work for most people.
 However, it can be customized if desired.
 To access the settings, head back to Yomichan's templates (Yomichan options → `Anki` →  `Configure Anki card templates...`),
