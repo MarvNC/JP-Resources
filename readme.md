@@ -82,7 +82,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
             {{~! Options ~}}
             {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
             {{~set "opt-no-freq-default-value" 0~}}
-            {{~set "opt-freq-sort-type" "min"~}} {{~! "min" or "first" ~}}
+            {{~set "opt-freq-sorting-method" "min"~}} {{~! "min" or "first" ~}}
             {{~! End of options ~}}
 
             {{~! Do not change the code below unless you know what you are doing. ~}}
@@ -96,7 +96,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
                 {{~#if
                     (op "||"
                         (op "&&"
-                            (op "===" (get "opt-freq-sort-type") "min")
+                            (op "===" (get "opt-freq-sorting-method") "min")
                             (op "&&"
                                 (op "||"
                                     (op "===" (get "min-freq") -1)
@@ -107,7 +107,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
                         )
 
                         (op "&&"
-                            (op "===" (get "opt-freq-sort-type") "first")
+                            (op "===" (get "opt-freq-sorting-method") "first")
                             (op "===" (get "min-freq") -1)
                         )
                     )
@@ -140,20 +140,46 @@ However, it can be customized if desired.
 To access the settings, head back to Yomichan's templates (Yomichan options → `Anki` →  `Configure Anki card templates...`),
 and view the lines right below `{{#*inline "freq"}}`.
 
-* *Ignoring Frequency Dictionaries*
-    * By default, `JLPT_Level` is ignored. If you want to ignore other dictionaries,
-      edit the `ignored-freq-dict-regex` variable and join the dictionary names with `|`.
-      For example, to ignore `My amazing frequency dictionary`, do the following:
+<details>
+<summary><b>Ignoring Frequency Dictionaries</b></summary>
 
-      ```handlebars
-      {{~#set "ignored-freq-dict-regex"~}} ^(JLPT_Level|My amazing frequency dictionary)$ {{~/set~}}
-      ```
+*   By default, `JLPT_Level` is ignored. If you want to ignore other dictionaries,
+    edit the `opt-ignored-freq-dict-regex` variable and join the dictionary names with `|`.
+    For example, to ignore `My amazing frequency dictionary`, do the following:
 
-* *Sorting Method*
-    * TODO
+    ```handlebars
+    {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level|My amazing frequency dictionary)$ {{~/set~}}
+    ```
 
-* *Default Value*
-    * TODO
+</details>
+
+<details>
+<summary><b>Default Value For No Frequencies</b></summary>
+
+*   When no frequencies are listed for the expression, the default value given is 0.
+    Some users may prefer setting the default value to a high number, say 99999999.
+    To do this, change the `opt-no-freq-default-value`.
+    For example:
+
+    ```handlebars
+    {{~set "opt-no-freq-default-value" 99999999~}}
+    ```
+
+</details>
+
+<details>
+<summary><b>Sorting Method</b></summary>
+
+*   By default, the handlebars code grabs the minimum frequency.
+    This can be changed to getting the first frequency listed in Yomichan,
+    by changing the `opt-freq-sorting-method` to `first`, i.e.
+
+    ```handlebars
+    {{~set "opt-freq-sorting-method" "first"~}}
+    ```
+
+</details>
+
 
 ### Usage
 
