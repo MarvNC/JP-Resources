@@ -156,9 +156,9 @@ and view the lines right below `{{#*inline "freq"}}`.
 <details>
 <summary><b>Default Value For No Frequencies</b></summary>
 
-*   When no frequencies are listed for the expression, the default value given is 0.
-    Some users may prefer setting the default value to a high number, say 99999999.
-    To do this, change the `opt-no-freq-default-value`.
+*   When no frequencies are listed for the expression, the default value given is `0`.
+    Some users may prefer setting the default value to a high number, say `99999999`.
+    To do this, change the `opt-no-freq-default-value` variable.
     For example:
 
     ```handlebars
@@ -170,13 +170,16 @@ and view the lines right below `{{#*inline "freq"}}`.
 <details>
 <summary><b>Sorting Method</b></summary>
 
-*   By default, the handlebars code grabs the minimum frequency.
+*   By default, the handlebars code grabs the smallest frequency available.
     This can be changed to getting the first frequency listed in Yomichan,
-    by changing the `opt-freq-sorting-method` to `first`, i.e.
+    by changing `opt-freq-sorting-method` to `first`, i.e.
 
     ```handlebars
     {{~set "opt-freq-sorting-method" "first"~}}
     ```
+
+    > **Note**: The order of frequency dictionaries is determined by the `Priority` column under Yomichan settings → `Configure installed and enabled dictionaries...`.
+    > Dictionaries are sorted from highest to lowest priority.
 
 </details>
 
