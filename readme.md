@@ -218,11 +218,14 @@ and view the lines right below `{{#*inline "freq"}}`.
 <summary><b>Sorting Method</b></summary>
 
 *   The sorting method determines the resulting value of `{freq}`.
+    By default, the minimum frequency is chosen.
     This can be modified by changing `opt-freq-sorting-method`, e.g.
 
     ```handlebars
     {{~set "opt-freq-sorting-method" "first" ~}}
     ```
+
+    The following table shows the available sorting methods. Note that these are case sensitive!
 
     | Sorting Method | Description |
     |-|-|
