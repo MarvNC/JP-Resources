@@ -150,7 +150,7 @@ def main():
     if args.default is None:
         input_msg = f"This will change {len(actions)} notes ({len(notes) - len(actions)} notes had no frequencies found). Type 'yes' to confirm, or anything else to exit.\n> "
     else:
-        input_msg = f"This will change {len(actions)} notes ({len(actions) - added_freqs_n} notes had no frequencies and will be set to {args.default}). Type 'yes' to confirm, or anything else to exit.\n> "
+        input_msg = f"This will change {len(actions)} notes ({len(actions) - added_freqs_n} notes had no frequencies found and will be set to {args.default}). Type 'yes' to confirm, or anything else to exit.\n> "
 
     confirm = input(input_msg)
     if confirm != "yes":
