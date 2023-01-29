@@ -206,6 +206,10 @@ Of course, you could just opt to finish reviewing these cards first instead of b
   #     --query "Frequency: \`"note:My mining note\`""
   python backfill.py "Expression" --query "Frequency: \"note:My mining note\""
 
+  # This custom query can be used to override all of your existing frequencies,
+  # instead of just backfilling. RUN THIS WITH CAUTION!
+  python backfill.py "Expression" --query "\"note:My mining note\""
+
   # Changes the order of which frequency list is used first.
   python backfill.py "Expression" --freq-lists "vnsfreq.txt" "JPDB.txt"
   ```
