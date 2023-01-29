@@ -36,10 +36,10 @@ def invoke(action, **params):
 
 # =========================================================================== #
 
-pattern = re.compile("<.*?>")
+rx_HTML = re.compile("<.*?>")
 
 def remove_html(expression: str):
-    return re.sub(pattern, '', expression)
+    return re.sub(rx_HTML, '', expression)
 
 def get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
