@@ -194,6 +194,9 @@ Of course, you could just opt to finish reviewing these cards first instead of b
   # Note that this is case sensitive!
   python backfill.py "Word"
 
+  # Sets all expressions without any found frequencies to the default value of '0'.
+  python backfill.py "Expression" --default 0
+
   # Uses the field "FrequencySort" instead of the default ("Frequency").
   # This also changes the default query to `FrequencySort:`.
   python backfill.py "Expression" --freq-field "FrequencySort"
