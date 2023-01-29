@@ -7,15 +7,11 @@ import re
 from typing import List, Dict, Any
 
 
-# ===== from anki-connect ===== #
+# ========================== from anki-connect =========================== #
+
 # https://github.com/FooSoft/anki-connect#python
 import json
 import urllib.request
-
-pattern = re.compile("<.*?>")
-
-def remove_html(expression: str):
-    return re.sub(pattern, '', expression)
 
 def request(action, **params):
     return {"action": action, "params": params, "version": 6}
@@ -38,9 +34,12 @@ def invoke(action, **params):
         raise Exception(response["error"])
     return response["result"]
 
+# =========================================================================== #
 
-# ============================= #
+rx_HTML = re.compile("<.*?>")
 
+def remove_html(expression: str):
+    return re.sub(rx_HTML, '', expression)
 
 def get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -51,6 +50,13 @@ def get_args() -> argparse.Namespace:
         "expr_field",
         type=str,
         help="exact field name that contains the expression",
+    )
+
+    parser.add_argument(
+        "--default",
+        type=int,
+        help="default value to fill for cards with no frequencies listed",
+        default=None,
     )
 
     parser.add_argument(
@@ -132,9 +138,21 @@ def main():
                     actions.extend(new_actions)
                     found_exprs.add(expr)
 
-    confirm = input(
-        f"This will change {len(actions)} notes. Type 'yes' to confirm, or anything else to exit.\n> "
-    )
+    added_freqs_n = len(actions)
+    if args.default is not None:
+        for expr in expr_to_nid.keys():
+            if expr not in found_exprs:
+                new_actions = create_actions(
+                    expr_to_nid[expr], str(args.default), args.freq_field
+                )
+                actions.extend(new_actions)
+
+    if args.default is None:
+        input_msg = f"This will change {len(actions)} notes ({len(notes) - len(actions)} notes had no frequencies found). Type 'yes' to confirm, or anything else to exit.\n> "
+    else:
+        input_msg = f"This will change {len(actions)} notes ({len(actions) - added_freqs_n} notes had no frequencies found and will be set to {args.default}). Type 'yes' to confirm, or anything else to exit.\n> "
+
+    confirm = input(input_msg)
     if confirm != "yes":
         print("Reply was not 'yes'. Exiting...")
         return

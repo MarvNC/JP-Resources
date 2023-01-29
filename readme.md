@@ -194,6 +194,9 @@ Of course, you could just opt to finish reviewing these cards first instead of b
   # Note that this is case sensitive!
   python backfill.py "Word"
 
+  # Sets all expressions without any found frequencies to the default value of '0'.
+  python backfill.py "Expression" --default 0
+
   # Uses the field "FrequencySort" instead of the default ("Frequency").
   # This also changes the default query to `FrequencySort:`.
   python backfill.py "Expression" --freq-field "FrequencySort"
@@ -202,6 +205,10 @@ Of course, you could just opt to finish reviewing these cards first instead of b
   # Note: For powershell users, you must escape the quotes with an additional backtick:
   #     --query "Frequency: \`"note:My mining note\`""
   python backfill.py "Expression" --query "Frequency: \"note:My mining note\""
+
+  # This custom query can be used to override all of your existing frequencies,
+  # instead of just backfilling. RUN THIS WITH CAUTION!
+  python backfill.py "Expression" --query "\"note:My mining note\""
 
   # Changes the order of which frequency list is used first.
   python backfill.py "Expression" --freq-lists "vnsfreq.txt" "JPDB.txt"
