@@ -82,54 +82,92 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
         {{~#scope~}}
             {{~! Options ~}}
             {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
-            {{~set "opt-no-freq-default-value" 0~}}
-            {{~set "opt-freq-sorting-method" "min"~}} {{~! "min" or "first" ~}}
+            {{~set "opt-no-freq-default-value" 0 ~}}
+            {{~set "opt-freq-sorting-method" "min" ~}} {{~! "min" or "first" ~}}
             {{~! End of options ~}}
 
+
             {{~! Do not change the code below unless you know what you are doing. ~}}
-            {{~set "min-freq" -1~}}
+            {{~set "result-freq" -1 ~}} {{~! -1 is chosen because no frequency dictionaries should have an entry as -1 ~}}
+            {{~set "t" 1 ~}}
+
             {{~#each definition.frequencies~}}
 
+                {{~! rx-match-ignored-freq is not empty if ignored <=> rx-match-ignored-freq is empty if not ignored ~}}
                 {{~#set "rx-match-ignored-freq" ~}}
                     {{~#regexMatch (get "opt-ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
                 {{/set~}}
+                {{~#if (op "===" (get "rx-match-ignored-freq") "") ~}}
 
-                {{~! if (
-                    (dictionary is not ignored) and (
-                        (sorting method == "min" and (min-freq == -1 or min-freq > this.frequency))
-                        or (sorting method == "first" and (min-freq == -1))
-                    )
-                )
-                ~}}
-                {{~#if
-                    (op "&&"
-                        (op "===" (get "rx-match-ignored-freq") "")
-                        (op "||"
-                            (op "&&"
-                                (op "===" (get "opt-freq-sorting-method") "min")
-                                (op "||"
-                                    (op "===" (get "min-freq") -1)
-                                    (op ">" (op "+" (get "min-freq")) (op "+" (regexMatch "\d" "g" this.frequency)))
+                    {{~#if (op "===" (get "opt-freq-sorting-method") "min") ~}}
+                        {{~#if
+                            (op "||"
+                                (op "===" (get "result-freq") -1)
+                                (op ">" (op "+" (get "result-freq")) (op "+" (regexMatch "\d" "g" this.frequency)))
+                            )
+                        ~}}
+                            {{~set "result-freq" (op "+" (regexMatch "\d" "g" this.frequency)) ~}}
+                        {{~/if~}}
+
+                    {{~else if (op "===" (get "opt-freq-sorting-method") "first") ~}}
+                        {{~#if (op "===" (get "result-freq") -1) ~}}
+                            {{~set "result-freq" (op "+" (regexMatch "\d" "g" this.frequency)) ~}}
+                        {{~/if~}}
+
+                    {{~else if (op "===" (get "opt-freq-sorting-method") "arithmetic-mean") ~}}
+
+                        {{~#if (op "===" (get "result-freq") -1) ~}}
+                            {{~set "result-freq" (op "+" (regexMatch "\d" "g" this.frequency)) ~}}
+                        {{~else~}}
+                            {{~! this uses the iterative mean formula: https://stackoverflow.com/a/1934266 ~}}
+                            {{~set "result-freq"
+                                (op "+"
+                                    (get "result-freq")
+                                    (op "/"
+                                        (op "-"
+                                            (op "+" (regexMatch "\d" "g" this.frequency))
+                                            (get "result-freq")
+                                        )
+                                        (get "t")
+                                    )
                                 )
-                            )
+                            }}
+                        {{~/if~}}
+                        {{~set "t" (op "+" (get "t") 1) ~}}
 
-                            (op "&&"
-                                (op "===" (get "opt-freq-sorting-method") "first")
-                                (op "===" (get "min-freq") -1)
-                            )
-                        )
-                    )
-                ~}}
-                    {{~set "min-freq" (op "+" (regexMatch "\d" "g" this.frequency))}}
+                    {{~else if (op "===" (get "opt-freq-sorting-method") "harmonic-mean") ~}}
+                        {{~#if (op "===" (get "result-freq") -1) ~}}
+                            {{~set "result-freq" (op "/" 1 (op "+" (regexMatch "\d" "g" this.frequency))) ~}}
+                        {{~else~}}
+                            {{~set "result-freq"
+                                (op "+"
+                                    (get "result-freq")
+                                    (op "/" 1 (op "+" (regexMatch "\d" "g" this.frequency)))
+                                )
+                            }}
+                            {{~set "t" (op "+" (get "t") 1) ~}}
+                        {{~/if~}}
+
+                    {{~else~}}
+                        (INVALID opt-freq-sorting-method value)
+                    {{~/if~}}
+
                 {{~/if~}}
+
             {{~/each~}}
 
-            {{~! Sets the default value if -1 ~}}
-            {{~#if (op "===" (get "min-freq") -1)~}}
-                {{~set "min-freq" (get "opt-no-freq-default-value")}}
+            {{~#if (op "===" (get "result-freq") -1) ~}}
+                {{~set "result-freq" (get "opt-no-freq-default-value") ~}}
+            {{~ else if (op "===" (get "opt-freq-sorting-method") "harmonic-mean") ~}}
+                {{~set "result-freq"
+                    (op "*"
+                        (op "/" 1 (get "result-freq"))
+                        (get "t")
+                    )
+                ~}}
             {{~/if~}}
 
-            {{~get "min-freq"~}}
+            {{~get "result-freq"~}}
         {{~/scope~}}
     {{/inline}}
     ```
@@ -178,7 +216,7 @@ and view the lines right below `{{#*inline "freq"}}`.
 <details>
 <summary><b>Sorting Method</b></summary>
 
-*   By default, the handlebars code grabs the smallest frequency available.
+*   By default, the handlebars code grabs the smallest frequency available (`min`).
     This can be changed to getting the first frequency listed in Yomichan,
     by changing `opt-freq-sorting-method` to `first`, i.e.
 
