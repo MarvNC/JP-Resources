@@ -10,6 +10,7 @@ My contributions to the Japanese learning community. For questions and support, 
 - [Frequency Dictionaries](#frequency-dictionaries)
 - [Sorting Mined Anki Cards by Frequency](#sorting-mined-anki-cards-by-frequency)
   - [How-To](#how-to)
+  - [`freq` Settings](#freq-settings)
   - [Usage](#usage)
   - [Backfilling Old Cards](#backfilling-old-cards)
 - [Anki Card Blur](#anki-card-blur)
@@ -83,7 +84,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
             {{~! Options ~}}
             {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
             {{~set "opt-no-freq-default-value" 0 ~}}
-            {{~set "opt-freq-sorting-method" "min" ~}} {{~! "min" or "first" ~}}
+            {{~set "opt-freq-sorting-method" "min" ~}} {{~! "min", "first", "avg", "harmonic" ~}}
             {{~! End of options ~}}
 
 
@@ -114,12 +115,12 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
                             {{~set "result-freq" (op "+" (regexMatch "\d" "g" this.frequency)) ~}}
                         {{~/if~}}
 
-                    {{~else if (op "===" (get "opt-freq-sorting-method") "arithmetic-mean") ~}}
+                    {{~else if (op "===" (get "opt-freq-sorting-method") "avg") ~}}
 
                         {{~#if (op "===" (get "result-freq") -1) ~}}
                             {{~set "result-freq" (op "+" (regexMatch "\d" "g" this.frequency)) ~}}
                         {{~else~}}
-                            {{~! this uses the iterative mean formula: https://stackoverflow.com/a/1934266 ~}}
+                            {{~! iterative mean formula: $S_{(t+1)} = S_t + \frac{1}{t+1} (x - S_t)$ ~}}
                             {{~set "result-freq"
                                 (op "+"
                                     (get "result-freq")
@@ -135,7 +136,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
                         {{~/if~}}
                         {{~set "t" (op "+" (get "t") 1) ~}}
 
-                    {{~else if (op "===" (get "opt-freq-sorting-method") "harmonic-mean") ~}}
+                    {{~else if (op "===" (get "opt-freq-sorting-method") "harmonic") ~}}
                         {{~#if (op "===" (get "result-freq") -1) ~}}
                             {{~set "result-freq" (op "/" 1 (op "+" (regexMatch "\d" "g" this.frequency))) ~}}
                         {{~else~}}
@@ -158,7 +159,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
             {{~#if (op "===" (get "result-freq") -1) ~}}
                 {{~set "result-freq" (get "opt-no-freq-default-value") ~}}
-            {{~ else if (op "===" (get "opt-freq-sorting-method") "harmonic-mean") ~}}
+            {{~ else if (op "===" (get "opt-freq-sorting-method") "harmonic") ~}}
                 {{~set "result-freq"
                     (op "*"
                         (op "/" 1 (get "result-freq"))
@@ -180,8 +181,8 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
 ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-15-02.png)
 
-### `freq` Handlebars Settings
-The default settings within the handlebars code should work for most people.
+### `freq` Settings
+The default settings within the `freq` handlebars code should work for most people.
 However, it can be customized if desired.
 To access the settings, head back to Yomichan's templates (Yomichan options → `Anki` →  `Configure Anki card templates...`),
 and view the lines right below `{{#*inline "freq"}}`.
@@ -216,16 +217,38 @@ and view the lines right below `{{#*inline "freq"}}`.
 <details>
 <summary><b>Sorting Method</b></summary>
 
-*   By default, the handlebars code grabs the smallest frequency available (`min`).
-    This can be changed to getting the first frequency listed in Yomichan,
-    by changing `opt-freq-sorting-method` to `first`, i.e.
+*   The sorting method determines the resulting value of `{freq}`.
+    This can be modified by changing `opt-freq-sorting-method`, e.g.
 
     ```handlebars
-    {{~set "opt-freq-sorting-method" "first"~}}
+    {{~set "opt-freq-sorting-method" "first" ~}}
     ```
 
-    > **Note**: The order of frequency dictionaries is determined by the `Priority` column under Yomichan settings → `Configure installed and enabled dictionaries...`.
-    > Dictionaries are sorted from highest to lowest priority.
+    | Sorting Method | Description |
+    |-|-|
+    | `min` | Gets the smallest frequency available. This is the default value. |
+    | `first` | Gets the first frequency listed in Yomichan. <br> The order of frequency dictionaries is determined by the `Priority` column under Yomichan settings → `Configure installed and enabled dictionaries...`. Dictionaries are sorted from highest to lowest priority. |
+    | `avg` | Gets the average (i.e. the [arithmetic mean](https://en.wikipedia.org/wiki/Arithmetic_mean)) of the frequencies. <br> You very likely want to use `harmonic` instead of this (see the note below for more details.) |
+    | `harmonic` | Gets the [harmonic mean](https://en.wikipedia.org/wiki/Harmonic_mean) of the frequencies. |
+
+    > **Note**: The harmonic mean is recommended over the arithmetic mean (despite it being technically incorrect to use in this context),
+    > because "the harmonic mean of a list of numbers tends strongly toward the least elements of the list"[^1].
+    > In other words, a frequency dictionary with an abnormally large value will not greatly affect the resulting frequency.
+    > For example, consider the word 読む with the following frequencies:
+    >
+    > | Dictionary | Frequency |
+    > |-|-|
+    > | Anime & Jdrama Freq | 625 |
+    > | Innocent Ranked | 321 |
+    > | JPDB | 440 |
+    > | JPDB | 26189㋕ |
+    > | VN Freq | 380 |
+    >
+    > The arithmetic mean of these frequencies is *5591*, but the harmonic mean is *517.7*.
+    > Removing the outlier of 26189, we would get an arithmetic mean and harmonic mean of *441.5* and *498.8* respectively.
+
+    [^1]:
+        https://en.wikipedia.org/wiki/Harmonic_mean#Relationship_with_other_means
 
 </details>
 
