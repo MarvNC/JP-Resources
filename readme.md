@@ -79,7 +79,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
     ```handlebars
     {{#*inline "freq"}}
         {{~! Frequency sorting from https://github.com/MarvNC/JP-Resources ~}}
-        {{~! v23.01.31.1 ~}}
+        {{~! v23.01.31.2 ~}}
         {{~#scope~}}
             {{~! Options ~}}
             {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
@@ -137,16 +137,18 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
                         {{~set "t" (op "+" (get "t") 1) ~}}
 
                     {{~else if (op "===" (get "opt-freq-sorting-method") "harmonic") ~}}
-                        {{~#if (op "===" (get "result-freq") -1) ~}}
-                            {{~set "result-freq" (op "/" 1 (op "+" (regexMatch "\d" "g" this.frequency))) ~}}
-                        {{~else if (op ">" (op "+" (regexMatch "\d" "g" this.frequency)) 0) ~}} {{~! ensures only positive numbers are used ~}}
-                            {{~set "result-freq"
-                                (op "+"
-                                    (get "result-freq")
-                                    (op "/" 1 (op "+" (regexMatch "\d" "g" this.frequency)))
-                                )
-                            }}
-                            {{~set "t" (op "+" (get "t") 1) ~}}
+                        {{~#if (op ">" (op "+" (regexMatch "\d" "g" this.frequency)) 0) ~}} {{~! ensures only positive numbers are used ~}}
+                            {{~#if (op "===" (get "result-freq") -1) ~}}
+                                {{~set "result-freq" (op "/" 1 (op "+" (regexMatch "\d" "g" this.frequency))) ~}}
+                            {{~else ~}}
+                                {{~set "result-freq"
+                                    (op "+"
+                                        (get "result-freq")
+                                        (op "/" 1 (op "+" (regexMatch "\d" "g" this.frequency)))
+                                    )
+                                }}
+                                {{~set "t" (op "+" (get "t") 1) ~}}
+                            {{~/if~}}
                         {{~/if~}}
 
                     {{~else~}}
