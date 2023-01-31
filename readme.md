@@ -248,7 +248,7 @@ and view the lines right below `{{#*inline "freq"}}`.
     > | VN Freq | 380 |
     >
     > The arithmetic mean of these frequencies is *5591*, but the harmonic mean is *517.7*.
-    > Removing the outlier of 26189, we would get an arithmetic mean and harmonic mean of *441.5* and *498.8* respectively.
+    > Removing the outlier of 26189, we would get an arithmetic mean and harmonic mean of *441.5* and *415.8* respectively.
 
     [^1]:
         https://en.wikipedia.org/wiki/Harmonic_mean#Relationship_with_other_means
