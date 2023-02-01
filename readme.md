@@ -88,7 +88,6 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
             {{~set "opt-freq-sorting-method" "min" ~}} {{~! "min", "first", "avg", "harmonic" ~}}
             {{~! End of options ~}}
 
-
             {{~! Do not change the code below unless you know what you are doing. ~}}
             {{~set "result-freq" -1 ~}} {{~! -1 is chosen because no frequency dictionaries should have an entry as -1 ~}}
             {{~set "prev-freq-dict" "" ~}}
@@ -102,6 +101,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
                 {{/set~}}
                 {{~#if (op "===" (get "rx-match-ignored-freq") "") ~}}
 
+                    {{~! only uses the 1st frequency of any dictionary ~}}
                     {{~set "read-freq" false ~}}
                     {{~#if (op "!==" (get "prev-freq-dict") this.dictionary ) ~}}
                         {{~set "read-freq" true ~}}
