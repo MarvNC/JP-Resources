@@ -1,3 +1,6 @@
+## v23.01.31.5
+- Added `debug` sort mode for internal use
+
 ## v23.01.31.4
 - Added `opt-keep-freqs-past-first-regex` and logic to use only the 1st frequency of a dictionary
 
