@@ -78,8 +78,8 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
     ```handlebars
     {{#*inline "freq"}}
-        {{~! Frequency sorting from https://github.com/MarvNC/JP-Resources ~}}
-        {{~! v23.01.31.6 ~}}
+        {{~! Frequency sort handlebars: v23.01.31.6 ~}}
+        {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources ~}}
         {{~#scope~}}
             {{~! Options ~}}
             {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
