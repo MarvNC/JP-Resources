@@ -79,10 +79,11 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
     ```handlebars
     {{#*inline "freq"}}
         {{~! Frequency sorting from https://github.com/MarvNC/JP-Resources ~}}
-        {{~! v23.01.31.3 ~}}
+        {{~! v23.01.31.4 ~}}
         {{~#scope~}}
             {{~! Options ~}}
             {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
+            {{~#set "opt-keep-freqs-past-first-regex"~}} ^()$ {{~/set~}}
             {{~set "opt-no-freq-default-value" 0 ~}}
             {{~set "opt-freq-sorting-method" "min" ~}} {{~! "min", "first", "avg", "harmonic" ~}}
             {{~! End of options ~}}
@@ -90,6 +91,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
             {{~! Do not change the code below unless you know what you are doing. ~}}
             {{~set "result-freq" -1 ~}} {{~! -1 is chosen because no frequency dictionaries should have an entry as -1 ~}}
+            {{~set "prev-freq-dict" "" ~}}
             {{~set "t" 1 ~}}
 
             {{~#each definition.frequencies~}}
@@ -99,61 +101,82 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
                     {{~#regexMatch (get "opt-ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
                 {{/set~}}
                 {{~#if (op "===" (get "rx-match-ignored-freq") "") ~}}
-                    {{~set "f" (op "+" (regexMatch "\d+" "" this.frequency)) ~}}
 
-                    {{~#if (op "===" (get "opt-freq-sorting-method") "min") ~}}
-                        {{~#if
-                            (op "||"
-                                (op "===" (get "result-freq") -1)
-                                (op ">" (op "+" (get "result-freq")) (get "f"))
-                            )
-                        ~}}
-                            {{~set "result-freq" (op "+" (get "f")) ~}}
-                        {{~/if~}}
+                    {{~set "read-freq" false ~}}
+                    {{~#if (op "!==" (get "prev-freq-dict") this.dictionary ) ~}}
+                        {{~set "read-freq" true ~}}
+                        {{~set "prev-freq-dict" this.dictionary ~}}
+                    {{/if~}}
 
-                    {{~else if (op "===" (get "opt-freq-sorting-method") "first") ~}}
-                        {{~#if (op "===" (get "result-freq") -1) ~}}
-                            {{~set "result-freq" (op "+" (get "f")) ~}}
-                        {{~/if~}}
+                    {{~#if (op "!" (get "read-freq") ) ~}}
+                        {{~#set "rx-match-keep-freqs" ~}}
+                            {{~#regexMatch (get "opt-keep-freqs-past-first-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                        {{/set~}}
 
-                    {{~else if (op "===" (get "opt-freq-sorting-method") "avg") ~}}
+                        {{~! rx-match-keep-freqs is not empty if keep freqs ~}}
+                        {{~#if (op "!==" (get "rx-match-keep-freqs") "") ~}}
+                            {{~set "read-freq" true ~}}
+                        {{/if~}}
+                    {{/if~}}
 
-                        {{~#if (op "===" (get "result-freq") -1) ~}}
-                            {{~set "result-freq" (op "+" (get "f")) ~}}
-                        {{~else~}}
-                            {{~! iterative mean formula: $S_{(t+1)} = S_t + \frac{1}{t+1} (x - S_t)$ ~}}
-                            {{~set "result-freq"
-                                (op "+"
-                                    (get "result-freq")
-                                    (op "/"
-                                        (op "-"
-                                            (op "+" (get "f"))
-                                            (get "result-freq")
-                                        )
-                                        (get "t")
-                                    )
+                    {{~#if (get "read-freq") ~}}
+
+                        {{~#if (op "===" (get "opt-freq-sorting-method") "min") ~}}
+                            {{~#if
+                                (op "||"
+                                    (op "===" (get "result-freq") -1)
+                                    (op ">" (op "+" (get "result-freq")) (op "+" (regexMatch "\d" "g" this.frequency)))
                                 )
-                            }}
-                        {{~/if~}}
-                        {{~set "t" (op "+" (get "t") 1) ~}}
+                            ~}}
+                                {{~set "result-freq" (op "+" (regexMatch "\d" "g" this.frequency)) ~}}
+                            {{~/if~}}
 
-                    {{~else if (op "===" (get "opt-freq-sorting-method") "harmonic") ~}}
-                        {{~#if (op ">" (op "+" (get "f")) 0) ~}} {{~! ensures only positive numbers are used ~}}
+                        {{~else if (op "===" (get "opt-freq-sorting-method") "first") ~}}
                             {{~#if (op "===" (get "result-freq") -1) ~}}
-                                {{~set "result-freq" (op "/" 1 (op "+" (get "f"))) ~}}
-                            {{~else ~}}
+                                {{~set "result-freq" (op "+" (regexMatch "\d" "g" this.frequency)) ~}}
+                            {{~/if~}}
+
+                        {{~else if (op "===" (get "opt-freq-sorting-method") "avg") ~}}
+
+                            {{~#if (op "===" (get "result-freq") -1) ~}}
+                                {{~set "result-freq" (op "+" (regexMatch "\d" "g" this.frequency)) ~}}
+                            {{~else~}}
+                                {{~! iterative mean formula: $S_{(t+1)} = S_t + \frac{1}{t+1} (x - S_t)$ ~}}
                                 {{~set "result-freq"
                                     (op "+"
                                         (get "result-freq")
-                                        (op "/" 1 (op "+" (get "f")))
+                                        (op "/"
+                                            (op "-"
+                                                (op "+" (regexMatch "\d" "g" this.frequency))
+                                                (get "result-freq")
+                                            )
+                                            (get "t")
+                                        )
                                     )
                                 }}
-                                {{~set "t" (op "+" (get "t") 1) ~}}
                             {{~/if~}}
+
+                            {{~set "t" (op "+" (get "t") 1) ~}}
+
+                        {{~else if (op "===" (get "opt-freq-sorting-method") "harmonic") ~}}
+                            {{~#if (op ">" (op "+" (regexMatch "\d" "g" this.frequency)) 0) ~}} {{~! ensures only positive numbers are used ~}}
+                                {{~#if (op "===" (get "result-freq") -1) ~}}
+                                    {{~set "result-freq" (op "/" 1 (op "+" (regexMatch "\d" "g" this.frequency))) ~}}
+                                {{~else ~}}
+                                    {{~set "result-freq"
+                                        (op "+"
+                                            (get "result-freq")
+                                            (op "/" 1 (op "+" (regexMatch "\d" "g" this.frequency)))
+                                        )
+                                    }}
+                                    {{~set "t" (op "+" (get "t") 1) ~}}
+                                {{~/if~}}
+                            {{~/if~}}
+
+                        {{~else~}}
+                            (INVALID opt-freq-sorting-method value)
                         {{~/if~}}
 
-                    {{~else~}}
-                        (INVALID opt-freq-sorting-method value)
                     {{~/if~}}
 
                 {{~/if~}}

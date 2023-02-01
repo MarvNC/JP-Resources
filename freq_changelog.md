@@ -1,3 +1,6 @@
+## v23.01.31.4
+- Added `opt-keep-freqs-past-first-regex` and logic to use only the 1st frequency of a dictionary
+
 ## v23.01.31.3
 - Apply floor() on harmonic mean and arithmetic mean result
 - Only gets the first number as the frequency instead of concatenating all digits together
