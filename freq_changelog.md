@@ -1,3 +1,6 @@
+## v23.01.31.6
+- Fixed accidental revert of logic in `v23.01.31.4`
+
 ## v23.01.31.5
 - Added `debug` sort mode for internal use
 
