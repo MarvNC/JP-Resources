@@ -1,3 +1,6 @@
+## v23.02.01.1
+- Removed redundant (op "+" x) operators (since the initial "f" shorthand already has it)
+
 ## v23.01.31.6
 - Fixed accidental revert of logic in `v23.01.31.4`
 
