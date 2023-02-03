@@ -285,10 +285,10 @@ and view the lines right below `{{#*inline "freq"}}`.
     * "The harmonic mean of a list of numbers tends strongly toward the least elements of the list."[^1]
         In other words, a frequency dictionary with an abnormally large value will not greatly
         affect the resulting frequency.
+        This makes it ideal for people who want a statistic that takes into account all numbers,
+        but does not arbitrarily deviate due to large outliers (which `avg` can easily do).
     * The harmonic mean is always greater than (or equal) to the minimum number and always less than
         (or equal) to the arithmetic mean.[^2]
-        This makes it ideal for people who want a statistic that takes into account all numbers,
-        but does not arbitrarily deviate from the minimum number.
 
     [^1]:
         https://en.wikipedia.org/wiki/Harmonic_mean#Relationship_with_other_means
