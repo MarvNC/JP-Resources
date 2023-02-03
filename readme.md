@@ -280,13 +280,15 @@ and view the lines right below `{{#*inline "freq"}}`.
     | `avg` | Gets the average (i.e. the [arithmetic mean](https://en.wikipedia.org/wiki/Arithmetic_mean)) of the frequencies. |
     | `harmonic` | Gets the [harmonic mean](https://en.wikipedia.org/wiki/Harmonic_mean) of the frequencies, which can be thought of as an in-between of `min` and `avg`. See below for more details. |
 
-    > **Note**: The harmonic mean has the following properties that may make it more attractive to use over `avg`:
-    > * "The harmonic mean of a list of numbers tends strongly toward the least elements of the list."[^1]
-    >   In other words, a frequency dictionary with an abnormally large value will not greatly
-    >   affect the resulting frequency.
-    > * The harmonic mean is always greater than (or equal) to the minimum number and always less than (or equal) to the arithmetic mean.[^2]
-    >   This makes it ideal for people who want a statistic that takes into account all numbers,
-    >   but does not arbitrarily deviate from the minimum number.
+    The harmonic mean has the following properties that may make it more attractive to use over `avg`:
+
+    * "The harmonic mean of a list of numbers tends strongly toward the least elements of the list."[^1]
+        In other words, a frequency dictionary with an abnormally large value will not greatly
+        affect the resulting frequency.
+    * The harmonic mean is always greater than (or equal) to the minimum number and always less than
+        (or equal) to the arithmetic mean.[^2]
+        This makes it ideal for people who want a statistic that takes into account all numbers,
+        but does not arbitrarily deviate from the minimum number.
 
     [^1]:
         https://en.wikipedia.org/wiki/Harmonic_mean#Relationship_with_other_means
@@ -306,7 +308,7 @@ and view the lines right below `{{#*inline "freq"}}`.
     1. The frequency is stored as one string. For example, with 青空文庫熟語,
         the frequency is "160 (5406)".
         Only the first number (160) can be grabbed from this, and any numbers past this
-        cannot be received without modifying the code.
+        *cannot be received* without hacking the code.
     2. The frequency is stored as multiple strings. For example with JPDB,
         the frequency for 読む is stored as "440" and "26189㋕" (with the latter turning into "21689").
 
