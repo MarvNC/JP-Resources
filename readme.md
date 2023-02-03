@@ -101,7 +101,10 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
                 {{/set~}}
                 {{~#if (op "===" (get "rx-match-ignored-freq") "") ~}}
 
-                    {{~! only uses the 1st frequency of any dictionary ~}}
+                    {{~!
+                        only uses the 1st frequency of any dictionary.
+                        For example, if JPDB lists 440 and 26189㋕, only the first 440 will be used.
+                    ~}}
                     {{~set "read-freq" false ~}}
                     {{~#if (op "!==" (get "prev-freq-dict") this.dictionary ) ~}}
                         {{~set "read-freq" true ~}}
@@ -142,7 +145,12 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
                             {{~#if (op "===" (get "result-freq") -1) ~}}
                                 {{~set "result-freq" (get "f") ~}}
                             {{~else~}}
-                                {{~! iterative mean formula: $S_{(t+1)} = S_t + \frac{1}{t+1} (x - S_t)$ ~}}
+                                {{~!
+                                    iterative mean formula (to prevent floating point overflow):
+                                        $S_{(t+1)} = S_t + \frac{1}{t+1} (x - S_t)$
+                                    - example java implementation: https://stackoverflow.com/a/1934266
+                                    - proof: https://www.heikohoffmann.de/htmlthesis/node134.html
+                                ~}}
                                 {{~set "result-freq"
                                     (op "+"
                                         (get "result-freq")
@@ -269,27 +277,53 @@ and view the lines right below `{{#*inline "freq"}}`.
     |-|-|
     | `min` | Gets the smallest frequency available. This is the default value. |
     | `first` | Gets the first frequency listed in Yomichan. <br> The order of frequency dictionaries is determined by the `Priority` column under Yomichan settings → `Configure installed and enabled dictionaries...`. Dictionaries are sorted from highest to lowest priority. |
-    | `avg` | Gets the average (i.e. the [arithmetic mean](https://en.wikipedia.org/wiki/Arithmetic_mean)) of the frequencies. <br> You very likely want to use `harmonic` instead of this (see the note below for more details.) |
-    | `harmonic` | Gets the [harmonic mean](https://en.wikipedia.org/wiki/Harmonic_mean) of the frequencies. |
+    | `avg` | Gets the average (i.e. the [arithmetic mean](https://en.wikipedia.org/wiki/Arithmetic_mean)) of the frequencies. |
+    | `harmonic` | Gets the [harmonic mean](https://en.wikipedia.org/wiki/Harmonic_mean) of the frequencies, which can be thought of as an in-between of `min` and `avg`. See below for more details. |
 
-    > **Note**: The harmonic mean is recommended over the arithmetic mean (despite it being technically incorrect to use in this context),
-    > because "the harmonic mean of a list of numbers tends strongly toward the least elements of the list"[^1].
-    > In other words, a frequency dictionary with an abnormally large value will not greatly affect the resulting frequency.
-    > For example, consider the word 読む with the following frequencies:
-    >
-    > | Dictionary | Frequency |
-    > |-|-|
-    > | Anime & Jdrama Freq | 625 |
-    > | Innocent Ranked | 321 |
-    > | JPDB | 440 |
-    > | JPDB | 26189㋕ |
-    > | VN Freq | 380 |
-    >
-    > The arithmetic mean of these frequencies is *5591*, but the harmonic mean is *517.7*.
-    > Removing the outlier of 26189, we would get an arithmetic mean and harmonic mean of *441.5* and *415.8* respectively.
+    > **Note**: The harmonic mean has the following properties that may make it more attractive to use over `avg`:
+    > * "The harmonic mean of a list of numbers tends strongly toward the least elements of the list."[^1]
+    >   In other words, a frequency dictionary with an abnormally large value will not greatly
+    >   affect the resulting frequency.
+    > * The harmonic mean is always greater than (or equal) to the minimum number and always less than (or equal) to the arithmetic mean.[^2]
+    >   This makes it ideal for people who want a statistic that takes into account all numbers,
+    >   but does not arbitrarily deviate from the minimum number.
 
     [^1]:
         https://en.wikipedia.org/wiki/Harmonic_mean#Relationship_with_other_means
+    [^2]:
+        https://en.wikipedia.org/wiki/Pythagorean_means#Inequalities_among_means
+
+</details>
+
+
+
+<details>
+<summary><b>Reading Multiple Frequencies from the Same Dictionary</b></summary>
+
+*   Some frequency dictionaries have multiple numbers displayed.
+    Among these dictionaries, there are two ways that these these can be stored:
+
+    1. The frequency is stored as one string. For example, with 青空文庫熟語,
+        the frequency is "160 (5406)".
+        Only the first number (160) can be grabbed from this, and any numbers past this
+        cannot be received without modifying the code.
+    2. The frequency is stored as multiple strings. For example with JPDB,
+        the frequency for 読む is stored as "440" and "26189㋕" (with the latter turning into "21689").
+
+        By default, only "440" will be considered in the sorting method.
+        If you want the sorting method to also consider 26189, add the desired dictionary
+        to the `opt-keep-freqs-past-first-regex` variable, similarly to how dictionaries
+        are added to `opt-ignored-freq-dict-regex` (concatenated with `|`).
+
+        For example, adding JPDB will result in the following:
+        ```handlebars
+        {{~#set "opt-keep-freqs-past-first-regex"~}} ^(JPDB)$ {{~/set~}}
+        ```
+
+        And adding JPDB VN3万 as well will result in the following:
+        ```handlebars
+        {{~#set "opt-keep-freqs-past-first-regex"~}} ^(JPDB|JPDB VN3万)$ {{~/set~}}
+        ```
 
 </details>
 
