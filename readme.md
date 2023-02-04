@@ -4,6 +4,8 @@
 
 My contributions to the Japanese learning community. For questions and support, please make a thread in the questions forum [in TheMoeWay](https://learnjapanese.moe/join/). For suggestions please mention @Marv.
 
+### [Changelog](changelog.md) <!-- omit in toc -->
+
 - [Other Resources](#other-resources)
     - [Dictionaries](#dictionaries)
   - [Special Thanks](#special-thanks)
@@ -41,7 +43,7 @@ Much thanks to:
 
 - Renji-xD for rewriting the handlebar to find a minimum value.
 - KamWithK for developing cool Anki addons to use with this guide.
-- Aquafina-water-bottle for developing a python script that greatly improved the backfilling process.
+- Aquafina-water-bottle for developing a python script that greatly improved the backfilling process and much handlebar wizardry to revamp the frequency handlebar.
 - GrumpyThomas, pj, and aka_baka for some suggestions.
 
 ## Frequency Dictionaries
@@ -69,66 +71,66 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
 - First, in your Anki card template create a new field for frequency, we can name this `Frequency` or whatever you like.
 
-    ![](images/anki_Fields_for_Mining_2022-07-10_10-12-31.png)
+  ![](images/anki_Fields_for_Mining_2022-07-10_10-12-31.png)
 
 - Then in Yomichan options, insert the following handlebar code at the end of the menu in `Configure Anki card templates...`.
 
-    ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-10-26.png)
+  ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-10-26.png)
 
-    ```handlebars
-    {{#*inline "freq"}}
-        {{~#scope~}}
-            {{~#set "ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
-            {{~#set "min-freq" 0~}}{{~/set~}}
-                {{~#each definition.frequencies~}}
+  ```handlebars
+  {{#*inline "freq"}}
+      {{~#scope~}}
+          {{~#set "ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
+          {{~#set "min-freq" 0~}}{{~/set~}}
+              {{~#each definition.frequencies~}}
 
-                    {{~#set "rx-match-ignored-freq" ~}}
-                        {{~#regexMatch (get "ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
-                    {{/set~}}
+                  {{~#set "rx-match-ignored-freq" ~}}
+                      {{~#regexMatch (get "ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                  {{/set~}}
 
-                    {{~#if
-                        (op "&&"
-                            (op "||"
-                                (op "===" (get "min-freq") 0)
-                                (op ">" (op "+" (get "min-freq")) (op "+" (regexMatch "\d" "g" this.frequency)))
-                            )
-                            (op "===" (get "rx-match-ignored-freq") "")
-                        )
-                    ~}}
-                        {{~#set "min-freq" (op "+" (regexMatch "\d" "g" this.frequency))}}{{/set~}}
-                    {{~/if~}}
-                {{~/each~}}
-            {{~get "min-freq"~}}
-        {{~/scope~}}
-    {{/inline}}
-    ```
+                  {{~#if
+                      (op "&&"
+                          (op "||"
+                              (op "===" (get "min-freq") 0)
+                              (op ">" (op "+" (get "min-freq")) (op "+" (regexMatch "\d" "g" this.frequency)))
+                          )
+                          (op "===" (get "rx-match-ignored-freq") "")
+                      )
+                  ~}}
+                      {{~#set "min-freq" (op "+" (regexMatch "\d" "g" this.frequency))}}{{/set~}}
+                  {{~/if~}}
+              {{~/each~}}
+          {{~get "min-freq"~}}
+      {{~/scope~}}
+  {{/inline}}
+  ```
 
     <details>
       <summary>Alternative handlebar</summary>
       The original handlebar I made only selects the first frequency available, which may be useful for some.
 
-    ```handlebars
-    {{#*inline "freq"}}
-        {{~#if (op ">" definition.frequencies.length 0)~}}
-            {{#regexReplace "[^\d]" ""}}
-                {{definition.frequencies.[0].frequency}}
-            {{/regexReplace}}
-        {{~/if~}}
-    {{/inline}}
-    ```
+  ```handlebars
+  {{#*inline "freq"}}
+      {{~#if (op ">" definition.frequencies.length 0)~}}
+          {{#regexReplace "[^\d]" ""}}
+              {{definition.frequencies.[0].frequency}}
+          {{/regexReplace}}
+      {{~/if~}}
+  {{/inline}}
+  ```
 
     </details>
 
     <details>
       <summary>Ignoring Frequency Dictionaries</summary>
 
-    * By default, `JLPT_Level` is ignored. If you want to ignore other dictionaries,
-      edit the `ignored-freq-dict-regex` variable and join the dictionary names with `|`.
-      For example, to ignore `My amazing frequency dictionary`, do the following:
+  - By default, `JLPT_Level` is ignored. If you want to ignore other dictionaries,
+    edit the `ignored-freq-dict-regex` variable and join the dictionary names with `|`.
+    For example, to ignore `My amazing frequency dictionary`, do the following:
 
-      ```
-      {{~#set "ignored-freq-dict-regex"~}} ^(JLPT_Level|My amazing frequency dictionary)$ {{~/set~}}
-      ```
+    ```
+    {{~#set "ignored-freq-dict-regex"~}} ^(JLPT_Level|My amazing frequency dictionary)$ {{~/set~}}
+    ```
 
     </details>
 
