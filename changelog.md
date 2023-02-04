@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-02-03
+
+Add changelog.
+
 ## 2023-01-28
 
 Add a way to specify the default frequency value for the backfill script by @Aquafina-water-bottle.
