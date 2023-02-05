@@ -4,6 +4,8 @@
 
 My contributions to the Japanese learning community. For questions and support, please make a thread in the questions forum [in TheMoeWay](https://learnjapanese.moe/join/). For suggestions please mention @Marv.
 
+### [Changelog](changelog.md) <!-- omit in toc -->
+
 - [Other Resources](#other-resources)
     - [Dictionaries](#dictionaries)
   - [Special Thanks](#special-thanks)
@@ -42,7 +44,7 @@ Much thanks to:
 
 - Renji-xD for rewriting the handlebar to find a minimum value.
 - KamWithK for developing cool Anki addons to use with this guide.
-- Aquafina-water-bottle for developing a python script that greatly improved the backfilling process.
+- Aquafina-water-bottle for developing a python script that greatly improved the backfilling process and much handlebar wizardry to revamp the frequency handlebar.
 - GrumpyThomas, pj, and aka_baka for some suggestions.
 
 ## Frequency Dictionaries
@@ -70,7 +72,7 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
 - First, in your Anki card template create a new field for frequency, we can name this `Frequency` or whatever you like.
 
-    ![](images/anki_Fields_for_Mining_2022-07-10_10-12-31.png)
+  ![](images/anki_Fields_for_Mining_2022-07-10_10-12-31.png)
 
 - Then in Yomichan options, insert the following handlebars code at the end of the menu in `Configure Anki card templates...`.
 
