@@ -36,6 +36,9 @@ Add my thoughts on a few frequency dictionaries.
 
 # `freq` Changelog
 
+## v23.02.05.1
+- Changed the default sorting method from `min` to `harmonic`
+
 ## v23.02.01.1
 - Removed redundant (op "+" x) operators (since the initial "f" shorthand already has it)
 
