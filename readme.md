@@ -281,6 +281,7 @@ and view the lines right below `{{#*inline "freq"}}`.
     | `first` | Gets the first frequency listed in Yomichan. <br> The order of frequency dictionaries is determined by the `Priority` column under Yomichan settings → `Configure installed and enabled dictionaries...`. Dictionaries are sorted from highest to lowest priority. |
     | `avg` | Gets the average (i.e. the [arithmetic mean](https://en.wikipedia.org/wiki/Arithmetic_mean)) of the frequencies. |
     | `harmonic` | Gets the [harmonic mean](https://en.wikipedia.org/wiki/Harmonic_mean) of the frequencies, which can be thought of as an in-between of `min` and `avg`. See below for more details. |
+    | `debug` | Internal mode to shows the dictionaries and frequencies for each dictionary, after being filtered from `opt-ignored-freq-dict-regex` and `opt-keep-freqs-past-first-regex`. Useful when testing the aforementioned regexes. |
 
     The harmonic mean has the following properties that may make it more attractive to use over `avg`:
 
