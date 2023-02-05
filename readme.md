@@ -66,7 +66,7 @@ I sometimes get asked about what frequency dictionaries to use and the differenc
 
 When reading and adding cards from the content you're reading, you'll come across a variety of words with varying degrees of usefulness. Especially as a beginner, you'll want to learn the useful words as soon as possible and learn the less useful words later. With this we can sort a backlog of mined cards by frequency using various installed Yomichan frequency lists.
 
-This handlebar for Yomichan will add a `{freq}` field that will send the lowest frequency value available to Anki in a numerical format.
+This handlebar for Yomichan will add a `{freq}` field that will use your installed frequency dictionaries to send a numerical frequency value to Anki depending on the [sort option applied](#freq-settings), with the default being the (recommended) harmonic mean.
 
 ### How-To
 
@@ -80,14 +80,14 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
     ```handlebars
     {{#*inline "freq"}}
-        {{~! Frequency sort handlebars: v23.02.01.1 ~}}
+        {{~! Frequency sort handlebars: v23.02.05.1 ~}}
         {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources ~}}
         {{~#scope~}}
             {{~! Options ~}}
             {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
             {{~#set "opt-keep-freqs-past-first-regex"~}} ^()$ {{~/set~}}
             {{~set "opt-no-freq-default-value" 0 ~}}
-            {{~set "opt-freq-sorting-method" "min" ~}} {{~! "min", "first", "avg", "harmonic" ~}}
+            {{~set "opt-freq-sorting-method" "harmonic" ~}} {{~! "min", "first", "avg", "harmonic" ~}}
             {{~! End of options ~}}
 
             {{~! Do not change the code below unless you know what you are doing. ~}}
@@ -266,7 +266,7 @@ and view the lines right below `{{#*inline "freq"}}`.
 <summary><b>Sorting Method</b></summary>
 
 *   The sorting method determines the resulting value of `{freq}`.
-    By default, the minimum frequency is chosen.
+    By default, the harmonic frequency is chosen.
     This can be modified by changing `opt-freq-sorting-method`, e.g.
 
     ```handlebars
@@ -277,10 +277,10 @@ and view the lines right below `{{#*inline "freq"}}`.
 
     | Sorting Method | Description |
     |-|-|
-    | `min` | Gets the smallest frequency available. This is the default value. |
+    | `min` | Gets the smallest frequency available. |
     | `first` | Gets the first frequency listed in Yomichan. <br> The order of frequency dictionaries is determined by the `Priority` column under Yomichan settings → `Configure installed and enabled dictionaries...`. Dictionaries are sorted from highest to lowest priority. |
     | `avg` | Gets the average (i.e. the [arithmetic mean](https://en.wikipedia.org/wiki/Arithmetic_mean)) of the frequencies. |
-    | `harmonic` | Gets the [harmonic mean](https://en.wikipedia.org/wiki/Harmonic_mean) of the frequencies, which can be thought of as an in-between of `min` and `avg`. See below for more details. |
+    | `harmonic` | Gets the [harmonic mean](https://en.wikipedia.org/wiki/Harmonic_mean) of the frequencies, which can be thought of as an in-between of `min` and `avg`. See below for more details. This is the default value. |
     | `debug` | Internal mode to shows the dictionaries and frequencies for each dictionary, after being filtered from `opt-ignored-freq-dict-regex` and `opt-keep-freqs-past-first-regex`. Useful when testing the aforementioned regexes. |
 
     The harmonic mean has the following properties that may make it more attractive to use over `avg`:
