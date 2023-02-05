@@ -287,11 +287,14 @@ and view the lines right below `{{#*inline "freq"}}`.
 
     * "The harmonic mean of a list of numbers tends strongly toward the least elements of the list."[^1]
         In other words, a frequency dictionary with an abnormally large value will not greatly
-        affect the resulting frequency.
-        This makes it ideal for people who want a statistic that takes into account all numbers,
-        but does not arbitrarily deviate due to large outliers (which `avg` can easily do).
+        affect the resulting value.
+        Conversely, a frequency dictionary with an abnormally small value will affect the resulting
+        value more than `avg`, but still less so than simply using `min`.
     * The harmonic mean is always greater than (or equal) to the minimum number and always less than
         (or equal) to the arithmetic mean.[^2]
+
+    This makes `harmonic` ideal for people who want a statistic that takes into account all numbers,
+    but does not arbitrarily deviate due to large outliers (which `avg` can easily do).
 
     [^1]:
         https://en.wikipedia.org/wiki/Harmonic_mean#Relationship_with_other_means
@@ -313,14 +316,16 @@ and view the lines right below `{{#*inline "freq"}}`.
         Only the first number (160) can be grabbed from this, and any numbers past this
         *cannot be received* without hacking the code.
     2. The frequency is stored as multiple strings. For example with JPDB,
-        the frequency for 読む is stored as "440" and "26189㋕" (with the latter turning into "21689").
+        the frequency for 読む is stored as "440" and "26189㋕"
+        (with the latter being read as *21689*).
 
-        By default, only "440" will be considered in the sorting method.
-        If you want the sorting method to also consider 26189, add the desired dictionary
-        to the `opt-keep-freqs-past-first-regex` variable, similarly to how dictionaries
-        are added to `opt-ignored-freq-dict-regex` (concatenated with `|`).
+        By default, only the first number (*440*) will be considered in the sorting method.
+        If you want the sorting method to also consider other numbers (such as *26189*),
+        add the desired dictionary to the `opt-keep-freqs-past-first-regex` variable,
+        similarly to how dictionaries are added to `opt-ignored-freq-dict-regex`
+        (concatenated with `|`).
 
-        For example, adding JPDB will result in the following:
+        For example, adding JPDB to the variable will result in the following:
         ```handlebars
         {{~#set "opt-keep-freqs-past-first-regex"~}} ^(JPDB)$ {{~/set~}}
         ```
