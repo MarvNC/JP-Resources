@@ -12,6 +12,7 @@ My contributions to the Japanese learning community. For questions and support, 
 - [Frequency Dictionaries](#frequency-dictionaries)
 - [Sorting Mined Anki Cards by Frequency](#sorting-mined-anki-cards-by-frequency)
   - [How-To](#how-to)
+  - [`freq` Settings](#freq-settings)
   - [Usage](#usage)
   - [Backfilling Old Cards](#backfilling-old-cards)
 - [Anki Card Blur](#anki-card-blur)
@@ -73,66 +74,152 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 
   ![](images/anki_Fields_for_Mining_2022-07-10_10-12-31.png)
 
-- Then in Yomichan options, insert the following handlebar code at the end of the menu in `Configure Anki card templates...`.
+- Then in Yomichan options, insert the following handlebars code at the end of the menu in `Configure Anki card templates...`.
 
-  ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-10-26.png)
+    ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-10-26.png)
 
-  ```handlebars
-  {{#*inline "freq"}}
-      {{~#scope~}}
-          {{~#set "ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
-          {{~#set "min-freq" 0~}}{{~/set~}}
-              {{~#each definition.frequencies~}}
+    ```handlebars
+    {{#*inline "freq"}}
+        {{~! Frequency sort handlebars: v23.02.01.1 ~}}
+        {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources ~}}
+        {{~#scope~}}
+            {{~! Options ~}}
+            {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
+            {{~#set "opt-keep-freqs-past-first-regex"~}} ^()$ {{~/set~}}
+            {{~set "opt-no-freq-default-value" 0 ~}}
+            {{~set "opt-freq-sorting-method" "min" ~}} {{~! "min", "first", "avg", "harmonic" ~}}
+            {{~! End of options ~}}
 
-                  {{~#set "rx-match-ignored-freq" ~}}
-                      {{~#regexMatch (get "ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
-                  {{/set~}}
+            {{~! Do not change the code below unless you know what you are doing. ~}}
+            {{~set "result-freq" -1 ~}} {{~! -1 is chosen because no frequency dictionaries should have an entry as -1 ~}}
+            {{~set "prev-freq-dict" "" ~}}
+            {{~set "t" 1 ~}}
 
-                  {{~#if
-                      (op "&&"
-                          (op "||"
-                              (op "===" (get "min-freq") 0)
-                              (op ">" (op "+" (get "min-freq")) (op "+" (regexMatch "\d" "g" this.frequency)))
-                          )
-                          (op "===" (get "rx-match-ignored-freq") "")
-                      )
-                  ~}}
-                      {{~#set "min-freq" (op "+" (regexMatch "\d" "g" this.frequency))}}{{/set~}}
-                  {{~/if~}}
-              {{~/each~}}
-          {{~get "min-freq"~}}
-      {{~/scope~}}
-  {{/inline}}
-  ```
+            {{~#each definition.frequencies~}}
 
-    <details>
-      <summary>Alternative handlebar</summary>
-      The original handlebar I made only selects the first frequency available, which may be useful for some.
+                {{~! rx-match-ignored-freq is not empty if ignored <=> rx-match-ignored-freq is empty if not ignored ~}}
+                {{~#set "rx-match-ignored-freq" ~}}
+                    {{~#regexMatch (get "opt-ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                {{/set~}}
+                {{~#if (op "===" (get "rx-match-ignored-freq") "") ~}}
 
-  ```handlebars
-  {{#*inline "freq"}}
-      {{~#if (op ">" definition.frequencies.length 0)~}}
-          {{#regexReplace "[^\d]" ""}}
-              {{definition.frequencies.[0].frequency}}
-          {{/regexReplace}}
-      {{~/if~}}
-  {{/inline}}
-  ```
+                    {{~!
+                        only uses the 1st frequency of any dictionary.
+                        For example, if JPDB lists 440 and 26189㋕, only the first 440 will be used.
+                    ~}}
+                    {{~set "read-freq" false ~}}
+                    {{~#if (op "!==" (get "prev-freq-dict") this.dictionary ) ~}}
+                        {{~set "read-freq" true ~}}
+                        {{~set "prev-freq-dict" this.dictionary ~}}
+                    {{/if~}}
 
-    </details>
+                    {{~#if (op "!" (get "read-freq") ) ~}}
+                        {{~#set "rx-match-keep-freqs" ~}}
+                            {{~#regexMatch (get "opt-keep-freqs-past-first-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                        {{/set~}}
 
-    <details>
-      <summary>Ignoring Frequency Dictionaries</summary>
+                        {{~! rx-match-keep-freqs is not empty if keep freqs ~}}
+                        {{~#if (op "!==" (get "rx-match-keep-freqs") "") ~}}
+                            {{~set "read-freq" true ~}}
+                        {{/if~}}
+                    {{/if~}}
 
-  - By default, `JLPT_Level` is ignored. If you want to ignore other dictionaries,
-    edit the `ignored-freq-dict-regex` variable and join the dictionary names with `|`.
-    For example, to ignore `My amazing frequency dictionary`, do the following:
+                    {{~#if (get "read-freq") ~}}
+                        {{~set "f" (op "+" (regexMatch "\d+" "" this.frequency)) ~}}
 
+                        {{~#if (op "===" (get "opt-freq-sorting-method") "min") ~}}
+                            {{~#if
+                                (op "||"
+                                    (op "===" (get "result-freq") -1)
+                                    (op ">" (get "result-freq") (get "f"))
+                                )
+                            ~}}
+                                {{~set "result-freq" (op "+" (get "f")) ~}}
+                            {{~/if~}}
+
+                        {{~else if (op "===" (get "opt-freq-sorting-method") "first") ~}}
+                            {{~#if (op "===" (get "result-freq") -1) ~}}
+                                {{~set "result-freq" (get "f") ~}}
+                            {{~/if~}}
+
+                        {{~else if (op "===" (get "opt-freq-sorting-method") "avg") ~}}
+
+                            {{~#if (op "===" (get "result-freq") -1) ~}}
+                                {{~set "result-freq" (get "f") ~}}
+                            {{~else~}}
+                                {{~!
+                                    iterative mean formula (to prevent floating point overflow):
+                                        $S_{(t+1)} = S_t + \frac{1}{t+1} (x - S_t)$
+                                    - example java implementation: https://stackoverflow.com/a/1934266
+                                    - proof: https://www.heikohoffmann.de/htmlthesis/node134.html
+                                ~}}
+                                {{~set "result-freq"
+                                    (op "+"
+                                        (get "result-freq")
+                                        (op "/"
+                                            (op "-"
+                                                (get "f")
+                                                (get "result-freq")
+                                            )
+                                            (get "t")
+                                        )
+                                    )
+                                }}
+                            {{~/if~}}
+                            {{~set "t" (op "+" (get "t") 1) ~}}
+
+                        {{~else if (op "===" (get "opt-freq-sorting-method") "harmonic") ~}}
+                            {{~#if (op ">" (get "f") 0) ~}} {{~! ensures only positive numbers are used ~}}
+                                {{~#if (op "===" (get "result-freq") -1) ~}}
+                                    {{~set "result-freq" (op "/" 1 (get "f")) ~}}
+                                {{~else ~}}
+                                    {{~set "result-freq"
+                                        (op "+"
+                                            (get "result-freq")
+                                            (op "/" 1 (get "f"))
+                                        )
+                                    }}
+                                    {{~set "t" (op "+" (get "t") 1) ~}}
+                                {{~/if~}}
+                            {{~/if~}}
+
+                        {{~else if (op "===" (get "opt-freq-sorting-method") "debug") ~}}
+
+                            {{ this.dictionary }}: {{ this.frequency }} -> {{ get "f" }} <br>
+
+                        {{~else~}}
+                            (INVALID opt-freq-sorting-method value)
+                        {{~/if~}}
+
+                    {{~/if~}}
+
+                {{~/if~}}
+
+            {{~/each~}}
+
+            {{~! (x) >> 0 apparently floors x: https://stackoverflow.com/a/4228528 ~}}
+            {{~#if (op "===" (get "result-freq") -1) ~}}
+                {{~set "result-freq" (get "opt-no-freq-default-value") ~}}
+            {{~ else if (op "===" (get "opt-freq-sorting-method") "avg") ~}}
+                {{~set "result-freq"
+                    (op ">>" (get "result-freq") 0 )
+                ~}}
+            {{~ else if (op "===" (get "opt-freq-sorting-method") "harmonic") ~}}
+                {{~set "result-freq"
+                    (op ">>"
+                        (op "*"
+                            (op "/" 1 (get "result-freq"))
+                            (get "t")
+                        )
+                        0
+                    )
+                ~}}
+            {{~/if~}}
+
+            {{~get "result-freq"~}}
+        {{~/scope~}}
+    {{/inline}}
     ```
-    {{~#set "ignored-freq-dict-regex"~}} ^(JLPT_Level|My amazing frequency dictionary)$ {{~/set~}}
-    ```
-
-    </details>
 
 - In `Configure Anki card format...`, we may need to refresh the card model for the new field to show up.
   - To do this, change the model to something else and change it back.
@@ -141,6 +228,115 @@ This handlebar for Yomichan will add a `{freq}` field that will send the lowest 
 - When your frequency field shows up, add `{freq}` in its value box to use the handlebar.
 
 ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-15-02.png)
+
+### `freq` Settings
+The default settings within the `freq` handlebars code should work for most people.
+However, it can be customized if desired.
+To access the settings, head back to Yomichan's templates (Yomichan options → `Anki` →  `Configure Anki card templates...`),
+and view the lines right below `{{#*inline "freq"}}`.
+
+<details>
+<summary><b>Ignoring Frequency Dictionaries</b></summary>
+
+*   By default, `JLPT_Level` is ignored. If you want to ignore other dictionaries,
+    edit the `opt-ignored-freq-dict-regex` variable and join the dictionary names with `|`.
+    For example, to ignore `My amazing frequency dictionary`, do the following:
+
+    ```handlebars
+    {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level|My amazing frequency dictionary)$ {{~/set~}}
+    ```
+
+</details>
+
+<details>
+<summary><b>Default Value For No Frequencies</b></summary>
+
+*   When no frequencies are listed for the expression, the default value given is `0`.
+    Some users may prefer setting the default value to a high number, say `99999999`.
+    To do this, change the `opt-no-freq-default-value` variable.
+    For example:
+
+    ```handlebars
+    {{~set "opt-no-freq-default-value" 99999999~}}
+    ```
+
+</details>
+
+<details>
+<summary><b>Sorting Method</b></summary>
+
+*   The sorting method determines the resulting value of `{freq}`.
+    By default, the minimum frequency is chosen.
+    This can be modified by changing `opt-freq-sorting-method`, e.g.
+
+    ```handlebars
+    {{~set "opt-freq-sorting-method" "first" ~}}
+    ```
+
+    The following table shows the available sorting methods. Note that these are case sensitive!
+
+    | Sorting Method | Description |
+    |-|-|
+    | `min` | Gets the smallest frequency available. This is the default value. |
+    | `first` | Gets the first frequency listed in Yomichan. <br> The order of frequency dictionaries is determined by the `Priority` column under Yomichan settings → `Configure installed and enabled dictionaries...`. Dictionaries are sorted from highest to lowest priority. |
+    | `avg` | Gets the average (i.e. the [arithmetic mean](https://en.wikipedia.org/wiki/Arithmetic_mean)) of the frequencies. |
+    | `harmonic` | Gets the [harmonic mean](https://en.wikipedia.org/wiki/Harmonic_mean) of the frequencies, which can be thought of as an in-between of `min` and `avg`. See below for more details. |
+    | `debug` | Internal mode to shows the dictionaries and frequencies for each dictionary, after being filtered from `opt-ignored-freq-dict-regex` and `opt-keep-freqs-past-first-regex`. Useful when testing the aforementioned regexes. |
+
+    The harmonic mean has the following properties that may make it more attractive to use over `avg`:
+
+    * "The harmonic mean of a list of numbers tends strongly toward the least elements of the list."[^1]
+        In other words, a frequency dictionary with an abnormally large value will not greatly
+        affect the resulting value.
+        Conversely, a frequency dictionary with an abnormally small value will affect the resulting
+        value more than `avg`, but still less so than simply using `min`.
+    * The harmonic mean is always greater than (or equal) to the minimum number and always less than
+        (or equal) to the arithmetic mean.[^2]
+
+    This makes `harmonic` ideal for people who want a statistic that takes into account all numbers,
+    but does not arbitrarily deviate due to large outliers (which `avg` can easily do).
+
+    [^1]:
+        https://en.wikipedia.org/wiki/Harmonic_mean#Relationship_with_other_means
+    [^2]:
+        https://en.wikipedia.org/wiki/Pythagorean_means#Inequalities_among_means
+
+</details>
+
+
+
+<details>
+<summary><b>Reading Multiple Frequencies from the Same Dictionary</b></summary>
+
+*   Some frequency dictionaries have multiple numbers displayed.
+    Among these dictionaries, there are two ways that these these can be stored:
+
+    1. The frequency is stored as one string. For example, with 青空文庫熟語,
+        the frequency is "160 (5406)".
+        Only the first number (160) can be grabbed from this, and any numbers past this
+        *cannot be received* without hacking the code.
+    2. The frequency is stored as multiple strings. For example with JPDB,
+        the frequency for 読む is stored as "440" and "26189㋕"
+        (with the latter being read as *21689*).
+
+        By default, only the first number (*440*) will be considered in the sorting method.
+        If you want the sorting method to also consider other numbers (such as *26189*),
+        add the desired dictionary to the `opt-keep-freqs-past-first-regex` variable,
+        similarly to how dictionaries are added to `opt-ignored-freq-dict-regex`
+        (concatenated with `|`).
+
+        For example, adding JPDB to the variable will result in the following:
+        ```handlebars
+        {{~#set "opt-keep-freqs-past-first-regex"~}} ^(JPDB)$ {{~/set~}}
+        ```
+
+        And adding JPDB VN3万 as well will result in the following:
+        ```handlebars
+        {{~#set "opt-keep-freqs-past-first-regex"~}} ^(JPDB|JPDB VN3万)$ {{~/set~}}
+        ```
+
+</details>
+
 
 ### Usage
 
