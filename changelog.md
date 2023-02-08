@@ -1,8 +1,6 @@
 # Changelog
 
-## 2023-02-07
-
-Clarify a word.
+Minor changes will not be reflected here. See the commit history for more details.
 
 ## 2023-02-03
 
