@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-02-07
+
+Clarify a word.
+
 ## 2023-02-03
 
 Add changelog.

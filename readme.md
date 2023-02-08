@@ -225,7 +225,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
   - To do this, change the model to something else and change it back.
   - ⚠️**This will clear your fields, so take a screenshot to remember what you had.**
     - You can try duplicating your card model in Anki and switching to/from that model, so hopefully your card fields will remain.
-- When your frequency field shows up, add `{freq}` in its value box to use the handlebar.
+- When your frequency field shows up, **type in** `{freq}` in its value box to use the handlebar.
 
 ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-15-02.png)
 
