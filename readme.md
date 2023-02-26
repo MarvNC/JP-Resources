@@ -80,7 +80,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
     ```handlebars
     {{#*inline "freq"}}
-        {{~! Frequency sort handlebars: v23.02.05.1 ~}}
+        {{~! Frequency sort handlebars: v23.02.25.1 ~}}
         {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources ~}}
         {{~#scope~}}
             {{~! Options ~}}
@@ -88,12 +88,17 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
             {{~#set "opt-keep-freqs-past-first-regex"~}} ^()$ {{~/set~}}
             {{~set "opt-no-freq-default-value" 0 ~}}
             {{~set "opt-freq-sorting-method" "harmonic" ~}} {{~! "min", "first", "avg", "harmonic" ~}}
+
+            {{~set "opt-grammar-override" true ~}}
+            {{~set "opt-grammar-override-value" 0 ~}}
+            {{~#set "opt-grammar-override-dict-regex"~}} ^(日本語文法辞典(全集)|毎日のんびり日本語教師|JLPT文法解説まとめ|どんなときどう使う 日本語表現文型辞典)$ {{~/set~}}
             {{~! End of options ~}}
 
             {{~! Do not change the code below unless you know what you are doing. ~}}
             {{~set "result-freq" -1 ~}} {{~! -1 is chosen because no frequency dictionaries should have an entry as -1 ~}}
             {{~set "prev-freq-dict" "" ~}}
             {{~set "t" 1 ~}}
+            {{~set "found-grammar-dict" false ~}}
 
             {{~#each definition.frequencies~}}
 
@@ -102,6 +107,14 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
                     {{~#regexMatch (get "opt-ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
                 {{/set~}}
                 {{~#if (op "===" (get "rx-match-ignored-freq") "") ~}}
+
+                    {{~#set "rx-match-grammar-dicts" ~}}
+                        {{~#regexMatch (get "opt-grammar-override-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                    {{/set~}}
+                    {{~! rx-match-grammar-dicts is not empty if a grammar dictionary was found ~}}
+                    {{~#if (op "!==" (get "rx-match-grammar-dicts") "") ~}}
+                        {{~set "found-grammar-dict" true ~}}
+                    {{/if~}}
 
                     {{~!
                         only uses the 1st frequency of any dictionary.
@@ -215,6 +228,16 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
                     )
                 ~}}
             {{~/if~}}
+
+            {{~! override final result if grammar dictionary ~}}
+            {{~#if (
+                op "&&"
+                    (op "===" (get "found-grammar-dict") true)
+                    (op "===" (get "opt-grammar-override") true)
+                )
+            ~}}
+                {{~set "result-freq" (get "opt-grammar-override-value") ~}}
+            {{/if}}
 
             {{~get "result-freq"~}}
         {{~/scope~}}

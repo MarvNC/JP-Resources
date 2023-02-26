@@ -38,6 +38,9 @@ Add my thoughts on a few frequency dictionaries.
 
 # `freq` Changelog
 
+## v23.02.25.1
+- Added option to override the frequency for grammar dictionaries
+
 ## v23.02.05.1
 - Changed the default sorting method from `min` to `harmonic`
 
