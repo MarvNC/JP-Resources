@@ -38,6 +38,9 @@ Add my thoughts on a few frequency dictionaries.
 
 # `freq` Changelog
 
+## v23.02.26.1
+- Added missing `絵でわかる日本語` grammar dictionary
+
 ## v23.02.25.3
 - Fixed grammar dictionaries not being detected if "Result grouping mode" is set to "No Grouping"
 

@@ -80,7 +80,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
     ```handlebars
     {{#*inline "freq"}}
-        {{~! Frequency sort handlebars: v23.02.25.3 ~}}
+        {{~! Frequency sort handlebars: v23.02.26.1 ~}}
         {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources ~}}
         {{~#scope~}}
             {{~! Options ~}}
@@ -91,7 +91,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
             {{~set "opt-grammar-override" true ~}}
             {{~set "opt-grammar-override-value" 0 ~}}
-            {{~#set "opt-grammar-override-dict-regex"~}} ^(日本語文法辞典\(全集\)|毎日のんびり日本語教師|JLPT文法解説まとめ|どんなときどう使う 日本語表現文型辞典)$ {{~/set~}}
+            {{~#set "opt-grammar-override-dict-regex"~}} ^(日本語文法辞典\(全集\)|毎日のんびり日本語教師|JLPT文法解説まとめ|どんなときどう使う 日本語表現文型辞典|絵でわかる日本語)$ {{~/set~}}
             {{~! End of options ~}}
 
             {{~! Do not change the code below unless you know what you are doing. ~}}
