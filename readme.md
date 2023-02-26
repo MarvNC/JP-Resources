@@ -100,6 +100,17 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
             {{~set "t" 1 ~}}
             {{~set "found-grammar-dict" false ~}}
 
+            {{~! search for grammar dictionary ~}}
+            {{~#each definition.definitions~}}
+                {{~#set "rx-match-grammar-dicts" ~}}
+                    {{~#regexMatch (get "opt-grammar-override-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                {{/set~}}
+                {{~! rx-match-grammar-dicts is not empty if a grammar dictionary was found ~}}
+                {{~#if (op "!==" (get "rx-match-grammar-dicts") "") ~}}
+                    {{~set "found-grammar-dict" true ~}}
+                {{/if~}}
+            {{~/each~}}
+
             {{~#each definition.frequencies~}}
 
                 {{~! rx-match-ignored-freq is not empty if ignored <=> rx-match-ignored-freq is empty if not ignored ~}}
@@ -107,14 +118,6 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
                     {{~#regexMatch (get "opt-ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
                 {{/set~}}
                 {{~#if (op "===" (get "rx-match-ignored-freq") "") ~}}
-
-                    {{~#set "rx-match-grammar-dicts" ~}}
-                        {{~#regexMatch (get "opt-grammar-override-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
-                    {{/set~}}
-                    {{~! rx-match-grammar-dicts is not empty if a grammar dictionary was found ~}}
-                    {{~#if (op "!==" (get "rx-match-grammar-dicts") "") ~}}
-                        {{~set "found-grammar-dict" true ~}}
-                    {{/if~}}
 
                     {{~!
                         only uses the 1st frequency of any dictionary.
