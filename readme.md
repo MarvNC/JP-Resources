@@ -80,7 +80,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
     ```handlebars
     {{#*inline "freq"}}
-        {{~! Frequency sort handlebars: v23.02.25.2 ~}}
+        {{~! Frequency sort handlebars: v23.02.25.3 ~}}
         {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources ~}}
         {{~#scope~}}
             {{~! Options ~}}
@@ -110,6 +110,15 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
                     {{~set "found-grammar-dict" true ~}}
                 {{/if~}}
             {{~/each~}}
+
+            {{~! Additional case when "Result grouping mode" is set to "No Grouping"~}}
+            {{~#set "rx-match-grammar-dicts" ~}}
+                {{~#regexMatch (get "opt-grammar-override-dict-regex") "gu"~}}{{this.definition.dictionary}}{{~/regexMatch~}}
+            {{/set~}}
+            {{~! rx-match-grammar-dicts is not empty if a grammar dictionary was found ~}}
+            {{~#if (op "!==" (get "rx-match-grammar-dicts") "") ~}}
+                {{~set "found-grammar-dict" true ~}}
+            {{/if~}}
 
             {{~#each definition.frequencies~}}
 

@@ -38,6 +38,9 @@ Add my thoughts on a few frequency dictionaries.
 
 # `freq` Changelog
 
+## v23.02.25.3
+- Fixed grammar dictionaries not being detected if "Result grouping mode" is set to "No Grouping"
+
 ## v23.02.25.2
 - Fixed default `opt-grammar-override-dict-regex` not being properly escaped
 
