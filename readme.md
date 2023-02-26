@@ -317,7 +317,7 @@ and view the lines right below `{{#*inline "freq"}}`.
     |-|-|
     | `opt-grammar-override` | If set to `true` (default), overrides the resulting frequency with `opt-grammar-override-value` if at least one dictionary is determined to be a grammar dictionary. Set this variable to `false` in order to disable the behavior. |
     | `opt-grammar-override-value` | The exact frequency value used for grammar dictionaries. |
-    | `opt-grammar-override-dict-regex` | The regex used in order to determine if a dictionary is a grammar dictionary. Edit this like any other `dict-regex` variable, i.e. by concatenating strings with `|`. |
+    | `opt-grammar-override-dict-regex` | The regex used in order to determine if a dictionary is a grammar dictionary. Edit this like any other `dict-regex` variable, i.e. by concatenating strings with `\|`. |
 
 
 </details>
