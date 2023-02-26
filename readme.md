@@ -300,7 +300,24 @@ and view the lines right below `{{#*inline "freq"}}`.
 <details>
 <summary><b>Default Value For Grammar Dictionaries</b></summary>
 
-*   TODO
+*   By default, if you create a card for any grammar point,
+    the frequency will be automatically set to `0`.
+    This is because it is very likely that
+    you would want to prioritize reviewing grammar points as much as possible.
+
+    The `{freq}` handlebars code determines whether a card is a grammar point or not by
+    your installed [grammar dictionaries](https://github.com/aiko-tanaka/Grammar-Dictionaries).
+    If the definition within the exported term contains any grammar dictionary,
+    then it is considered as a grammar point. Otherwise, the term is treated
+    like any other term.
+
+    The following table summarizes the options related to this.
+
+    | Option | Description |
+    |-|-|
+    | `opt-grammar-override` | If set to `true` (default), overrides the resulting frequency with `opt-grammar-override-value` if at least one dictionary is determined to be a grammar dictionary. Set this variable to `false` in order to disable the behavior. |
+    | `opt-grammar-override-value` | The exact frequency value used for grammar dictionaries. |
+    | `opt-grammar-override-dict-regex` | The regex used in order to determine if a dictionary is a grammar dictionary. Edit this like any other `dict-regex` variable, i.e. by concatenating strings with `|`. |
 
 
 </details>
