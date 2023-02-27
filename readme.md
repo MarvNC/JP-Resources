@@ -312,10 +312,9 @@ and view the lines right below `{{#*inline "freq"}}`.
     like any other term.
 
     > **Note**:
-    > This may incorrectly override some terms that might not be considered as a grammar point.
-    > For example, 以前 can be used as a standalone word, but is an entry under the
-    > **毎日のんびり日本語教師** dictionary.
-    > In other words, with this feature enabled, 以前 will have a `{freq}` value of 0.
+    > This may incorrectly override the frequency for some terms that might not be considered as a grammar point.
+    > For example, 以前 can be used as a standalone word, but is an entry under the **毎日のんびり日本語教師** dictionary.
+    > In other words, with this feature enabled, 以前 will have its `{freq}` value incorrectly overwritten (to 0 by default).
     >
     > This incorrect override usually only happens for very common words anyways
     > (JPDB ranks 以前 as 721), so this should not be a very big problem.
