@@ -311,6 +311,12 @@ and view the lines right below `{{#*inline "freq"}}`.
     then it is considered as a grammar point. Otherwise, the term is treated
     like any other term.
 
+    > **Note**:
+    > This may incorrectly override some terms that might not be considered as a grammar point.
+    > For example, 以前 can be used as a standalone word, but is an entry under the
+    > **毎日のんびり日本語教師** dictionary.
+    > Adding word will have a frequency value of 0.
+
     The following table summarizes the options related to this.
 
     | Option | Description |
