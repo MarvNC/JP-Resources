@@ -83,13 +83,13 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
   ```handlebars
   {{#*inline "freq"}}
-      {{~! Frequency sort handlebars: v23.02.26.1 ~}}
+      {{~! Frequency sort handlebars: v23.02.27.1 ~}}
       {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources#freq-handlebar ~}}
       {{~#scope~}}
           {{~! Options ~}}
           {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
           {{~#set "opt-keep-freqs-past-first-regex"~}} ^()$ {{~/set~}}
-          {{~set "opt-no-freq-default-value" 0 ~}}
+          {{~set "opt-no-freq-default-value" 9999999 ~}}
           {{~set "opt-freq-sorting-method" "harmonic" ~}} {{~! "min", "first", "avg", "harmonic" ~}}
 
           {{~set "opt-grammar-override" true ~}}
@@ -290,13 +290,15 @@ and view the lines right below `{{#*inline "freq"}}`.
 <details>
 <summary><b>Default Value For No Frequencies</b></summary>
 
-- When no frequencies are listed for the expression, the default value given is `0`.
-  Some users may prefer setting the default value to a high number, say `99999999`.
+- When no frequencies are listed for the expression, the default value given is `9999999`. This puts the card at the very end of the queue.
+
+  Some users may prefer setting the default value to 0, as it would be a conscious decision to add
+  a term without a frequency value and you may want to prioritize learning the term immediately.
   To do this, change the `opt-no-freq-default-value` variable.
   For example:
 
   ```handlebars
-  {{~set 'opt-no-freq-default-value' 99999999~}}
+  {{~set 'opt-no-freq-default-value' 0~}}
   ```
 
 </details>

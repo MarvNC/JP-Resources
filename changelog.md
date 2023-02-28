@@ -38,6 +38,9 @@ Add my thoughts on a few frequency dictionaries.
 
 # `freq` Changelog
 
+## v23.02.27.1
+- Changed the default frequency for terms with no frequency data to 9999999.
+
 ## v23.02.26.1
 - Added missing `絵でわかる日本語` grammar dictionary
 
