@@ -6,6 +6,7 @@ My contributions to the Japanese learning community. For questions and support, 
 
 ### [Changelog](changelog.md) <!-- omit in toc -->
 
+- [Contribution](#contribution)
 - [Other Resources](#other-resources)
     - [Dictionaries](#dictionaries)
   - [Special Thanks](#special-thanks)
@@ -25,6 +26,12 @@ My contributions to the Japanese learning community. For questions and support, 
 - [Anki Automatically Highlight in Sentence](#anki-automatically-highlight-in-sentence)
 - [Anki Automatic Hint Sentence for Kana Cards](#anki-automatic-hint-sentence-for-kana-cards)
 - [Yomichan Text Replacement Patterns](#yomichan-text-replacement-patterns)
+
+## Contribution
+
+Contributions are welcome, feel free to open a pull request. Note that there is a [Prettier](https://prettier.io/) config file in the repo for auto formatting with the extension. 
+
+In addition, the [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one) extension can be used to automatically generate and update a table of contents as well as assist in markdown editing.
 
 ## Other Resources
 
