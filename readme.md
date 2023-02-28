@@ -12,6 +12,7 @@ My contributions to the Japanese learning community. For questions and support, 
 - [Frequency Dictionaries](#frequency-dictionaries)
 - [Sorting Mined Anki Cards by Frequency](#sorting-mined-anki-cards-by-frequency)
   - [How-To](#how-to)
+    - [`freq` Handlebar](#freq-handlebar)
   - [`freq` Settings](#freq-settings)
   - [Usage](#usage)
   - [Backfilling Old Cards](#backfilling-old-cards)
@@ -78,10 +79,12 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
   ![](images/chrome_Yomichan_Settings_-_Google_Chrome_2022-07-10_10-10-26.png)
 
+  #### `freq` Handlebar
+
   ```handlebars
   {{#*inline "freq"}}
       {{~! Frequency sort handlebars: v23.02.26.1 ~}}
-      {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources ~}}
+      {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources#freq-handlebar ~}}
       {{~#scope~}}
           {{~! Options ~}}
           {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
