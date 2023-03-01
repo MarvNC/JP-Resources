@@ -104,7 +104,7 @@ def main():
         query = args.query
     else:
         # queries all notes with an empty frequency field
-        query = f"{args.freq_field}:"
+        query = f'"{args.expr_field}:*" "{args.freq_field}:"'
     print(f"Querying Anki with: '{query}'")
     notes = invoke("findNotes", query=query)
 

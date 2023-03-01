@@ -474,10 +474,10 @@ Of course, you could just opt to finish reviewing these cards first instead of b
   python backfill.py "Expression" --default 0
 
   # Uses the field "FrequencySort" instead of the default ("Frequency").
-  # This also changes the default query to `FrequencySort:`.
+  # This also changes the default query to search an empty `FrequencySort` field.
   python backfill.py "Expression" --freq-field "FrequencySort"
 
-  # Uses a custom query instead of the default ("Frequency:").
+  # Uses a custom query instead of the default ("Expression:* Frequency:").
   # Note: For powershell users, you must escape the quotes with an additional backtick:
   #     --query "Frequency: \`"note:My mining note\`""
   python backfill.py "Expression" --query "Frequency: \"note:My mining note\""
