@@ -114,7 +114,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
           {{~! search for grammar dictionary ~}}
           {{~#each definition.definitions~}}
               {{~#set "rx-match-grammar-dicts" ~}}
-                  {{~#regexMatch (get "opt-grammar-override-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                  {{~#regexMatch (get "opt-grammar-override-dict-regex") "u"~}}{{this.dictionary}}{{~/regexMatch~}}
               {{/set~}}
               {{~! rx-match-grammar-dicts is not empty if a grammar dictionary was found ~}}
               {{~#if (op "!==" (get "rx-match-grammar-dicts") "") ~}}
@@ -124,7 +124,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
           {{~! Additional case when "Result grouping mode" is set to "No Grouping"~}}
           {{~#set "rx-match-grammar-dicts" ~}}
-              {{~#regexMatch (get "opt-grammar-override-dict-regex") "gu"~}}{{this.definition.dictionary}}{{~/regexMatch~}}
+              {{~#regexMatch (get "opt-grammar-override-dict-regex") "u"~}}{{this.definition.dictionary}}{{~/regexMatch~}}
           {{/set~}}
           {{~! rx-match-grammar-dicts is not empty if a grammar dictionary was found ~}}
           {{~#if (op "!==" (get "rx-match-grammar-dicts") "") ~}}
@@ -135,11 +135,11 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
               {{~! rx-match-ignored-freq is not empty if ignored <=> rx-match-ignored-freq is empty if not ignored ~}}
               {{~#set "rx-match-ignored-freq" ~}}
-                  {{~#regexMatch (get "opt-ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                  {{~#regexMatch (get "opt-ignored-freq-dict-regex") "u"~}}{{this.dictionary}}{{~/regexMatch~}}
               {{/set~}}
 
               {{~#set "rx-match-ignored-value" ~}}
-                  {{~#regexMatch (get "opt-ignored-freq-value-regex") "gu"~}}{{this.frequency}}{{~/regexMatch~}}
+                  {{~#regexMatch (get "opt-ignored-freq-value-regex") "u"~}}{{this.frequency}}{{~/regexMatch~}}
               {{/set~}}
               {{~#if (op "&&" (op "===" (get "rx-match-ignored-freq") "") (op "===" (get "rx-match-ignored-value") ""))~}}
 
@@ -155,7 +155,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
                   {{~#if (op "!" (get "read-freq") ) ~}}
                       {{~#set "rx-match-keep-freqs" ~}}
-                          {{~#regexMatch (get "opt-keep-freqs-past-first-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                          {{~#regexMatch (get "opt-keep-freqs-past-first-regex") "u"~}}{{this.dictionary}}{{~/regexMatch~}}
                       {{/set~}}
 
                       {{~! rx-match-keep-freqs is not empty if keep freqs ~}}
