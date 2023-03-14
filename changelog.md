@@ -38,6 +38,9 @@ Add my thoughts on a few frequency dictionaries.
 
 # `freq` Changelog
 
+## v23.03.13.1
+- Add option to ignore frequencies based on the value of the frequency field.
+
 ## v23.02.27.1
 - Changed the default frequency for terms with no frequency data to 9999999.
 
