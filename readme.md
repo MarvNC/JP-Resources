@@ -95,7 +95,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
       {{~#scope~}}
           {{~! Options ~}}
           {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
-          {{~#set "opt-ignored-freq-value-regex"~}} .*(❌).* {{~/set~}}
+          {{~#set "opt-ignored-freq-value-regex"~}} ❌ {{~/set~}}
           {{~#set "opt-keep-freqs-past-first-regex"~}} ^()$ {{~/set~}}
           {{~set "opt-no-freq-default-value" 9999999 ~}}
           {{~set "opt-freq-sorting-method" "harmonic" ~}} {{~! "min", "first", "avg", "harmonic" ~}}
@@ -307,7 +307,13 @@ and view the lines right below `{{#*inline "freq"}}`.
   For example, to also ignore entries containing a `⚠` symbol, do the following:
 
   ```handlebars
-  {{~#set 'opt-ignored-freq-value-regex'~}} .*(❌|⚠).* {{~/set~}}
+  {{~#set 'opt-ignored-freq-value-regex'~}} ❌|⚠ {{~/set~}}
+  ```
+
+- If you do not wish to ignore any values, remove the ❌ symbol from the regex.
+
+  ```handlebars
+  {{~#set 'opt-ignored-freq-value-regex'~}}{{~/set~}}
   ```
 
 </details>
