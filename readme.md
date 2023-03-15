@@ -8,7 +8,7 @@ My contributions to the Japanese learning community. For questions and support, 
 
 - [Contribution](#contribution)
 - [Other Resources](#other-resources)
-    - [Dictionaries](#dictionaries)
+  - [Dictionaries](#dictionaries)
   - [Special Thanks](#special-thanks)
 - [Frequency Dictionaries](#frequency-dictionaries)
 - [Sorting Mined Anki Cards by Frequency](#sorting-mined-anki-cards-by-frequency)
@@ -29,7 +29,7 @@ My contributions to the Japanese learning community. For questions and support, 
 
 ## Contribution
 
-Contributions are welcome, feel free to open a pull request. Note that there is a [Prettier](https://prettier.io/) config file in the repo for auto formatting with the extension. 
+Contributions are welcome, feel free to open a pull request. Note that there is a [Prettier](https://prettier.io/) config file in the repo for auto formatting with the extension.
 
 In addition, the [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one) extension can be used to automatically generate and update a table of contents as well as assist in markdown editing.
 
@@ -38,7 +38,7 @@ In addition, the [Markdown All in One](https://marketplace.visualstudio.com/item
 - [JP resources by Aquafina water bottle](https://aquafina-water-bottle.github.io/jp-mining-note/jpresources/) and a [very promising Anki note template](https://aquafina-water-bottle.github.io/jp-mining-note/).
 - [arujisho](https://github.com/emc2314/arujisho) - the BEST android dictionary.
 
-#### Dictionaries
+### Dictionaries
 
 These are absolutely essential.
 
@@ -90,11 +90,12 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
   ```handlebars
   {{#*inline "freq"}}
-      {{~! Frequency sort handlebars: v23.02.27.1 ~}}
+      {{~! Frequency sort handlebars: v23.03.13.1 ~}}
       {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources#freq-handlebar ~}}
       {{~#scope~}}
           {{~! Options ~}}
           {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
+          {{~#set "opt-ignored-freq-value-regex"~}} ❌ {{~/set~}}
           {{~#set "opt-keep-freqs-past-first-regex"~}} ^()$ {{~/set~}}
           {{~set "opt-no-freq-default-value" 9999999 ~}}
           {{~set "opt-freq-sorting-method" "harmonic" ~}} {{~! "min", "first", "avg", "harmonic" ~}}
@@ -113,7 +114,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
           {{~! search for grammar dictionary ~}}
           {{~#each definition.definitions~}}
               {{~#set "rx-match-grammar-dicts" ~}}
-                  {{~#regexMatch (get "opt-grammar-override-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                  {{~#regexMatch (get "opt-grammar-override-dict-regex") "u"~}}{{this.dictionary}}{{~/regexMatch~}}
               {{/set~}}
               {{~! rx-match-grammar-dicts is not empty if a grammar dictionary was found ~}}
               {{~#if (op "!==" (get "rx-match-grammar-dicts") "") ~}}
@@ -123,7 +124,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
           {{~! Additional case when "Result grouping mode" is set to "No Grouping"~}}
           {{~#set "rx-match-grammar-dicts" ~}}
-              {{~#regexMatch (get "opt-grammar-override-dict-regex") "gu"~}}{{this.definition.dictionary}}{{~/regexMatch~}}
+              {{~#regexMatch (get "opt-grammar-override-dict-regex") "u"~}}{{this.definition.dictionary}}{{~/regexMatch~}}
           {{/set~}}
           {{~! rx-match-grammar-dicts is not empty if a grammar dictionary was found ~}}
           {{~#if (op "!==" (get "rx-match-grammar-dicts") "") ~}}
@@ -134,9 +135,13 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
               {{~! rx-match-ignored-freq is not empty if ignored <=> rx-match-ignored-freq is empty if not ignored ~}}
               {{~#set "rx-match-ignored-freq" ~}}
-                  {{~#regexMatch (get "opt-ignored-freq-dict-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                  {{~#regexMatch (get "opt-ignored-freq-dict-regex") "u"~}}{{this.dictionary}}{{~/regexMatch~}}
               {{/set~}}
-              {{~#if (op "===" (get "rx-match-ignored-freq") "") ~}}
+
+              {{~#set "rx-match-ignored-value" ~}}
+                  {{~#regexMatch (get "opt-ignored-freq-value-regex") "u"~}}{{this.frequency}}{{~/regexMatch~}}
+              {{/set~}}
+              {{~#if (op "&&" (op "===" (get "rx-match-ignored-freq") "") (op "===" (get "rx-match-ignored-value") ""))~}}
 
                   {{~!
                       only uses the 1st frequency of any dictionary.
@@ -150,7 +155,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
                   {{~#if (op "!" (get "read-freq") ) ~}}
                       {{~#set "rx-match-keep-freqs" ~}}
-                          {{~#regexMatch (get "opt-keep-freqs-past-first-regex") "gu"~}}{{this.dictionary}}{{~/regexMatch~}}
+                          {{~#regexMatch (get "opt-keep-freqs-past-first-regex") "u"~}}{{this.dictionary}}{{~/regexMatch~}}
                       {{/set~}}
 
                       {{~! rx-match-keep-freqs is not empty if keep freqs ~}}
@@ -290,6 +295,25 @@ and view the lines right below `{{#*inline "freq"}}`.
 
   ```handlebars
   {{~#set 'opt-ignored-freq-dict-regex'~}} ^(JLPT_Level|My amazing frequency dictionary)$ {{~/set~}}
+  ```
+
+</details>
+
+<details>
+<summary><b>Ignoring Frequency Values</b></summary>
+
+- By default, any frequency value containing `❌` is ignored as it represents a value that does not appear in JPDB.
+  If you want to ignore other values, edit the `opt-ignored-freq-value-regex` variable and join the ignored symbols with `|`.
+  For example, to also ignore entries containing a `⚠` symbol, do the following:
+
+  ```handlebars
+  {{~#set 'opt-ignored-freq-value-regex'~}} ❌|⚠ {{~/set~}}
+  ```
+
+- If you do not wish to ignore any values, remove the ❌ symbol from the regex.
+
+  ```handlebars
+  {{~#set 'opt-ignored-freq-value-regex'~}}{{~/set~}}
   ```
 
 </details>
