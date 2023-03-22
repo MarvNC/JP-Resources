@@ -2,6 +2,10 @@
 
 Minor changes will not be reflected here. See the commit history for more details.
 
+## 2023-03-21
+
+Add MIT license.
+
 ## 2023-02-03
 
 Add changelog.
