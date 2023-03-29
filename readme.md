@@ -17,6 +17,7 @@ My contributions to the Japanese learning community. For questions and support, 
   - [`freq` Settings](#freq-settings)
   - [Usage](#usage)
   - [Backfilling Old Cards](#backfilling-old-cards)
+  - [Fitting in your own cards](#fitting-in-your-own-cards)
 - [Anki Card Blur](#anki-card-blur)
   - [How-To](#how-to-1)
   - [Usage](#usage-1)
@@ -539,6 +540,10 @@ Of course, you could just opt to finish reviewing these cards first instead of b
 - Finally, you can right click the `backlog` tag in the sidebar and delete it.
 
 </details>
+
+
+### Fitting in your own cards
+If you frequently make your own cards from scratch, you won't be able to pull frequencies from dictionaries. If you tag all of these cards specifically, you can use [this plugin](https://github.com/HunterKing/anki-frequency-shuffle).
 
 ## Anki Card Blur
 
