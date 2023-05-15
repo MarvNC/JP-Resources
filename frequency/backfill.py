@@ -38,8 +38,9 @@ def invoke(action, **params):
 
 rx_HTML = re.compile("<.*?>")
 
-def remove_html(expression: str):
-    return re.sub(rx_HTML, '', expression)
+def normalize_expr(expression: str):
+    # removes HTML and surrounding whitespace
+    return re.sub(rx_HTML, '', expression).strip()
 
 def get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -119,7 +120,7 @@ def main():
     # dict[str, list[int]]
     expr_to_nid = collections.defaultdict(list)
     for note_info in notes_info:
-        expr = remove_html(note_info["fields"][args.expr_field]["value"])
+        expr = normalize_expr(note_info["fields"][args.expr_field]["value"])
         expr_to_nid[expr].append(note_info["noteId"])
 
     # creates multi action to update multiple notes
