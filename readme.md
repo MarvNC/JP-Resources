@@ -51,10 +51,11 @@ These are absolutely essential.
 
 Much thanks to:
 
-- Renji-xD for rewriting the handlebar to find a minimum value.
-- KamWithK for developing cool Anki addons to use with this guide.
-- Aquafina-water-bottle for developing a python script that greatly improved the backfilling process and much handlebar wizardry to revamp the frequency handlebar.
+- Renji-xD for originally rewriting the handlebar to find a minimum value.
+- [KamWithK](https://github.com/KamWithK/) for developing cool Anki addons to use with this guide.
+- [Aquafina-water-bottle](https://github.com/Aquafina-water-bottle/) for much handlebar wizardry in rewriting the frequency handlebar to be radically better and developing a python script that greatly improves the backfilling process.
 - GrumpyThomas, pj, and aka_baka for some suggestions.
+- [Michel](https://github.com/Michel-Henry-ZH/) for converting the Chinese txt frequency files
 
 ## Frequency Dictionaries
 
@@ -465,6 +466,15 @@ If you already have a large backlog of old cards without frequency values, you m
 Of course, you could just opt to finish reviewing these cards first instead of backfilling the old cards.
 
 > **Warning**: **Make sure to backup your collection** before trying either method below.
+
+**Differences between the backfill .txt files**
+
+- `JPDB.txt` - Japanese list from [jpdb.io](https://jpdb.io)
+- `vnsfreqSTARS.txt` and `vnsfreq.txt` - Japanese frequency lists from visual novels
+- `BLCUcoll.txt` and `BLCUlit.txt` - Chinese frequency lists from colloquial and literary text from the [BLCU BCC Corpus](https://github.com/MarvNC/yomichan-dictionaries#blcu-bcc-corpus).
+- `SUBTLEX-CH.txt` - Chinese frequency list based on movie/TV subtitles from [SUBTLEX-CH](https://github.com/MarvNC/yomichan-dictionaries#subtlex-ch-subtitle-corpus).
+
+Note that the Japanese ones are selected by default when backfilling via the command line; you will have to use the `--freq-lists` option to specify other lists.
 
 <details>
 <summary><b>Backfilling: Command Line (Recommended)</b></summary>
