@@ -832,7 +832,7 @@ Put this code at the bottom of your front card template, making sure to rename `
 
 Some text replacement patterns in Yomichan `Settings -> Translation -> Custom Text Replacement Patterns` that I've found useful for better parsing.
 
-If it might save you some time, you can optionally [download the text replacement patterns from here](https://cdn.discordapp.com/attachments/778430038159655012/1128767009446969414/replacementPatterns.txt), export your config, replace them in the appropriate spot, and reimport. Thanks to @JulianJapan for providing the export.
+If it might save you some time, you can optionally [download the text replacement patterns from here](https://cdn.discordapp.com/attachments/778430038159655012/1128767009446969414/replacementPatterns.txt), export your config, replace them in the appropriate spot, and reimport. Thanks to Julian for providing the export.
 
 - Some expressions may occasionally be written using numerals and most dictionaries only have entries for the kanji version. You could try replacing 0 with 十 and so on for larger numbers, but it dosen't seem to be worth it in my experience.
   - 鯛も１人はうまからず
