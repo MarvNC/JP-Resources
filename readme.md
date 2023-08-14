@@ -27,6 +27,7 @@ My contributions to the Japanese learning community. For questions and support, 
 - [Anki Automatically Highlight in Sentence](#anki-automatically-highlight-in-sentence)
 - [Anki Automatic Hint Sentence for Kana Cards](#anki-automatic-hint-sentence-for-kana-cards)
 - [Yomichan Text Replacement Patterns](#yomichan-text-replacement-patterns)
+- [Fixing the Font Language in Anki](#fixing-the-font-language-in-anki)
 
 ## Contribution
 
@@ -865,3 +866,21 @@ If it might save you some time, you can optionally [download the text replacemen
   - 侃々諤々
 
 `(.)々` -> `$1$1`
+
+## Fixing the Font Language in Anki
+
+If you're displaying Japanese/Chinese/Korean text in Anki, you might often get incorrect glyphs, as there are [differences in the display of unified Han characters for different languages](https://en.wikipedia.org/wiki/Han_unification). In general, I recommend setting a `lang` tag in your Anki card template so that the card is rendered correctly.
+
+At the beginning of your card add the following line, replacing `ja` with `zh`, `zh-hk`, `zh-tw` or `ko` as appropriate. You can look up the ISO language code for the language you want to display online.
+
+```html
+<span lang="ja"></span>
+```
+
+Then at the very bottom of your card template just add a closing span tag.
+
+```html
+</span>
+```
+
+You may already have set a custom font using CSS which is a good way to customize your cards but it does not guarantee full compatibility in cases where the glyph is not present in the font you're using.
