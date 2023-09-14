@@ -564,7 +564,7 @@ If you frequently make cards that don't contain frequencies, such as sentence or
 
 In the [JP Mining Note](https://aquafina-water-bottle.github.io/jp-mining-note/) Anki note type, there is also a FrequenciesStylized field for displaying the values from various frequency dictionaries on the front of the card. Due to the specific formatting requirements of this field, it cannot be backfilled with the above methods. A separate script is provided in the `frequencies/frequenciesstylized` folder for this purpose.
 
-<b>As always, back up your entire collection before performing any steps from this section</b>
+> **Warning**: **As always, back up your entire collection** before performing any steps from this section
 
 ### Configuring the dictionary list
 
@@ -603,7 +603,7 @@ Then it will now produce this output: (note the lowercase dictionary names)
 
 Note the `../` in the filepath for the VN Freq dictionary. This script can use any of the frequency lists that are used by `backfill.py`. However, if there is a stylized version of a frequency list, then it is highly recommended that you use that one, rather than the simpler version. This is because the stylized version includes additional formatting, such as JPDB's ㋕ marker for kana frequencies.
 
-Stylized versions of frequency lists also include the reading for each word, so if your cards have the `WordReadingHiragana` field filled in, then the script can ensure that only the frequencies for the correct reading are used. If your notes do not have the `WordReadingHiragana` field filled, then it's highly recommended that you fill it using the instructions on the [JP Mining Note](https://aquafina-water-bottle.github.io/jp-mining-note/importing/#5-optional-batch-set-wordreadinghiragana-field) site.
+Stylized versions of frequency lists also include the reading for each word, so if your cards have the `WordReadingHiragana` field filled in, then the script can ensure that only the frequencies for the correct reading are used. If your notes do not have the `WordReadingHiragana` field filled, then it's highly recommended that you fill it using the instructions on the [JP Mining Note](https://aquafina-water-bottle.github.io/jp-mining-note/importing/#5-optional-batch-set-wordreadinghiragana-field) docs.
 
 <details>
 <summary><b>Included Stylized Frequency Dictionaries</b></summary>
@@ -678,7 +678,7 @@ You can clear this HTML directly by clicking on the HTML toggle button marked in
 
 If you need to completely clear the `FrequenciesStylized` field for several cards at once, first select all the relevent cards in the Anki browser. Then, go to `Notes -> Find and Replace...` and enter the options shown below.
 
-<b>WARNING: Unless you know exactly what you're doing, only use the options shown below. Using different options has the potential to delete an arbitrary amount of information from an arbitrary number of cards in your collection</b>
+> **WARNING**: **Unless you know exactly what you're doing, only use the options shown below. Using different options has the potential to delete an arbitrary amount of information from an arbitrary number of cards in your collection**
 
 ![](images/FrequenciesStylized-6.png)
 
