@@ -18,6 +18,10 @@ My contributions to the Japanese learning community. For questions and support, 
   - [Usage](#usage)
   - [Backfilling Old Cards](#backfilling-old-cards)
   - [Fitting in Cards Without Frequencies](#fitting-in-cards-without-frequencies)
+- [Backfilling Stylized Frequencies in JP Mining Note](#backfilling-stylized-frequencies-in-jp-mining-note)
+  - [Configuring the dictionary list](#configuring-the-dictionary-list)
+  - [Running the script](#running-the-script)
+  - [Clearing the FrequenciesStylized field](#clearing-the-frequenciesstylized-field)
 - [Anki Card Blur](#anki-card-blur)
   - [How-To](#how-to-1)
   - [Usage](#usage-1)
@@ -555,6 +559,130 @@ Note that the Japanese ones are selected by default when backfilling via the com
 ### Fitting in Cards Without Frequencies
 
 If you frequently make cards that don't contain frequencies, such as sentence or grammar cards, you won't be able to pull frequencies from dictionaries. If you tag all of these cards specifically, you can use [this plugin](https://github.com/HunterKing/anki-frequency-shuffle) to generate random frequencies for these cards.
+
+## Backfilling Stylized Frequencies in JP Mining Note
+
+In the [JP Mining Note](https://aquafina-water-bottle.github.io/jp-mining-note/) Anki note type, there is also a FrequenciesStylized field for displaying the values from various frequency dictionaries on the front of the card. Due to the specific formatting requirements of this field, it cannot be backfilled with the above methods. A separate script is provided in the `frequencies/frequenciesstylized` folder for this purpose.
+
+<b>As always, back up your entire collection before performing any steps from this section</b>
+
+### Configuring the dictionary list
+
+Before running the script, you will need to configure the list of frequency dictionaries to be used:
+
+The set of frequency dictionaries to use can be configured by editing the `dict_names.py` file. The default values in this file are shown below:
+
+```
+dict_names = [
+    ('JPDB-stylized.txt', 'JPDB'),
+    ('../vnsfreq.txt', 'VN Freq'),
+    ('JLPT-stylized.txt', 'JLPT')
+]
+```
+
+The order of the dictionaries in this list determines the order that the frequencies will appear in the FrequenciesStylized field.
+Within each entry, the first parameter is the relative filepath to the frequency list, and the second parameter is the display name you want to use for that dictionary.
+
+For example, the above configuration produces the following result for 返事:
+
+![](images/FrequenciesStylized-1.png)
+
+If you change the `dict_names.py` file to:
+
+```
+dict_names = [
+    ('../vnsfreq.txt', 'VN Freq'),
+    ('JPDB-stylized.txt', 'jpdb'),
+    ('JLPT-stylized.txt', 'jlpt')
+]
+```
+
+Then it will now produce this output: (note the lowercase dictionary names)
+
+![](images/FrequenciesStylized-2.png)
+
+Note the `../` in the filepath for the VN Freq dictionary. This script can use any of the frequency lists that are used by `backfill.py`. However, if there is a stylized version of a frequency list, then it is highly recommended that you use that one, rather than the simpler version. This is because the stylized version includes additional formatting, such as JPDB's ㋕ marker for kana frequencies.
+
+Stylized versions of frequency lists also include the reading for each word, so if your cards have the `WordReadingHiragana` field filled in, then the script can ensure that only the frequencies for the correct reading are used. If your notes do not have the `WordReadingHiragana` field filled, then it's highly recommended that you fill it using the instructions on the [JP Mining Note](https://aquafina-water-bottle.github.io/jp-mining-note/importing/#5-optional-batch-set-wordreadinghiragana-field) site.
+
+<details>
+<summary><b>Included Stylized Frequency Dictionaries</b></summary>
+
+- `JPDB-stylized.txt` - Same as `JPDB.txt` [above](#backfilling-old-cards), but includes the ㋕ marker to indicate kana form frequency, and word readings to differentiate between different words that use the same kanji.
+- `cc100-stylized.txt` - The CC100 dataset as described in the [Frequency Dictionaries](#frequency-dictionaries) section.
+- `JLPT-stylized.txt` - Provides the JLPT level for words tested on the JLPT. Extracted from stephenmk's [yomichan-jlpt-vocab](https://github.com/stephenmk/yomichan-jlpt-vocab) yomichan dictionary.
+</details>
+
+### Running the script
+
+Once you have configured the list of dictionaries to use, you can run the script. The simplest way to run this script is to navigate into the `frequencies/frequenciesstylized` folder, and run:
+
+```
+# Linux users might have to use `python3` instead of `python`.
+python backfill-stylized.py
+```
+
+This will search your collection for all notes of type `JP Mining Note` with an empty `FrequenciesStylized` field. It will then fill those fields with the appropriate frequency information as determined by your configuration in `dict_names.py`. It will also tag every note it modifies with the tag `backfill-stylized`. There are two options that can be used with this script:
+
+<details>
+<summary><b>query</b></summary>
+
+The `--query` option works in the same way as it does in [the standard backfill.py script](#backfilling-old-cards). This allows you to use a custom query to find the cards to modify.
+
+For example, if you want to overwrite the FrequenciesStylized field for all JP Mining Notes, and not just those where the field is already empty, you can use the following:
+
+```
+# This custom query can be used to override all of your existing frequencies,
+# instead of just backfilling. RUN THIS WITH CAUTION!
+python backfill-stylized.py --query "\"note:JP Mining Note\""
+```
+
+One thing to be careful of is that your custom query must only return notes of type `JP Mining Note` with `Word` and `FrequenciesStylized` fields. If it returns any other type of note, it will throw an error. You can ensure only JP Mining Notes are returned by always including `\"note:JP Mining Note\"` in your queries.
+
+</details>
+
+<details>
+<summary><b>tag</b></summary>
+
+By default, every note that is modified by this script will be tagged with the tag `backfill-stylized`. This makes it easy to revert your changes if you make a mistake. To reset the modified cards and start again, search for them in the Anki browser using `tag:backfill-stylized`, select all the cards, and then clear the `FrequenciesStylized` field using the procedure in the [next section](#clearing-the-frequenciesstylized-field).
+
+Once you are happy with your cards, you can remove the tags by searching Anki for `tag:backfill-stylized`, and using `Notes -> Remove Tags...` to remove `backfill-stylized`.
+
+If you want to use a different tag, you can use the `--tag` option:
+
+```
+# Tags all modified notes with "modified-stylized-freq"
+python backfill-stylized.py --tag "modified-stylized-freq"
+```
+
+If you don't want the script to tag any notes, use `--tag ""`
+
+```
+# Prevents the script from tagging any notes
+python backfill-stylized.py --tag ""
+```
+
+</details>
+
+### Clearing the FrequenciesStylized field
+
+If you have never edited the `FrequenciesStylized` field on a note, then it is probably completely empty, and `backfill-stylized.py` will be able to find the note.
+
+However, in some cases, the `FrequenciesStylized` field might look empty, when in fact it has some hidden HTML tags in it. In this case, the script will not be able to find these notes, since it is only looking for notes where this field is empty.
+
+| `FrequenciesStylized` looks empty     | But it actually has hidden HTML elements |
+| ------------------------------------- | ---------------------------------------- |
+| ![](images/FrequenciesStylized-4.png) | ![](images/FrequenciesStylized-5.png)    |
+
+You can clear this HTML directly by clicking on the HTML toggle button marked in the above image. Then just delete the HTML from the editor.
+
+If you need to completely clear the `FrequenciesStylized` field for several cards at once, first select all the relevent cards in the Anki browser. Then, go to `Notes -> Find and Replace...` and enter the options shown below.
+
+<b>WARNING: Unless you know exactly what you're doing, only use the options shown below. Using different options has the potential to delete an arbitrary amount of information from an arbitrary number of cards in your collection</b>
+
+![](images/FrequenciesStylized-6.png)
+
+After clicking OK, the `FrequenciesStylized` field for all selected notes will be completely emptied.
 
 ## Anki Card Blur
 
