@@ -475,6 +475,7 @@ Of course, you could just opt to finish reviewing these cards first instead of b
 **Differences between the backfill .txt files**
 
 - `JPDB.txt` - Japanese list from [jpdb.io](https://jpdb.io)
+- `cc100.txt` - The CC100 dataset as described in the [Frequency Dictionaries](#frequency-dictionaries) section.
 - `vnsfreqSTARS.txt` and `vnsfreq.txt` - Japanese frequency lists from visual novels
 - `BLCUcoll.txt` and `BLCUlit.txt` - Chinese frequency lists from colloquial and literary text from the [BLCU BCC Corpus](https://github.com/MarvNC/yomichan-dictionaries#blcu-bcc-corpus).
 - `SUBTLEX-CH.txt` - Chinese frequency list based on movie/TV subtitles from [SUBTLEX-CH](https://github.com/MarvNC/yomichan-dictionaries#subtlex-ch-subtitle-corpus).
