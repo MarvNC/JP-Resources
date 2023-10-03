@@ -79,7 +79,7 @@ def get_args() -> argparse.Namespace:
         nargs="+",
         type=str,
         help="what lists to use to backfill",
-        default=["JPDB.txt", "vnsfreq.txt", "vnsfreqSTARS.txt"],
+        default=["JPDB.txt", "cc100.txt", "vnsfreq.txt", "vnsfreqSTARS.txt"],
     )
 
     return parser.parse_args()
