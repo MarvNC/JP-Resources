@@ -1003,7 +1003,7 @@ If you're displaying Japanese/Chinese/Korean text in Anki, you might often get i
 At the beginning of your card add the following line, replacing `ja` with `zh`, `zh-hk`, `zh-tw` or `ko` as appropriate. You can look up the ISO language code for the language you want to display online.
 
 ```html
-<span lang="ja"></span>
+<span lang="ja">
 ```
 
 Then at the very bottom of your card template just add a closing span tag.
