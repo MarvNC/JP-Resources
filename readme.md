@@ -97,7 +97,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
   ```handlebars
   {{#*inline "freq"}}
-      {{~! Frequency sort handlebars: v23.03.13.1 ~}}
+      {{~! Frequency sort handlebars: v24.01.06.1 ~}}
       {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources#freq-handlebar ~}}
       {{~#scope~}}
           {{~! Options ~}}
@@ -172,8 +172,8 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
                   {{/if~}}
 
                   {{~#if (get "read-freq") ~}}
-                      {{~set "f" (op "+" (regexMatch "\d+" "" this.frequency)) ~}}
-
+                      {{~#set "numericFrequencyMatch"}}{{~#regexMatch "\d+" ""}}{{~this.frequency~}}{{/regexMatch~}}{{/set~}}
+                      {{~set "f" (op "+" (get "numericFrequencyMatch")) ~}}
                       {{~#if (op "===" (get "opt-freq-sorting-method") "min") ~}}
                           {{~#if
                               (op "||"
