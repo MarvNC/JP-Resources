@@ -95,13 +95,16 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
 
   #### `freq` Handlebar
 
+  > [!NOTE]
+  > This is the same handlebar that is used in jp-mining-note, but with a different name and with the options included. If you want to use it with jp-mining-note, you can copy the code below and rename `freq` in the first line to `jpmn-frequency-sort`, then remove the options section.
+
   ```handlebars
   {{#*inline "freq"}}
-      {{~! Frequency sort handlebars: v24.01.06.1 ~}}
+      {{~! Frequency sort handlebars: v24.01.10.1 ~}}
       {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources#freq-handlebar ~}}
       {{~#scope~}}
           {{~! Options ~}}
-          {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT_Level)$ {{~/set~}}
+          {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT.*)|(HSK.*)$ {{~/set~}}
           {{~#set "opt-ignored-freq-value-regex"~}} ❌ {{~/set~}}
           {{~#set "opt-keep-freqs-past-first-regex"~}} ^()$ {{~/set~}}
           {{~set "opt-no-freq-default-value" 9999999 ~}}
@@ -1003,7 +1006,7 @@ If you're displaying Japanese/Chinese/Korean text in Anki, you might often get i
 At the beginning of your card add the following line, replacing `ja` with `zh`, `zh-hk`, `zh-tw` or `ko` as appropriate. You can look up the ISO language code for the language you want to display online.
 
 ```html
-<span lang="ja">
+<span lang="ja"></span>
 ```
 
 Then at the very bottom of your card template just add a closing span tag.

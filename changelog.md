@@ -40,9 +40,13 @@ Add my thoughts on a few frequency dictionaries.
 
 # `freq` Changelog
 
+## v24.01.10.1
+
+- Add ignored dict regexes and add note for jpmn use.
+
 ## v24.01.06.1
 
-- Fix regexMatch for 2023.12.29 version of Yomitan
+- Fix regexMatch for 2023.12.29 version of Yomitan.
 
 ## v23.03.13.1
 
