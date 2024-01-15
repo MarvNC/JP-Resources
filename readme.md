@@ -41,7 +41,7 @@ In addition, the [Markdown All in One](https://marketplace.visualstudio.com/item
 
 ## Other Resources
 
-- [JP resources by Aquafina water bottle](https://aquafina-water-bottle.github.io/jp-mining-note/jpresources/) and a [very promising Anki note template](https://aquafina-water-bottle.github.io/jp-mining-note/).
+- [JP resources by Aquafina water bottle](https://arbyste.github.io/jp-mining-note/jpresources/) and a [very promising Anki note template](https://arbyste.github.io/jp-mining-note/) (maintenance now taken over by Arbyste)
 - [arujisho](https://github.com/emc2314/arujisho) - the BEST android dictionary.
 
 ### Dictionaries
