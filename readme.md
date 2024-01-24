@@ -1003,7 +1003,7 @@ If it might save you some time, you can optionally [download the text replacemen
 
 If you're displaying Japanese/Chinese/Korean text in Anki, you might often get incorrect glyphs, as there are [differences in the display of unified Han characters for different languages](https://en.wikipedia.org/wiki/Han_unification). In general, I recommend setting a `lang` tag in your Anki card template so that the card is rendered correctly.
 
-At the beginning of your card add the following line, replacing `ja` with `zh`, `zh-hk`, `zh-tw` or `ko` as appropriate. You can look up the ISO language code for the language you want to display online.
+At the beginning of your card template (both front and back sides) add the following line, replacing `ja` with `zh`, `zh-hk`, `zh-tw` or `ko` as appropriate. You can look up the ISO language code for the language you want to display online.
 
 ```html
 <span lang="ja">
