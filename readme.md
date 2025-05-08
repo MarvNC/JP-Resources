@@ -104,7 +104,7 @@ This handlebar for Yomichan will add a `{freq}` field that will use your install
       {{~! The latest version can be found at https://github.com/MarvNC/JP-Resources#freq-handlebar ~}}
       {{~#scope~}}
           {{~! Options ~}}
-          {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT.*)|(HSK.*)$ {{~/set~}}
+          {{~#set "opt-ignored-freq-dict-regex"~}} ^(JLPT.*)|(HSK.*)|(WK.*)$ {{~/set~}}
           {{~#set "opt-ignored-freq-value-regex"~}} ❌ {{~/set~}}
           {{~#set "opt-keep-freqs-past-first-regex"~}} ^()$ {{~/set~}}
           {{~set "opt-no-freq-default-value" 9999999 ~}}
