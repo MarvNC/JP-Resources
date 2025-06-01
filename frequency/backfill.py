@@ -42,6 +42,18 @@ def normalize_expr(expression: str):
     # removes HTML and surrounding whitespace
     return re.sub(rx_HTML, '', expression).strip()
 
+def harmonic_average(frequencies: List[float]) -> int:
+    """Calculate the harmonic average of a list of frequencies."""
+    if not frequencies:
+        return 0
+    if any(f <= 0 for f in frequencies):
+        # Handle case where some frequencies might be 0 or negative
+        # Filter out non-positive values
+        frequencies = [f for f in frequencies if f > 0]
+        if not frequencies:
+            return 0
+    return int(len(frequencies) / sum(1/f for f in frequencies))
+
 def get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
@@ -127,17 +139,31 @@ def main():
     actions = []
 
     print("Parsing frequency lists...")
-    found_exprs = set()
+    # dict[str, list[int]] - collect all frequencies for each expression
+    expr_to_frequencies = collections.defaultdict(list)
+
     for file_path in args.freq_lists:
         with open(file_path, encoding="utf-8") as f:
             for line in csv.reader(f, dialect=csv.excel_tab):
                 expr, freq = line
-                if expr not in found_exprs and expr in expr_to_nid:
-                    new_actions = create_actions(
-                        expr_to_nid[expr], freq, args.freq_field
-                    )
-                    actions.extend(new_actions)
-                    found_exprs.add(expr)
+                if expr in expr_to_nid:
+                    try:
+                        freq_value = int(freq)
+                        expr_to_frequencies[expr].append(freq_value)
+                    except ValueError:
+                        # Skip invalid frequency values
+                        continue
+
+    # Calculate harmonic averages and create actions
+    found_exprs = set()
+    for expr, frequencies in expr_to_frequencies.items():
+        if frequencies:  # Only process expressions that have valid frequencies
+            harmonic_avg = harmonic_average(frequencies)
+            new_actions = create_actions(
+                expr_to_nid[expr], str(harmonic_avg), args.freq_field
+            )
+            actions.extend(new_actions)
+            found_exprs.add(expr)
 
     added_freqs_n = len(actions)
     if args.default is not None:
